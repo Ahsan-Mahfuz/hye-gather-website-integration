@@ -1,14 +1,11 @@
-import type { Metadata } from 'next'
-import {
-  Geist,
-  Geist_Mono,
-  Poppins,
-  Cedarville_Cursive,
-} from 'next/font/google'
+'use client'
+import { Geist, Geist_Mono, Poppins } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import './globals.css'
 import Navbar from '@/components/navbar/Navbar'
 import Footer from '@/components/footer/Footer'
+import { Provider } from 'react-redux'
+import { store } from '@/redux/main/store'
 
 // const cursive = Cedarville_Cursive({
 //   variable: '--font-cedarville-cursive',
@@ -33,13 +30,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'HYE GATHER',
-  description:
-    'HYE GATHER | Find the best vendors for your events, from weddings to corporate parties.',
-  keywords: 'event vendors, wedding vendors, corporate event vendors',
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,11 +40,12 @@ export default function RootLayout({
       <body
         className={`${poppins.variable}  ${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-between  `}
       >
-        <Navbar />
-
-        <div className=" min-h-screen">{children}</div>
-        <Toaster />
-        <Footer />
+        <Provider store={store}>
+          <Navbar />
+          <div className="min-h-screen">{children}</div>
+          <Toaster />
+          <Footer />
+        </Provider>
       </body>
     </html>
   )

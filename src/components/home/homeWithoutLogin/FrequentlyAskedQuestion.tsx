@@ -1,7 +1,9 @@
+
 import { FaPhoneAlt } from 'react-icons/fa'
 import Link from 'next/link'
 import { IoMailOpenSharp } from 'react-icons/io5'
 import dynamic from 'next/dynamic'
+
 
 const AskedQuestionWithAnswer = dynamic(
   () => import('./AskedQuestionWithAnswer'),
@@ -10,6 +12,7 @@ const AskedQuestionWithAnswer = dynamic(
   }
 )
 const FrequentlyAskedQuestion = () => {
+
   return (
     <div className="responsive-width " id="faq">
       <div className="  mt-40 rounded-lg flex  flex-col justify-center">

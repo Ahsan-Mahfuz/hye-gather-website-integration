@@ -8,6 +8,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { useSignUpMutation } from '@/redux/authApis'
+import { FiLoader } from 'react-icons/fi'
 
 const SignUpComp = () => {
   const router = useRouter()
@@ -16,25 +18,45 @@ const SignUpComp = () => {
 
   useEffect(() => {
     console.log(role)
-    if (role !== 'vendor' && role != 'customer') {
+    if (role !== 'VENDOR' && role != 'USER') {
       router.push('/choose-role')
     }
   }, [role, router])
 
+  const [form] = Form.useForm()
+
   type FormData = {
-    username: string
+    name: string
     email: string
     password: string
-    confirmPassword: string
+    confirm_password: string
+    phone: string
   }
 
-  const onFinish = (values: FormData) => {
-    console.log('Received values of form: ', values)
-    toast.success('Account created successfully!')
-    if (role === 'customer') {
-      router.push('/sign-in')
-    } else if (role === 'vendor') {
-      router.push('/subscription')
+  const [postSignUp, { isLoading }] = useSignUpMutation()
+
+  const onFinish = async (values: FormData) => {
+    try {
+      const response = await postSignUp({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        confirm_password: values.confirm_password,
+        phone: values.phone,
+        role,
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success(res?.message)
+          form.resetFields()
+          if (role === 'USER') {
+            router.push('/sign-in')
+          } else if (role === 'VENDOR') {
+            router.push('/subscription')
+          }
+        })
+    } catch (error: any) {
+      toast.error(error?.data?.message)
     }
   }
 
@@ -77,7 +99,7 @@ const SignUpComp = () => {
           }}
         >
           <Form.Item
-            name="username"
+            name="name"
             label={<span className=" ">User Name</span>}
             rules={[
               {
@@ -111,6 +133,7 @@ const SignUpComp = () => {
               className="h-[42px] px-4  border-gray-300 rounded-md"
             />
           </Form.Item>
+
           <Form.Item
             name="phone"
             label={<span className="">Phone Number</span>}
@@ -146,7 +169,7 @@ const SignUpComp = () => {
           </Form.Item>
 
           <Form.Item
-            name="confirm"
+            name="confirm_password"
             label={<span className="">Confirm Password</span>}
             dependencies={['password']}
             rules={[
@@ -185,8 +208,16 @@ const SignUpComp = () => {
                 padding: '1.25rem',
               }}
               className="w-full   rounded-full h-11 mt-5"
+              disabled={isLoading}
             >
-              Sign Up
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  Loading...
+                  <FiLoader />
+                </div>
+              ) : (
+                'Sign Up'
+              )}
             </Button>
           </Form.Item>
         </Form>

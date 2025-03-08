@@ -1,21 +1,33 @@
 'use client'
 
+import { usePostContactUsMutation } from '@/redux/contactUsApis'
 import { Form, Input, Button } from 'antd'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import { FiLoader } from 'react-icons/fi'
 
 const ContactUs = () => {
   const [form] = Form.useForm()
+  const [postContactUs, { isLoading }] = usePostContactUsMutation()
 
   type FormData = {
     fullName: string
     email: string
     question: string
   }
-  const handleSubmit = (values: FormData) => {
-    console.log('Form submitted', values)
-    toast.success('Form submitted successfully!')
-    form.resetFields()
+
+  const handleSubmit = async (values: FormData) => {
+    try {
+      const response = await postContactUs({
+        receiver: values.email,
+        name: values.fullName,
+        question: values.question,
+      }).unwrap()
+      toast.success(response.message || 'Message sent successfully!')
+      form.resetFields()
+    } catch (error: any) {
+      toast.error(error.data?.message || 'Failed to send message.')
+    }
   }
 
   return (
@@ -94,8 +106,16 @@ const ContactUs = () => {
                 type="primary"
                 htmlType="submit"
                 className="w-full bg-blue-900 h-[48px] text-white p-2 rounded-md hover:bg-blue-800 cursor-pointer"
+                disabled={isLoading}
               >
-                Send message now
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    Loading...
+                    <FiLoader />
+                  </div>
+                ) : (
+                  'Send message now'
+                )}
               </Button>
             </Form>
           </div>
