@@ -1,22 +1,26 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Password from '../../../../components/profile/Password'
 import { Button, Form, Input, message, Upload } from 'antd'
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import {
+  useGetProfileDataQuery,
+  usePostProfileDataMutation,
+} from '@/redux/profileApis'
 const Profile = () => {
   type FormData = {
-    fullName: string
-    email: string
-    phone: string
-    area: string
-    building: string
-    postalCode: string
-    streetAddress: string
-    pdf: File | null
-    image: string | null
-    description: string | null
+    fullName?: string
+    email?: string
+    phone?: string
+    area?: string
+    building?: string
+    postalCode?: string
+    streetAddress?: string
+    pdf?: File | null
+    image?: string | null
+    description?: string | null
   }
   const [userType, setUserType] = useState('vendor') // user, vendor
   const [activeTab, setActiveTab] = useState('profile')
@@ -24,19 +28,23 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(false)
   const [imageLoading, setImageLoading] = useState(false)
-  const [formData, setFormData] = useState<FormData>({
-    fullName: 'Thuto Makohaone',
-    email: 'thutomakohaone@gmail.com',
-    phone: '+27 55745 2567 125',
-    area: '',
-    building: '',
-    postalCode: '2191',
-    streetAddress: 'Alice Street',
-    pdf: null,
-    image: null,
-    description: '',
 
-  })
+  const { data: profileData, isLoading } = useGetProfileDataQuery()
+  const [updateProfile, { isLoading: updateLoading }] =
+    usePostProfileDataMutation()
+  const [formData, setFormData] = useState<FormData>({})
+
+  useEffect(() => {
+    console.log(profileData?.data)
+    if (profileData?.data) {
+      setFormData({
+        fullName: profileData.data.name,
+        email: profileData.data.email,
+        phone: profileData.data.phone,
+        image: profileData.data.img,
+      })
+    }
+  }, [profileData])
 
   const handleUpdate = () => {
     if (isEditing) {
@@ -152,7 +160,16 @@ const Profile = () => {
         {activeTab === 'profile' && (
           <div className="flex flex-col items-center ">
             <div className="rounded-lg  w-full max-w-3xl">
-              <Form form={form} layout="vertical" initialValues={formData}>
+              <Form
+                form={form}
+                layout="vertical"
+                initialValues={{
+                  fullName: profileData?.data?.name,
+                  email: profileData?.data?.email,
+                  // phone: profileData.data.phone,
+                  // image: profileData.data.img,
+                }}
+              >
                 <div className="flex flex-col gap-1">
                   <Form.Item label="Name" name="fullName">
                     <Input disabled={!isEditing} className="h-[40px]" />
@@ -165,12 +182,19 @@ const Profile = () => {
                   </Form.Item>
                   {userType === 'vendor' && (
                     <Form.Item label="Description" name="description">
-                      <textarea disabled={!isEditing} className="border rounded-md outline-none p-4 h-[150px] w-full" />
+                      <textarea
+                        disabled={!isEditing}
+                        className="border rounded-md outline-none p-4 h-[150px] w-full"
+                      />
                     </Form.Item>
                   )}
                   {userType === 'vendor' && (
                     <Form.Item label="Starting Price" name="staringPrice">
-                      <Input disabled={!isEditing} className="h-[40px]"  placeholder='1000'/>
+                      <Input
+                        disabled={!isEditing}
+                        className="h-[40px]"
+                        placeholder="1000"
+                      />
                     </Form.Item>
                   )}
                 </div>

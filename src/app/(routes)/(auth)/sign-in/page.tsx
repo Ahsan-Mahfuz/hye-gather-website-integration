@@ -8,6 +8,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { useSignInMutation } from '@/redux/authApis'
 import { FiLoader } from 'react-icons/fi'
+import Cookies from 'js-cookie'
 
 const SignIn = () => {
   const router = useRouter()
@@ -29,17 +30,23 @@ const SignIn = () => {
         .then((res) => {
           toast.success(res?.message)
           form.resetFields()
+          localStorage.setItem('token', res?.token)
+          Cookies.set('token', res?.token)
+          Cookies.set('role', res?.role)
+
           if (res?.role === 'VENDOR') {
             router.push('/vendor-home')
           } else if (res?.role === 'USER') {
             router.push('/user-home')
+          } else {
+            router.push('/home')
           }
         })
     } catch (error: any) {
-      if (error?.data?.error?.statusCode === 500) {
-        localStorage.setItem('email', values.email)
-        router.push('/verify-account')
-      }
+      // if (error?.data?.error?.statusCode === 500) {
+      //   localStorage.setItem('email', values.email)
+      //   router.push('/verify-account')
+      // }
       toast.error(error?.data?.message)
     }
   }

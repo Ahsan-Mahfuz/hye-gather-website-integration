@@ -12,7 +12,6 @@ const privacyApis = baseApis.injectEndpoints({
       providesTags: ['privacyPolicy'],
     }),
   }),
-  overrideExisting: false,
 })
 
 export const { useGetPrivacyQuery } = privacyApis

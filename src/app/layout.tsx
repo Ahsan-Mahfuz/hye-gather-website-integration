@@ -6,13 +6,11 @@ import Navbar from '@/components/navbar/Navbar'
 import Footer from '@/components/footer/Footer'
 import { Provider } from 'react-redux'
 import { store } from '@/redux/main/store'
+import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
 
-// const cursive = Cedarville_Cursive({
-//   variable: '--font-cedarville-cursive',
-//   subsets: ['latin'],
-//   weight: ['400'],
-//   display: 'swap',
-// })
 const poppins = Poppins({
   variable: '--font-poppins',
   subsets: ['latin'],
@@ -35,6 +33,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // const router = useRouter()
+  // const pathname = usePathname()
+  // const [isLoading, setIsLoading] = useState(true)
+
+  // const protectedRoutes = []
+
+  // useEffect(() => {
+  //   const token = Cookies.get('token')
+
+  //   if (!token && protectedRoutes.includes(pathname)) {
+  //     router.push('/login')
+  //   } else {
+  //     setIsLoading(false)
+  //   }
+  // }, [pathname])
+
+  // if (isLoading) return <div>Loading...</div>
+
   return (
     <html lang="en">
       <body

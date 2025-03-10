@@ -49,7 +49,7 @@ const Footer = () => {
         <div className="flex flex-col mb-6 md:mb-0">
           <h3 className="font-semibold text-blue-500 text-xl">Explore</h3>
           <ul className="mt-5 flex flex-col gap-5 ">
-            <li>
+            {/* <li>
               <Link href="/" className="hover:text-blue-500">
                 Home
               </Link>
@@ -58,7 +58,7 @@ const Footer = () => {
               <Link href="/explore-vendors" className="hover:text-blue-500">
                 Explore Vendors
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/contact-us" className="hover:text-blue-500">
                 Contact Us
@@ -70,11 +70,11 @@ const Footer = () => {
         <div className="flex flex-col mb-6 md:mb-0">
           <h3 className="font-semibold text-blue-500 text-xl">Support</h3>
           <ul className="mt-5 flex flex-col gap-5 ">
-            <li>
+            {/* <li>
               <Link href="/#faq" className="hover:text-blue-500">
                 FAQ
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 href="/terms-and-conditions"

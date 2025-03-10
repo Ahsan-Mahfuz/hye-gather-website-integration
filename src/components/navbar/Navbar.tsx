@@ -1,15 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { jwtDec } from '../jwtDecoder/Jwt'
 
 const Navbar = () => {
+  const router = useRouter()
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const [userType, setUserType] = useState('Normal') // Normal, login-Normal, login-Vendor
+
+  const [userType, setUserType] = useState('FREE') // FREE, USER, VENDOR
+
+  useEffect(() => {
+    const decoded = jwtDec()
+    if (!decoded) {
+      router.push('/home')
+    } else {
+      setUserType(decoded?.role)
+    }
+  }, [pathname, router])
 
   const getLinkClass = (path: string) =>
     pathname === path
@@ -21,7 +34,7 @@ const Navbar = () => {
       <section>
         {/* Normal User Navbar */}
         <div className="font-semibold">
-          {userType === 'Normal' && (
+          {userType === 'FREE' && (
             <div className="flex justify-between items-center">
               <div>
                 <Link href="/home">
@@ -124,7 +137,7 @@ const Navbar = () => {
 
         {/* Login User Navbar */}
         <div className="font-semibold">
-          {userType === 'login-Normal' && (
+          {userType === 'USER' && (
             <div className="flex justify-between items-center">
               <div>
                 <Link href="/user-home">
@@ -237,7 +250,7 @@ const Navbar = () => {
 
         {/* Login Vendor Navbar */}
         <div className="font-semibold">
-          {userType === 'login-Vendor' && (
+          {userType === 'VENDOR' && (
             <div className="flex justify-between items-center">
               <div>
                 <Link href="/vendor-home">

@@ -70,7 +70,7 @@ const authApis = baseApis.injectEndpoints({
     >({
       query: (data) => {
         const token = localStorage.getItem('reset-token')
-        console.log(token)
+      
         return {
           url: '/auth/reset-password',
           method: 'POST',
@@ -89,21 +89,6 @@ const authApis = baseApis.injectEndpoints({
     //     body: data,
     //   }),
     // }),
-
-    // verifyResetOtp: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/verify-reset-otp',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
-    // resendResetCode: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/resend-reset-code',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
   }),
   overrideExisting: false,
 })
@@ -114,11 +99,7 @@ export const {
   useSignInMutation,
   useResendOtpMutation,
   useResetPasswordMutation,
-  // useLoginMutation,
   // useChangePasswordMutation,
-  // useForgetPasswordMutation,
-  // useVerifyResetOtpMutation,
-  // useResendResetCodeMutation,
 } = authApis
 
 export default authApis
