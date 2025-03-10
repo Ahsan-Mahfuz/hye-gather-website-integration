@@ -1,13 +1,29 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Form, Input, Button } from 'antd'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import {
+  useResendOtpMutation,
+  useVerifyEmailOtpMutation,
+} from '@/redux/authApis'
 
 const VerifyAccount = () => {
   const router = useRouter()
+  const [form] = Form.useForm()
+
+  type FormData = {
+    otp: string
+  }
+
+  type ResendData = {
+    email: string
+  }
+  const [postVerifyAccount, { isLoading }] = useVerifyEmailOtpMutation()
+  const [postResendOtp] = useResendOtpMutation()
+
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
 
   const handleOtpChange = (value: string, index: number) => {
@@ -32,10 +48,45 @@ const VerifyAccount = () => {
     return Promise.resolve()
   }
 
-  const onFinishOtp = () => {
-    console.log(otp)
-    toast.success('Otp verified successfully!')
-    router.push('/set-new-password')
+  const onFinishOtp = async (values: FormData) => {
+    const role = localStorage.getItem('role')
+    const email = localStorage.getItem('email') || ''
+    if (role !== 'VENDOR' && role != 'USER' && !email) {
+      router.push('/sign-up')
+    }
+    try {
+      const response = await postVerifyAccount({
+        email: email,
+        code: otp.join(''),
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success(res?.message)
+          form.resetFields()
+          toast.success('Otp verified successfully!')
+          router.push('/sign-in')
+        })
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    }
+  }
+
+  const handleResendOtp = async () => {
+    const email = localStorage.getItem('email') || ''
+    if (email) {
+      try {
+        const response = await postResendOtp({ email })
+          .unwrap()
+          .then((res) => {
+            toast.success(res?.message)
+            form.resetFields()
+          })
+      } catch (error: any) {
+        toast.error(error?.data?.message)
+      }
+    } else {
+      router.push('/sign-up')
+    }
   }
 
   return (
@@ -103,14 +154,14 @@ const VerifyAccount = () => {
             </Button>
           </Form.Item>
         </Form>
-        <div className="text-gray-600 text-xs">
+        <div className="text-gray-600 text-xs flex justify-between">
           You have not received the email? {''}
-          <Link
-            href={`/check-email-for-the-otp`}
-            className=" hover:underline text-blue-800 hover:text-blue-600"
+          <div
+            onClick={handleResendOtp}
+            className=" hover:underline cursor-pointer text-blue-800 hover:text-blue-600"
           >
             Resend
-          </Link>
+          </div>
         </div>
       </div>
     </div>

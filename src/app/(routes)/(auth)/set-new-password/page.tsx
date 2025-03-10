@@ -5,18 +5,34 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import { useResetPasswordMutation } from '@/redux/authApis'
 
 const SetANewPassword = () => {
   const router = useRouter()
-
+  const [postResetPassword, { isLoading }] = useResetPasswordMutation()
+  const [form] = Form.useForm()
   type FormData = {
     password: string
     confirm: string
   }
-  const onFinish = (values: FormData) => {
-    console.log('Received values of form: ', values)
-    toast.success('Set new password successfully!')
-    router.push('/sign-in')
+  const onFinish = async (values: FormData) => {
+    try {
+      console.log(values)
+      const response = await postResetPassword({
+        password: values.password,
+        confirm_password: values.confirm,
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success(res?.message)
+          form.resetFields()
+          localStorage.removeItem('reset-token')
+          localStorage.removeItem('email')
+          router.push('/sign-in')
+        })
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    }
   }
 
   return (

@@ -17,7 +17,6 @@ const SignUpComp = () => {
   const role = searchParams.get('role')
 
   useEffect(() => {
-    console.log(role)
     if (role !== 'VENDOR' && role != 'USER') {
       router.push('/choose-role')
     }
@@ -43,17 +42,15 @@ const SignUpComp = () => {
         password: values.password,
         confirm_password: values.confirm_password,
         phone: values.phone,
-        role,
+        role: role || '',
       })
         .unwrap()
         .then((res) => {
+          localStorage.setItem('role', role || '')
+          localStorage.setItem('email', values.email)
           toast.success(res?.message)
           form.resetFields()
-          if (role === 'USER') {
-            router.push('/sign-in')
-          } else if (role === 'VENDOR') {
-            router.push('/subscription')
-          }
+          router.push('/verify-account')
         })
     } catch (error: any) {
       toast.error(error?.data?.message)

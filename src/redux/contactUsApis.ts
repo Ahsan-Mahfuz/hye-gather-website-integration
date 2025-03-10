@@ -15,6 +15,7 @@ const contactUsApis = baseApis.injectEndpoints({
       },
     }),
   }),
+  overrideExisting: false,
 })
 
 export const { usePostContactUsMutation } = contactUsApis

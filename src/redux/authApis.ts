@@ -20,13 +20,68 @@ const authApis = baseApis.injectEndpoints({
       }),
     }),
 
-    // login: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/login',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
+    verifyEmailOtp: builder.mutation<
+      any,
+      {
+        email: string
+        code: string
+      }
+    >({
+      query: (data) => ({
+        url: '/verification/verify',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    signIn: builder.mutation<
+      any,
+      {
+        email: string
+        password: string
+      }
+    >({
+      query: (data) => ({
+        url: '/auth/sign-in',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    resendOtp: builder.mutation<
+      any,
+      {
+        email: string
+      }
+    >({
+      query: (data) => ({
+        url: '/verification/create',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    resetPassword: builder.mutation<
+      any,
+      {
+        confirm_password: string
+        password: string
+      }
+    >({
+      query: (data) => {
+        const token = localStorage.getItem('reset-token')
+        console.log(token)
+        return {
+          url: '/auth/reset-password',
+          method: 'POST',
+          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      },
+    }),
+
     // changePassword: builder.mutation({
     //   query: (data) => ({
     //     url: '/auth/change-password',
@@ -34,20 +89,7 @@ const authApis = baseApis.injectEndpoints({
     //     body: data,
     //   }),
     // }),
-    // forgetPassword: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/forget-password',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
-    // resetPassword: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/reset-password',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
+
     // verifyResetOtp: builder.mutation({
     //   query: (data) => ({
     //     url: '/auth/verify-reset-otp',
@@ -63,14 +105,18 @@ const authApis = baseApis.injectEndpoints({
     //   }),
     // }),
   }),
+  overrideExisting: false,
 })
 
 export const {
   useSignUpMutation,
+  useVerifyEmailOtpMutation,
+  useSignInMutation,
+  useResendOtpMutation,
+  useResetPasswordMutation,
   // useLoginMutation,
   // useChangePasswordMutation,
   // useForgetPasswordMutation,
-  // useResetPasswordMutation,
   // useVerifyResetOtpMutation,
   // useResendResetCodeMutation,
 } = authApis

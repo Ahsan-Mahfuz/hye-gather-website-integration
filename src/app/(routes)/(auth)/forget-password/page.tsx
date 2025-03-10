@@ -4,17 +4,33 @@ import { Form, Input, Button } from 'antd'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
+import { useResendOtpMutation } from '@/redux/authApis'
 
 const ForgetPassword = () => {
   const router = useRouter()
+  const [postResendOtp, { isLoading }] = useResendOtpMutation()
 
+  const [form] = Form.useForm()
   type FormData = {
     email: string
   }
-  const onFinish = (values: FormData) => {
-    console.log('Received values of form: ', values)
-    toast.success('Email Otp sent successfully! Check your email')
-    router.push('/check-email-for-the-otp')
+  const onFinish = async (values: FormData) => {
+    try {
+      console.log(values)
+      const response = await postResendOtp({
+        email: values.email,
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success(res?.message)
+          form.resetFields()
+          localStorage.removeItem('email')
+          localStorage.setItem('email', values.email)
+          router.push('/check-email-for-the-otp')
+        })
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    }
   }
 
   return (

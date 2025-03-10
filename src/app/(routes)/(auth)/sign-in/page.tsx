@@ -6,18 +6,42 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+import { useSignInMutation } from '@/redux/authApis'
+import { FiLoader } from 'react-icons/fi'
 
 const SignIn = () => {
   const router = useRouter()
+  const [form] = Form.useForm()
+
+  const [postSignIn, { isLoading }] = useSignInMutation()
 
   type FormData = {
     email: string
     password: string
   }
-  const onFinish = (values: FormData) => {
-    console.log('Received values of form: ', values)
-    toast.success('Login successful!')
-    router.push('/user-home') // '/user-home' , '/vendor-home'
+  const onFinish = async (values: FormData) => {
+    try {
+      const response = await postSignIn({
+        email: values.email,
+        password: values.password,
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success(res?.message)
+          form.resetFields()
+          if (res?.role === 'VENDOR') {
+            router.push('/vendor-home')
+          } else if (res?.role === 'USER') {
+            router.push('/user-home')
+          }
+        })
+    } catch (error: any) {
+      if (error?.data?.error?.statusCode === 500) {
+        localStorage.setItem('email', values.email)
+        router.push('/verify-account')
+      }
+      toast.error(error?.data?.message)
+    }
   }
 
   return (
@@ -108,8 +132,16 @@ const SignIn = () => {
                 padding: '1.25rem',
               }}
               className="w-full   rounded-full h-11 mt-5"
+              disabled={isLoading}
             >
-              Sign In
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  Loading...
+                  <FiLoader />
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </Form.Item>
         </Form>

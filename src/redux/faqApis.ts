@@ -10,6 +10,7 @@ const faqApis = baseApis.injectEndpoints({
       providesTags: ['faq'],
     }),
   }),
+  overrideExisting: false,
 })
 
 export const { useGetAllFaqQuery } = faqApis

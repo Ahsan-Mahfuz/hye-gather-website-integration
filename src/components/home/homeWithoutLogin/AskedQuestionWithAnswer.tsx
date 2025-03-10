@@ -13,7 +13,7 @@ const AskedQuestionWithAnswer = () => {
   if (isLoading) return <Loader />
   if (isError) {
     return (
-      <div className="w-full flex justify-center items-center h-[85vh]">
+      <div className=" flex justify-center items-center ">
         <p>
           Failed to load frequently asked questions. Please try again later.
         </p>
