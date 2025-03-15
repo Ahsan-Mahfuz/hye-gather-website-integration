@@ -30,15 +30,12 @@ const cardTitleStyle: React.CSSProperties = {
 }
 
 const TopTrendingService = () => {
-  // Use RTK Query hook to fetch data
-  const { data, error, isLoading } = useGetBusinessDataQuery({
+  const { data, isLoading } = useGetBusinessDataQuery({
     vendor_type: 'PREMIUM',
   })
 
-  console.log(data)
 
   if (isLoading) return <Loader />
-  if (error) return <div>Error loading data</div>
 
   return (
     <div className="responsive-width">

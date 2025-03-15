@@ -7,19 +7,16 @@ import VendorBusinessInformation from '@/components/vendorBusinessProfile/Vendor
 import { useGetBusinessDataQuery } from '@/redux/businessApis'
 
 const Dashboard = () => {
-  const {
-    data: businessResponse,
-    isLoading,
-    isError,
-  } = useGetBusinessDataQuery({
+  const { data: businessResponse, isLoading } = useGetBusinessDataQuery({
     vendor_type: 'PREMIUM',
   })
-
+  console.log(businessResponse)
   if (isLoading) return <Loader />
-  if (isError) return <p>Error loading business data</p>
 
   if (!businessResponse?.data || businessResponse.data.length === 0) {
-    return <p>No business data available</p>
+    return (
+      <p className="text-center text-2xl mt-2">No business data available</p>
+    )
   }
 
   const vendorBusinessData = {
@@ -39,13 +36,13 @@ const Dashboard = () => {
       {
         id: 1,
         label: 'New Booking Requests',
-        value: businessResponse.data[0].new_booking_requests || 0,
+        value: businessResponse?.data[0].new_booking_requests || 0,
         icon: '/new-booking.svg',
       },
       {
         id: 2,
         label: 'Total Services',
-        value: businessResponse.data[0].business_services
+        value: businessResponse?.data[0].business_services
           ? businessResponse.data[0].business_services.length
           : 0,
         icon: '/total-service.svg',
@@ -53,19 +50,19 @@ const Dashboard = () => {
       {
         id: 3,
         label: 'Total Bookings',
-        value: businessResponse.data[0].total_booking || 0,
+        value: businessResponse?.data[0].total_booking || 0,
         icon: '/total-booking.svg',
       },
       {
         id: 4,
         label: 'Total Ratings',
-        value: businessResponse.data[0].total_rated || 0,
+        value: businessResponse?.data[0].total_rated || 0,
         icon: '/total-rating.svg',
       },
       {
         id: 5,
         label: 'Total Earnings',
-        value: `$${businessResponse.data[0].total_earnings || 0}`,
+        value: `$${businessResponse?.data[0].total_earnings || 0}`,
         icon: '/total-earning.svg',
       },
     ],

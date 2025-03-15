@@ -26,6 +26,7 @@ const VendorBusinessCard: React.FC<CardProps> = ({
   vendorType,
 }) => {
   return (
+   
     <div className="bg-white shadow-md rounded-lg p-4 flex flex-col sm:flex-row gap-4  w-full border border-gray-200">
       <div className="flex-1">
         <div className="flex gap-5">
