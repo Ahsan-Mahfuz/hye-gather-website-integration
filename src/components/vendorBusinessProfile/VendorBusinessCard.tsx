@@ -1,4 +1,5 @@
-import Image from 'next/image'
+import { url } from '@/redux/main/server'
+import { Image } from 'antd'
 import Link from 'next/link'
 
 interface CardProps {
@@ -30,10 +31,10 @@ const VendorBusinessCard: React.FC<CardProps> = ({
         <div className="flex gap-5">
           <div className="flex-shrink-0 w-[100px] sm:w-[140px] flex justify-center items-center">
             <Image
-              src={logo}
+              src={`${url}/${logo}`}
               alt="Vendor Logo"
-              width={5000}
-              height={100}
+              width={200}
+              height={150}
               className="rounded-md object-cover object-center h-[150px]"
             />
           </div>

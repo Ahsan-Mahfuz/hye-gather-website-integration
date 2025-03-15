@@ -3,6 +3,7 @@ import { IoLogoWhatsapp } from 'react-icons/io'
 import { SiImessage } from 'react-icons/si'
 import Image from 'next/image'
 import Link from 'next/link'
+import { FaFacebook, FaInstagramSquare, FaLinkedin } from 'react-icons/fa'
 
 const Footer = () => {
   return (
@@ -22,25 +23,15 @@ const Footer = () => {
             </p>
             <div className="flex mt-4 space-x-4 text-2xl items-center ">
               <Link href="/" target="_blank">
-                <BsTelegram className="cursor-pointer text-blue-300 hover:text-gray-200 " />
+                <FaFacebook className="cursor-pointer text-blue-700 hover:text-gray-200 " />
               </Link>
+
               <Link href="/" target="_blank">
-                <Image
-                  src="/logo.svg"
-                  alt="logo"
-                  className="cursor-pointer w-8  hover:text-gray-200 "
-                  width={5000}
-                  height={50}
-                />
+                <FaLinkedin className="cursor-pointer text-blue-500 hover:text-gray-200 " />
               </Link>
+
               <Link href="/" target="_blank">
-                <BsMessenger className="cursor-pointer text-blue-300 hover:text-gray-200 " />
-              </Link>
-              <Link href="/" target="_blank">
-                <IoLogoWhatsapp className="cursor-pointer text-green-500 text-3xl hover:text-gray-200 " />
-              </Link>
-              <Link href="/" target="_blank">
-                <SiImessage className="cursor-pointer text-green-500 hover:text-gray-200 " />
+                <FaInstagramSquare className="cursor-pointer text-pink-500 hover:text-gray-200 " />
               </Link>
             </div>
           </section>

@@ -68,9 +68,6 @@ const OtpSent = () => {
     } catch (error: any) {
       toast.error(error?.data?.message)
     }
-    // console.log(otp)
-    // toast.success('Otp verified successfully!')
-    // router.push('/set-new-password')
   }
 
   const handleResendOtp = async () => {

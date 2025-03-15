@@ -17,12 +17,28 @@ const Navbar = () => {
 
   useEffect(() => {
     const decoded = jwtDec()
-    if (!decoded) {
+    if (
+      !decoded &&
+      pathname !== '/sign-in' &&
+      pathname !== '/sign-up' &&
+      pathname !== '/verify-account' &&
+      pathname !== '/reset-password' &&
+      pathname !== '/set-new-password' &&
+      pathname !== '/' &&
+      pathname !== '/forget-password' &&
+      pathname !== '/check-email-for-the-otp' &&
+      pathname !== '/explore-vendors' &&
+      pathname !== '/contact-us' &&
+      pathname !== '/about-us' &&
+      pathname !== '/terms-and-conditions' &&
+      pathname !== '/privacy-and-policy' &&
+      pathname !== '/choose-role'
+    ) {
       router.push('/home')
     } else {
-      setUserType(decoded?.role)
+      setUserType(decoded?.role || 'FREE')
     }
-  }, [pathname, router])
+  }, [router, pathname])
 
   const getLinkClass = (path: string) =>
     pathname === path
@@ -32,7 +48,7 @@ const Navbar = () => {
   return (
     <div className="py-5 px-2  z-50 responsive-width">
       <section>
-        {/* Normal User Navbar */}
+        {/* FREE Navbar */}
         <div className="font-semibold">
           {userType === 'FREE' && (
             <div className="flex justify-between items-center">
@@ -135,7 +151,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Login User Navbar */}
+        {/* USER Navbar */}
         <div className="font-semibold">
           {userType === 'USER' && (
             <div className="flex justify-between items-center">
@@ -248,7 +264,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Login Vendor Navbar */}
+        {/* VENDOR Navbar */}
         <div className="font-semibold">
           {userType === 'VENDOR' && (
             <div className="flex justify-between items-center">

@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -11,6 +12,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { useGetEarningsQuery } from '@/redux/earningsApis'
+import Loader from '../loading/ReactLoader'
 
 ChartJS.register(
   CategoryScale,
@@ -25,19 +28,31 @@ ChartJS.register(
 
 const EarningStatics = () => {
   const currentYear = new Date().getFullYear()
+  const [selectedYear, setSelectedYear] = useState(currentYear.toString())
 
-  const years = Array.from(
-    { length: currentYear - 2024 + 1 },
-    (_, i) => 2024 + i
-  )
-  const months = [
+  const {
+    data: earningsData,
+    isLoading,
+    error,
+  } = useGetEarningsQuery({
+    year_user: selectedYear,
+    year_payment: selectedYear,
+  })
+
+  console.log(earningsData)
+
+  const years = earningsData?.payment_year || [currentYear]
+
+  const months = earningsData?.earningGrowth?.monthNames?.map((name: string) =>
+    name.substring(0, 3)
+  ) || [
     'Jan',
     'Feb',
     'Mar',
     'Apr',
     'May',
     'Jun',
-    'July',
+    'Jul',
     'Aug',
     'Sep',
     'Oct',
@@ -45,55 +60,90 @@ const EarningStatics = () => {
     'Dec',
   ]
 
-  const EarningStaticsGrowth = {
+  const earningStaticsData = {
     labels: months,
     datasets: [
       {
         label: 'Earnings',
-        data: [150, 120, 110, 130, 120, 140, 135, 130, 125, 120, 115, 125],
+        data: earningsData?.earningGrowth?.data || Array(12).fill(0),
         backgroundColor: '#0033A0',
       },
     ],
   }
 
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(e.target.value)
+  }
+
   return (
     <div className="w-full bg-white p-4 rounded-lg shadow my-10 border">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-xl font-semibold">Earning Statics </h2>
-        <select className="p-2 bg-blue-100 text-xs rounded-md cursor-pointer outline-none">
-          {years.map((year) => (
-            <option
-              key={year}
-              value={year}
-              className="p-2 text-xs cursor-pointer"
-            >
-              {year}
-            </option>
-          ))}
-        </select>
+        <h2 className="text-xl font-semibold">Earning Statistics</h2>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-500">
+            Total: ${earningsData?.total_earning?.toLocaleString() || 0}
+          </span>
+          <select
+            className="p-2 bg-blue-100 text-xs rounded-md cursor-pointer outline-none"
+            value={selectedYear}
+            onChange={handleYearChange}
+          >
+            {years.map((year: number) => (
+              <option
+                key={year}
+                value={year}
+                className="p-2 text-xs cursor-pointer"
+              >
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="w-full h-[300px] sm:h-[400px]">
-        <Bar
-          data={EarningStaticsGrowth}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            elements: {
-              bar: {
-                borderRadius: 30,
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 50,
+
+      {isLoading ? (
+        <div className="w-full h-[300px] flex items-center justify-center">
+          <Loader />
+        </div>
+      ) : error ? (
+        <div className="w-full h-[300px] flex items-center justify-center">
+          <p className="text-red-500">Error loading earnings data</p>
+        </div>
+      ) : (
+        <div className="w-full h-[300px] sm:h-[400px]">
+          <Bar
+            data={earningStaticsData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              elements: {
+                bar: {
+                  borderRadius: 30,
                 },
               },
-            },
-          }}
-        />
-      </div>
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize:
+                      Math.max(
+                        ...(earningsData?.earningGrowth?.data || [100])
+                      ) / 5,
+                    callback: (value) => `$${value}`,
+                  },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: (context) => `$${context.raw}`,
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

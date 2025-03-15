@@ -70,7 +70,7 @@ const authApis = baseApis.injectEndpoints({
     >({
       query: (data) => {
         const token = localStorage.getItem('reset-token')
-      
+
         return {
           url: '/auth/reset-password',
           method: 'POST',
@@ -82,13 +82,39 @@ const authApis = baseApis.injectEndpoints({
       },
     }),
 
-    // changePassword: builder.mutation({
-    //   query: (data) => ({
-    //     url: '/auth/change-password',
-    //     method: 'POST',
-    //     body: data,
-    //   }),
-    // }),
+    changePassword: builder.mutation<
+      any,
+      {
+        old_password: string
+        password: string
+        confirm_password: string
+      }
+    >({
+      query: (data) => {
+        const token = localStorage.getItem('token')
+        return {
+          url: '/auth/change-password',
+          method: 'POST',
+          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      },
+    }),
+
+    logout: builder.mutation<any, void>({
+      query: (data) => {
+        const token = localStorage.getItem('token')
+        return {
+          url: '/auth/logout',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 })
@@ -99,7 +125,8 @@ export const {
   useSignInMutation,
   useResendOtpMutation,
   useResetPasswordMutation,
-  // useChangePasswordMutation,
+  useChangePasswordMutation,
+  useLogoutMutation,
 } = authApis
 
 export default authApis

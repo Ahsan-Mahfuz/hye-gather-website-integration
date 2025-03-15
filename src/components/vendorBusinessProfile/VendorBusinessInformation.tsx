@@ -1,26 +1,21 @@
 import Image from 'next/image'
 
-const VendorBusinessInformation = () => {
-  const stats = [
-    {
-      id: 1,
-      label: 'New Booking Requests',
-      value: 10,
-      icon: '/new-booking.svg',
-    },
-    { id: 2, label: 'Total Services', value: '03', icon: '/total-service.svg' },
-    { id: 3, label: 'Total Bookings', value: 1000, icon: '/total-booking.svg' },
-    { id: 4, label: 'Total Ratings', value: 144061, icon: '/total-rating.svg' },
-    {
-      id: 5,
-      label: 'Total Earnings',
-      value: '$144061',
-      icon: '/total-earning.svg',
-    },
-  ]
+interface Stat {
+  id: number
+  label: string
+  value: number | string
+  icon: string
+}
 
+interface VendorBusinessInformationProps {
+  stats: Stat[]
+}
+
+const VendorBusinessInformation = ({
+  stats,
+}: VendorBusinessInformationProps) => {
   return (
-    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4  rounded-lg ">
+    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 rounded-lg">
       {stats.map((stat) => (
         <div
           key={stat.id}

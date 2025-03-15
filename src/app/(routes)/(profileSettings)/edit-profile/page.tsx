@@ -1,140 +1,158 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Password from '../../../../components/profile/Password'
-import { Button, Form, Input, message, Upload } from 'antd'
-import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
+import { Button, Form, Input, message } from 'antd'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
 import {
   useGetProfileDataQuery,
   usePostProfileDataMutation,
 } from '@/redux/profileApis'
-const Profile = () => {
-  type FormData = {
-    fullName?: string
-    email?: string
-    phone?: string
-    area?: string
-    building?: string
-    postalCode?: string
-    streetAddress?: string
-    pdf?: File | null
-    image?: string | null
-    description?: string | null
+import { url } from '@/redux/main/server'
+import { IoCameraOutline } from 'react-icons/io5'
+import Loader from '@/components/loading/ReactLoader'
+
+type FormData = {
+  name?: string
+  email?: string
+  phone?: string
+  img?: string | null
+}
+
+type ProfileData = {
+  data?: {
+    name: string
+    email: string
+    phone: string
+    img: string
   }
-  const [userType, setUserType] = useState('vendor') // user, vendor
+}
+
+const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile')
   const [form] = Form.useForm()
   const [isEditing, setIsEditing] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [imageLoading, setImageLoading] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   const { data: profileData, isLoading } = useGetProfileDataQuery()
   const [updateProfile, { isLoading: updateLoading }] =
     usePostProfileDataMutation()
-  const [formData, setFormData] = useState<FormData>({})
 
   useEffect(() => {
-    console.log(profileData?.data)
     if (profileData?.data) {
-      setFormData({
-        fullName: profileData.data.name,
+      form.setFieldsValue({
+        name: profileData.data.name,
         email: profileData.data.email,
         phone: profileData.data.phone,
-        image: profileData.data.img,
       })
-    }
-  }, [profileData])
 
-  const handleUpdate = () => {
+      if (profileData.data.img) {
+        setImagePreview(`${url}/${profileData.data.img}`)
+      }
+    }
+
+
+   
+
+  }, [profileData, form])
+
+  if (isLoading) return <Loader />
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setImageFile(file)
+      const previewUrl = URL.createObjectURL(file)
+      setImagePreview(previewUrl)
+    }
+  }
+
+  const handleUpdate = async () => {
     if (isEditing) {
-      form
-        .validateFields()
-        .then((values) => {
-          setFormData({ ...formData, ...values })
-          toast.success('Profile updated successfully!')
-          setIsEditing(false)
-        })
-        .catch(() => {
-          message.error('Please complete the form properly.')
-        })
+      try {
+        const values = await form.validateFields()
+
+        const formData = new FormData()
+        formData.append('name', values.name)
+        formData.append('phone', values.phone)
+
+        if (imageFile) {
+          formData.append('img', imageFile)
+        }
+
+        const response = await updateProfile(formData).unwrap()
+        toast.success(response?.message || 'Profile updated successfully!')
+        setIsEditing(false)
+
+        if (imagePreview && imagePreview.startsWith('blob:')) {
+          URL.revokeObjectURL(imagePreview)
+        }
+      } catch (error: any) {
+        if (error?.data?.message) {
+          toast.error(error.data.message)
+        } else {
+          toast.error('Failed to update profile.')
+        }
+      }
     } else {
       setIsEditing(true)
     }
   }
 
-  const handleImageUpload = async (info: any) => {
-    console.log(info)
-    setImageLoading(true)
-
-    const uploadedImage = info.file.originFileObj || info.file
-
-    if (!(uploadedImage instanceof File)) {
-      message.error('Invalid file type. Please upload a valid image.')
-      setImageLoading(false)
-      return
-    }
-
-    setTimeout(() => {
-      setImageLoading(false)
-
-      try {
-        const imageURL = URL.createObjectURL(uploadedImage)
-
-        setFormData({
-          ...formData,
-          image: imageURL,
-        })
-
-        toast.success('Profile image updated successfully!')
-      } catch (error) {
-        console.error('Error creating image URL:', error)
-        toast.error('Error displaying image.')
-      }
-    }, 2000)
-  }
-
   return (
-    <div className="min-h-screen  flex flex-col items-center py-10">
-      <div className=" shadow-md rounded-lg p-8 w-full max-w-3xl">
+    <div className="min-h-screen flex flex-col items-center py-10">
+      <div className="shadow-md rounded-lg p-8 w-full max-w-3xl">
         <div className="text-2xl font-bold text-center m-5 mb-7">
           Update Your Profile
         </div>
-        <div className="flex flex-col items-center">
-          <Image
-            src={
-              formData.image
-                ? formData.image
-                : 'https://randomuser.me/api/portraits/men/1.jpg'
-            }
-            alt="Profile"
-            className="w-28 h-28 rounded-full border object-cover"
-            width={5000}
-            height={50}
-          />
-
-          {isEditing && (
-            <Upload
+        <div className="flex flex-col items-center gap-5">
+          <div className="relative w-[140px] h-[140px] mx-auto">
+            <input
+              type="file"
+              onChange={handleImageChange}
+              id="img"
+              style={{ display: 'none' }}
               accept="image/*"
-              showUploadList={false}
-              beforeUpload={() => false}
-              onChange={handleImageUpload}
-              className="mt-2"
-            >
-              <Button
-                icon={
-                  imageLoading ? <LoadingOutlined spin /> : <UploadOutlined />
-                }
-              >
-                {imageLoading ? 'Uploading...' : 'Update Image'}
-              </Button>
-            </Upload>
-          )}
+            />
+            {imagePreview ? (
+              <Image
+                src={imagePreview}
+                alt="Profile"
+                width={140}
+                height={140}
+                className="border-2 p-[2px] w-[140px] h-[140px] object-cover rounded-full"
+              />
+            ) : (
+              <div className="w-[140px] h-[140px] bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-500">No Image</span>
+              </div>
+            )}
 
-          <h2 className="mt-3 text-xl font-semibold">Jerome Smith</h2>
+            <label
+              htmlFor="img"
+              className={`
+                absolute bottom-0 right-0
+                bg-[var(--primary-color)]
+                rounded-full
+                w-10 h-10
+                flex items-center justify-center
+                cursor-pointer
+                ${!isEditing && 'pointer-events-none opacity-50'}
+              `}
+            >
+              <div className="bg-yellow p-2 rounded-full">
+                <IoCameraOutline className="text-4xl bg-white p-1 rounded-full hover:bg-gray-300" />
+              </div>
+            </label>
+          </div>
+
+          <h2 className="mt-3 text-xl font-semibold">
+            {profileData?.data?.name || ''}
+          </h2>
         </div>
 
-        <div className="flex justify-center mt-6  ">
+        <div className="flex justify-center mt-6">
           <button
             className={`px-4 py-2 cursor-pointer ${
               activeTab === 'profile'
@@ -158,52 +176,38 @@ const Profile = () => {
         </div>
 
         {activeTab === 'profile' && (
-          <div className="flex flex-col items-center ">
-            <div className="rounded-lg  w-full max-w-3xl">
-              <Form
-                form={form}
-                layout="vertical"
-                initialValues={{
-                  fullName: profileData?.data?.name,
-                  email: profileData?.data?.email,
-                  // phone: profileData.data.phone,
-                  // image: profileData.data.img,
-                }}
-              >
-                <div className="flex flex-col gap-1">
-                  <Form.Item label="Name" name="fullName">
-                    <Input disabled={!isEditing} className="h-[40px]" />
-                  </Form.Item>
-                  <Form.Item label="Email" name="email">
-                    <Input disabled={!isEditing} className="h-[40px]" />
-                  </Form.Item>
-                  <Form.Item label="Contact Number" name="phone">
-                    <Input disabled={!isEditing} className="h-[40px]" />
-                  </Form.Item>
-                  {userType === 'vendor' && (
-                    <Form.Item label="Description" name="description">
-                      <textarea
-                        disabled={!isEditing}
-                        className="border rounded-md outline-none p-4 h-[150px] w-full"
-                      />
-                    </Form.Item>
-                  )}
-                  {userType === 'vendor' && (
-                    <Form.Item label="Starting Price" name="staringPrice">
-                      <Input
-                        disabled={!isEditing}
-                        className="h-[40px]"
-                        placeholder="1000"
-                      />
-                    </Form.Item>
-                  )}
-                </div>
+          <div className="flex flex-col items-center">
+            <div className="rounded-lg w-full max-w-3xl">
+              <Form form={form} layout="vertical" className="mt-4">
+                <Form.Item
+                  label="Name"
+                  name="name"
+                  rules={[{ message: 'Please enter your name' }]}
+                >
+                  <Input disabled={!isEditing} className="h-[40px]" />
+                </Form.Item>
+
+                <Form.Item label="Email" name="email">
+                  <Input disabled className="h-[40px]" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Contact Number"
+                  name="phone"
+                  rules={[
+                    {
+                      message: 'Please enter your phone number',
+                    },
+                  ]}
+                >
+                  <Input disabled={!isEditing} className="h-[40px]" />
+                </Form.Item>
 
                 <div className="flex justify-center mt-6">
                   <Button
                     type="primary"
                     onClick={handleUpdate}
-                    disabled={loading}
+                    loading={updateLoading}
                   >
                     {isEditing ? 'Save' : 'Update Now'}
                   </Button>

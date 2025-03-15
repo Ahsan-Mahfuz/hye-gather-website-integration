@@ -16,7 +16,7 @@ const privacyApis = baseApis.injectEndpoints({
 
     postProfileData: builder.mutation<
       any,
-      { name: string; phone: string; documents?: File; img?: string }
+      { name: string; phone: string; email: string; img: string }
     >({
       query: (data) => {
         return {

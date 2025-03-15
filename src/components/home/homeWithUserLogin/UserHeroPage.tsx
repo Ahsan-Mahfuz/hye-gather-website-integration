@@ -27,7 +27,7 @@ const UserHeroPage = () => {
           </li>
         </ul>
 
-        <div className="mt-6 max-sm:flex  max-sm:flex-col gap-1">
+        {/* <div className="mt-6 max-sm:flex  max-sm:flex-col gap-1">
           <input
             type="text"
             className=" px-4 py-3 rounded-l-lg max-sm:rounded-lg  bg-white text-gray-700 focus:outline-none border"
@@ -36,7 +36,7 @@ const UserHeroPage = () => {
           <button className="px-1 py-3 max-sm:w-full bg-blue-600  text-white rounded-r-lg font-semibold hover:bg-blue-700 transition">
             Search
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-col gap-3 mt-20">

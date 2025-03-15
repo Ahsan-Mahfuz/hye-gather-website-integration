@@ -31,7 +31,7 @@ const VendorHeroPage = () => {
         </ul>
 
         <div className="mt-6">
-          <Link href={'/'} className="max-sm:flex  max-sm:flex-col gap-1">
+          <Link href={'/top-vendor-plan'} className="max-sm:flex  max-sm:flex-col gap-1">
             <button className="px-2 py-3 max-sm:w-full bg-blue-600  text-white rounded-lg font-semibold hover:bg-blue-700 transition">
               Get Started
             </button>

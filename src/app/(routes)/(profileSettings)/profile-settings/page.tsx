@@ -1,4 +1,8 @@
 'use client'
+import Loader from '@/components/loading/ReactLoader'
+import { useLogoutMutation } from '@/redux/authApis'
+import { url } from '@/redux/main/server'
+import { useGetProfileDataQuery } from '@/redux/profileApis'
 import {
   User,
   Phone,
@@ -13,7 +17,6 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 
 const menuItems = [
   {
@@ -68,36 +71,52 @@ const moreItems = [
     icon: <HelpCircle className="w-5 h-5" />,
     link: '/contact-us',
   },
-  {
-    id: 7,
-    title: 'Log Out',
-    icon: <LogOut className="w-5 h-5" />,
-    link: '/home',
-  },
 ]
 
-const ProfileSettings = () => {
-  const [profileType, setProfileType] = useState('vendor') // user, vendor
+// // {
+//   id: 7,
+//   title: 'Log Out',
+//   icon: <LogOut className="w-5 h-5" />,
+//   link: '/home',
+// },
 
+const ProfileSettings = () => {
+  const { data: profileData, isLoading } = useGetProfileDataQuery()
+  const [logout] = useLogoutMutation()
+
+  if (isLoading) return <Loader />
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    logout()
+    document.cookie.split(';').forEach((cookie) => {
+      const eqPos = cookie.indexOf('=')
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim()
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
+    })
+    window.location.href = '/home'
+  }
   return (
     <div className="responsive-width h-screen flex justify-center items-center ">
       <div className="max-w-[700px]  w-full mx-auto  rounded-lg   ">
         <div className="flex flex-col items-center">
           <div className="relative">
             <Image
-              src="https://randomuser.me/api/portraits/men/1.jpg"
+              src={`${url}/${profileData?.data.img}`}
               alt="User"
               className="w-30 h-30 rounded-full border-4 border-yellow-500"
               width={120}
               height={50}
             />
           </div>
-          <h2 className="mt-3 text-xl font-semibold">Eleanor Pena</h2>
+          <h2 className="mt-3 text-xl font-semibold">
+            {profileData?.data?.name}
+          </h2>
           <p className="text-gray-500 flex items-center gap-1">
-            <Phone className="w-4 h-4" /> (406) 555-0120
+            <Phone className="w-4 h-4" /> {profileData?.data?.phone}
           </p>
           <p className="text-gray-500 flex items-center gap-1">
-            <Mail className="w-4 h-4 " /> michelle.rivera@example.com
+            <Mail className="w-4 h-4 " /> {profileData?.data?.email}
           </p>
           <Link href="/edit-profile">
             <button className="mt-4 bg-blue-800 hover:bg-blue-700 cursor-pointer text-white px-4 py-2 rounded-lg flex items-center gap-2">
@@ -109,7 +128,7 @@ const ProfileSettings = () => {
         <div className="mt-6 bg-gray-100 p-3 rounded-lg ">
           {menuItems
             .filter((item) =>
-              profileType === 'user'
+              profileData?.data?.role !== 'VENDOR'
                 ? item.title !== 'My Subscription' && item.title !== 'Earnings'
                 : true
             )
@@ -144,6 +163,16 @@ const ProfileSettings = () => {
                 </div>
               </Link>
             ))}
+            <div
+              onClick={handleLogout}
+              className="flex items-center justify-between gap-2 mt-4 cursor-pointer hover:bg-red-300 bg-red-200 px-4 py-2 rounded-lg"
+            >
+              <div className="flex items-center gap-2 ">
+                <LogOut className="w-5 h-5" />
+                <div>Log Out</div>
+              </div>
+              <span className="text-gray-400">{'>'}</span>
+            </div>
           </div>
         </div>
       </div>

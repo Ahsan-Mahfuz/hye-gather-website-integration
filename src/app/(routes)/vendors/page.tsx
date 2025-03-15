@@ -108,11 +108,22 @@ const Vendors = () => {
 
   return (
     <div className="p-6 responsive-width">
-      <div className="max-lg:block text-3xl text-center hidden" onClick={handleClickHumburger}>
+      <div
+        className="max-lg:block text-3xl text-center hidden"
+        onClick={handleClickHumburger}
+      >
         ☰
       </div>
       <div className="flex gap-10 mb-6 justify-between ">
         <div className="flex flex-col gap-4 w-1/4 max-lg:hidden">
+          <div>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="max-w-[350px] w-full px-4 py-2 border rounded-md   outline-none"
+            />
+          </div>
+
           <div>
             <p className="font-semibold">Services</p>
             <Checkbox.Group onChange={setVendorType}>

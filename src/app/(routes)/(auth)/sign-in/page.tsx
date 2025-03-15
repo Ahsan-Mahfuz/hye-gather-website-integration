@@ -43,10 +43,6 @@ const SignIn = () => {
           }
         })
     } catch (error: any) {
-      // if (error?.data?.error?.statusCode === 500) {
-      //   localStorage.setItem('email', values.email)
-      //   router.push('/verify-account')
-      // }
       toast.error(error?.data?.message)
     }
   }
@@ -93,7 +89,7 @@ const SignIn = () => {
             label={<span className=" ">Email</span>}
             rules={[
               {
-                type: 'email',
+                // type: 'email',
                 message: 'The input is not valid E-mail!',
               },
               {

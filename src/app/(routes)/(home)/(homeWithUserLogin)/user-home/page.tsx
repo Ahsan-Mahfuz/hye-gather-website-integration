@@ -10,7 +10,7 @@ const UserHome = () => {
     <div className="w-11/12 items-center mx-auto">
       <UserHeroPage />
       <PopularVendorsCategory />
-      <DiscoverVendors />
+      {/* <DiscoverVendors /> */}
       <HowItWorks />
       <TopRatedVendors />
       <Testimonial /> 
