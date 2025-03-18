@@ -19,11 +19,11 @@ const PrivacyAndPolicy = () => {
     <div className="p-4 flex flex-col  justify-center responsive-width">
       <div className="text-3xl font-bold mb-1.5">Privacy and Policy</div>
       <div
-        dangerouslySetInnerHTML={{ __html: content || '' }}
-        className="text-justify"
-      >
-        {content || 'No privacy policy available.'}
-      </div>
+        dangerouslySetInnerHTML={{
+          __html: content || 'No privacy policy available.',
+        }}
+        className="text-justify mt-5"
+      ></div>
     </div>
   )
 }

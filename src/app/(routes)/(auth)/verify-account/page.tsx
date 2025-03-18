@@ -9,6 +9,7 @@ import {
   useResendOtpMutation,
   useVerifyEmailOtpMutation,
 } from '@/redux/authApis'
+import Cookies from 'js-cookie'
 
 const VerifyAccount = () => {
   const router = useRouter()
@@ -63,8 +64,13 @@ const VerifyAccount = () => {
         .then((res) => {
           toast.success(res?.message)
           form.resetFields()
-          toast.success('Otp verified successfully!')
-          router.push('/sign-in')
+          console.log(role)
+          if (role === 'VENDOR') {
+            Cookies.set('token', res?.data?.token)
+            router.push('/subscription')
+          } else {
+            router.push('/sign-in')
+          }
         })
     } catch (error: any) {
       toast.error(error?.data?.message)

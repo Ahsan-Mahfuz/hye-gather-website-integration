@@ -15,6 +15,26 @@ const businessApis = baseApis.injectEndpoints({
         }
       },
     }),
+    createBusinessService: builder.query<
+      any,
+      {
+        business_category: string
+        business_services: string[]
+        price: number
+        business: string
+      }
+    >({
+      query: (data) => {
+        return {
+          url: '/business-service/create',
+          method: 'POST',
+          data,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        }
+      },
+    }),
   }),
   overrideExisting: false,
 })

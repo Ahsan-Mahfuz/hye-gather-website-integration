@@ -4,7 +4,6 @@ const page = () => {
   return (
     <div className="responsive-width flex flex-wrap items-center justify-start">
       <ServiceCard />
-      
     </div>
   )
 }

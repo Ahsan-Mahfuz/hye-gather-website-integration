@@ -32,7 +32,8 @@ const Navbar = () => {
       pathname !== '/about-us' &&
       pathname !== '/terms-and-conditions' &&
       pathname !== '/privacy-and-policy' &&
-      pathname !== '/choose-role'
+      pathname !== '/choose-role' &&
+      pathname !== '/subscription'
     ) {
       router.push('/home')
     } else {
