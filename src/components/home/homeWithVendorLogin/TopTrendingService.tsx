@@ -34,7 +34,6 @@ const TopTrendingService = () => {
     vendor_type: 'PREMIUM',
   })
 
-
   if (isLoading) return <Loader />
 
   return (
@@ -75,15 +74,18 @@ const TopTrendingService = () => {
         >
           {/* Iterate over the fetched data */}
           {data?.data?.map(
-            (service: {
-              id: number
-              rating: number
-              price: number
-              business_category: { name: string; img: string }
-              business_services: { name: string }[]
-            }) => (
+            (
+              service: {
+                id: number
+                rating: number
+                price: number
+                business_category: { name: string; img: string }
+                business_services: { name: string }[]
+              },
+              index: number
+            ) => (
               <div
-                key={service.id}
+                key={index}
                 className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
               >
                 <div className="relative overflow-hidden">
@@ -111,11 +113,17 @@ const TopTrendingService = () => {
                   <div className="mt-auto pt-3 flex items-center justify-between border-t border-gray-100">
                     <div className="flex items-center gap-1">
                       {[...Array(Math.floor(service?.rating))].map((_, i) => (
-                        <StarIcon key={i} className="w-6 h-6 text-yellow-500" />
+                        <StarIcon
+                          key={`filled-${i}`}
+                          className="w-6 h-6 text-yellow-500"
+                        />
                       ))}
                       {[...Array(5 - Math.floor(service?.rating))].map(
                         (_, i) => (
-                          <StarIcon key={i} className="w-6 h-6 text-gray-300" />
+                          <StarIcon
+                            key={`empty-${i}`}
+                            className="w-6 h-6 text-gray-300"
+                          />
                         )
                       )}
                       {/* <span className="!text-xl text-gray-500">

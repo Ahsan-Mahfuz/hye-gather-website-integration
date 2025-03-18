@@ -44,6 +44,7 @@ const Testimonial = () => (
       </h2>
 
       <Carousel
+        key={Math.random()}
         slidesToShow={3}
         autoplaySpeed={1200}
         autoplay
