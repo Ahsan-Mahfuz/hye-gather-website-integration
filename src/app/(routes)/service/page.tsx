@@ -10,7 +10,7 @@ const Service = () => {
 
   useEffect(() => {
     if (profileData?.data?.business_profile) {
-      setBusinessId(profileData.data.business_profile[0]._id)
+      setBusinessId(profileData?.data?.business_profile[0]?._id)
     }
   }, [profileData])
 
@@ -39,7 +39,7 @@ const Service = () => {
 
   if (!businessId) {
     return (
-      <div className="flex justify-center items-center min-h-screen p-4">
+      <div className="flex justify-center items-center h-[80vh] p-4">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center max-w-md">
           <h2 className="text-xl font-semibold text-yellow-600 mb-2">
             Business Profile Not Found

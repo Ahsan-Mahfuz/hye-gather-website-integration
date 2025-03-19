@@ -303,7 +303,6 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
       if (mainImage) {
         formData.append('img', mainImage)
       }
-      console.log(mainImage.originFileObj)
       fileList.forEach((file) => {
         if (file.originFileObj) {
           formData.append('photos', file.originFileObj)
@@ -394,22 +393,23 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
             key={service._id}
             className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-200 transition-all hover:shadow-xl"
           >
-            <div className="relative">
-              <Image
-                src={getServiceImage(service)}
-                alt={service?.business_category?.name || 'Service image'}
-                width={500}
-                height={300}
-                className="w-full h-60 object-cover object-center"
-              />
+            <Link href={`/service/${service._id}`}>
+              <div className="relative">
+                <Image
+                  src={getServiceImage(service)}
+                  alt={service?.business_category?.name || 'Service image'}
+                  width={500}
+                  height={300}
+                  className="w-full h-60 object-cover object-center"
+                />
 
-              {service.vendor_type && (
-                <div className="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 rounded-full text-xs">
-                  {service.vendor_type}
-                </div>
-              )}
-            </div>
-
+                {service.vendor_type && (
+                  <div className="absolute top-2 left-2 bg-purple-600 text-white px-2 py-1 rounded-full text-xs">
+                    {service.vendor_type}
+                  </div>
+                )}
+              </div>
+            </Link>
             <div className="p-5">
               <div className="flex items-center mb-3">
                 <AppstoreOutlined className="text-blue-600 mr-2" />

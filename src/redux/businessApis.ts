@@ -3,6 +3,28 @@ import Cookies from 'js-cookie'
 
 const businessApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
+    createBusiness: builder.mutation({
+      query: (data) => {
+        return {
+          url: '/business/create',
+          method: 'POST',
+          body: data,
+        }
+      },
+      invalidatesTags: ['business', 'Profile'],
+    }),
+
+    cityList: builder.mutation({
+      query: (data) => {
+        return {
+          url: '/city-list',
+          method: 'GET',
+          body: data,
+        }
+      },
+      invalidatesTags: ['business', 'Profile'],
+    }),
+
     getBusinessData: builder.query({
       query: (params) => {
         return {
@@ -65,6 +87,7 @@ export const {
   useCreateBusinessServiceMutation,
   useUpdateBusinessServiceMutation,
   useDeleteBusinessServiceMutation,
+  useCreateBusinessMutation,
 } = businessApis
 
 export default businessApis
