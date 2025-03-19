@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 const businessApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
-    getBusinessData: builder.query<any, { businessId: string }>({
+    getBusinessData: builder.query({
       query: (params) => {
         return {
           url: '/business-service/get-all',
@@ -11,51 +11,32 @@ const businessApis = baseApis.injectEndpoints({
           params,
         }
       },
+      providesTags: ['business', 'Profile'],
     }),
 
-    createBusinessService: builder.mutation<
-      any,
-      {
-        business_category: string
-        business_services: string[]
-        price: number
-        business: string
-      }
-    >({
+    createBusinessService: builder.mutation({
       query: (data) => {
         return {
           url: '/business-service/create',
           method: 'POST',
-          data,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
+          body: data,
         }
       },
+      invalidatesTags: ['business', 'Profile'],
     }),
 
-    updateBusinessService: builder.mutation<
-      any,
-      {
-        business_category: string
-        business_services: string[]
-        price: number
-        business: string
-        businessServiceId: string
-        businessId: string
-      }
-    >({
+    updateBusinessService: builder.mutation({
       query: (data) => {
-        const { businessServiceId, businessId } = data
+        const businessServiceId = data.get('businessServiceId')
+        const businessId = data.get('businessId')
+
         return {
-          url: `/business-service/create/${businessServiceId}/${businessId}`,
+          url: `/business-service/update/${businessServiceId}/${businessId}`,
           method: 'PATCH',
-          data,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
+          body: data,
         }
       },
+      invalidatesTags: ['business', 'Profile'],
     }),
 
     deleteBusinessService: builder.mutation<
@@ -71,11 +52,9 @@ const businessApis = baseApis.injectEndpoints({
           url: `/business-service/delete/${businessServiceId}/${businessId}`,
           method: 'DELETE',
           data,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
         }
       },
+      invalidatesTags: ['business', 'Profile'],
     }),
   }),
   overrideExisting: false,
