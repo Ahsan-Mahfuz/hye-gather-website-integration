@@ -97,9 +97,46 @@ const Dashboard = () => {
     )
   }
 
+  const vendorBusinessInfo = {
+    stats: [
+      {
+        id: 1,
+        label: 'New Booking Requests',
+        value: businessResponse?.data.new_booking_requests || 0,
+        icon: '/new-booking.svg',
+      },
+      {
+        id: 2,
+        label: 'Total Services',
+        value: businessResponse?.data.business_services
+          ? businessResponse.data.business_services.length
+          : 0,
+        icon: '/total-service.svg',
+      },
+      {
+        id: 3,
+        label: 'Total Bookings',
+        value: businessResponse?.data.total_booking || 0,
+        icon: '/total-booking.svg',
+      },
+      {
+        id: 4,
+        label: 'Total Ratings',
+        value: businessResponse?.data.total_rated || 0,
+        icon: '/total-rating.svg',
+      },
+      {
+        id: 5,
+        label: 'Total Earnings',
+        value: `$${businessResponse?.data.total_earnings || 0}`,
+        icon: '/total-earning.svg',
+      },
+    ],
+  }
+
   const vendorBusinessData = {
     id: businessResponse?.data?.business_profile?.[0]?._id,
-    logo: businessResponse?.data?.business_profile?.[0]?.logo,
+    logo: businessResponse?.data?.business_profile?.[0]?.banner,
     businessName: businessResponse?.data?.business_profile?.[0]?.name,
     about: businessResponse?.data?.business_profile?.[0]?.desc,
     vendorType: businessResponse?.data?.use_type,
@@ -108,6 +145,7 @@ const Dashboard = () => {
   return (
     <div className="responsive-width">
       <VendorBusinessCard {...vendorBusinessData} />
+      <VendorBusinessInformation stats={vendorBusinessInfo.stats} />
       <EarningStatics />
       <ProVendorPlan />
     </div>
