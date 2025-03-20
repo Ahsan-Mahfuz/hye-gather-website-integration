@@ -330,9 +330,9 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
 
       setShowModal(false)
       resetForm()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Operation failed:', error)
-      toast.error('Operation failed. Please try again!')
+      toast.error(error?.data?.message || 'Operation failed')
     }
   }
 
@@ -433,6 +433,14 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
                           : getServiceNames([ser])[0]}
                       </span>
                     ))}
+
+                  {/* {
+                      business_services.map((ser, idx) => (
+                        <div>
+                   
+                        </div>
+                      ))
+                    } */}
                 </div>
               </div>
 

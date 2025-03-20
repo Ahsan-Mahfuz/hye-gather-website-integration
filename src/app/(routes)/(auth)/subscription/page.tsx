@@ -35,13 +35,14 @@ const Subscription: React.FC = () => {
           },
         ],
         subscription_type: plan === 'monthly' ? 'MONTHLY' : 'YEARLY',
-        purpose: 'PREMIUM',
+        purpose: 'BASIC',
       }
 
       const response = await createPayment(payload).unwrap()
 
       if (response.success && response.url) {
         window.location.href = response.url
+        router.push('/vendor-home')
       }
     } catch (error) {
       console.error('Payment creation failed:', error)

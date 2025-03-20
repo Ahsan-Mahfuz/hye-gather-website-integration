@@ -17,6 +17,11 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { CiBadgeDollar } from 'react-icons/ci'
+import { ImProfile } from 'react-icons/im'
+import { LuCrown } from 'react-icons/lu'
+import { MdOutlineWorkspacePremium } from 'react-icons/md'
+import { RiMoneyDollarCircleLine } from 'react-icons/ri'
 
 const menuItems = [
   {
@@ -33,22 +38,40 @@ const menuItems = [
   // },
 
   {
-    id: 4,
+    id: 2,
     title: 'My Subscription',
-    icon: <Bell className="w-5 h-5" />,
+    icon: <LuCrown className="w-5 h-5" />,
     link: '/my-subscription',
   },
   {
-    id: 5,
+    id: 3,
     title: 'Earnings',
-    icon: <Bell className="w-5 h-5" />,
+    icon: <RiMoneyDollarCircleLine className="w-5 h-5" />,
     link: '/earnings',
   },
   {
-    id: 3,
+    id: 4,
     title: 'Notification',
     icon: <Bell className="w-5 h-5" />,
     link: '/notifications',
+  },
+  {
+    id: 5,
+    title: 'Business Profile',
+    icon: <ImProfile className="w-5 h-5" />,
+    link: '/business/create',
+  },
+  {
+    id: 6,
+    title: 'Premium Package',
+    icon: <MdOutlineWorkspacePremium className="w-5 h-5" />,
+    link: '/top-vendor-plan',
+  },
+  {
+    id: 7,
+    title: 'Package Plan',
+    icon: <CiBadgeDollar className="w-5 h-5" />,
+    link: '/subscription',
   },
 ]
 
@@ -97,7 +120,7 @@ const ProfileSettings = () => {
     window.location.href = '/home'
   }
   return (
-    <div className="responsive-width h-screen flex justify-center items-center ">
+    <div className="responsive-width !h-screen !mb-20 flex justify-center items-center ">
       <div className="max-w-[700px]  w-full mx-auto  rounded-lg   ">
         <div className="flex flex-col items-center">
           <div className="relative">
@@ -129,7 +152,11 @@ const ProfileSettings = () => {
           {menuItems
             .filter((item) =>
               profileData?.data?.role !== 'VENDOR'
-                ? item.title !== 'My Subscription' && item.title !== 'Earnings'
+                ? item.title !== 'My Subscription' &&
+                  item.title !== 'Earnings' &&
+                  item.title !== 'Business Profile' &&
+                  item.title !== 'Premium Package' &&
+                  item.title !== 'Package Plan'
                 : true
             )
             .map((item) => (

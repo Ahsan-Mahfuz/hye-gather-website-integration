@@ -11,18 +11,39 @@ const businessApis = baseApis.injectEndpoints({
           body: data,
         }
       },
-      invalidatesTags: ['business', 'Profile'],
+      invalidatesTags: ['business', 'Profile', 'businessProfile'],
     }),
 
-    cityList: builder.mutation({
-      query: (data) => {
+    getBusiness: builder.query({
+      query: () => {
         return {
-          url: '/city-list',
+          url: '/business/get-all',
           method: 'GET',
+        }
+      },
+      providesTags: ['business', 'Profile', 'businessProfile'],
+    }),
+
+    updateBusiness: builder.mutation({
+      query: (data) => {
+        const businessId = data.get('id')
+        
+        return {
+          url: `/business/update/${businessId}`,
+          method: 'PATCH',
           body: data,
         }
       },
-      invalidatesTags: ['business', 'Profile'],
+      invalidatesTags: ['business', 'Profile', 'businessProfile'],
+    }),
+
+    cityList: builder.query({
+      query: () => {
+        return {
+          url: '/city-list',
+          method: 'GET',
+        }
+      },
     }),
 
     getBusinessData: builder.query({
@@ -84,6 +105,9 @@ const businessApis = baseApis.injectEndpoints({
 
 export const {
   useGetBusinessDataQuery,
+  useCityListQuery,
+  useGetBusinessQuery,
+  useUpdateBusinessMutation,
   useCreateBusinessServiceMutation,
   useUpdateBusinessServiceMutation,
   useDeleteBusinessServiceMutation,

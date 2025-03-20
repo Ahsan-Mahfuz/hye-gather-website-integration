@@ -1,7 +1,38 @@
+'use client'
+
+import { useCreatePaymentMutation } from '@/redux/paymentApis'
 import Image from 'next/image'
+import toast from 'react-hot-toast'
 import { FaCheckCircle } from 'react-icons/fa'
 
 export default function VendorPlan() {
+  const [createPayment, { isLoading: isCreatingPayment }] =
+    useCreatePaymentMutation()
+
+  const handleSubscribe = async () => {
+    try {
+      const payload = {
+        price_data: [
+          {
+            name: 'subscription',
+            unit_amount: 69.99,
+            quantity: 1,
+          },
+        ],
+        subscription_type: 'MONTHLY',
+        purpose: 'PREMIUM',
+      }
+
+      const response = await createPayment(payload).unwrap()
+
+      if (response.success && response.url) {
+        window.location.href = response.url
+      }
+    } catch (error) {
+      console.error('Payment creation failed:', error)
+    }
+  }
+
   const features = [
     'Priority Listing',
     'Exclusive Badge',
@@ -57,7 +88,10 @@ export default function VendorPlan() {
           ))}
         </div>
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition">
+        <button
+          className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
+          onClick={handleSubscribe}
+        >
           Get started
         </button>
       </div>
