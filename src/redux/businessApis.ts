@@ -27,7 +27,7 @@ const businessApis = baseApis.injectEndpoints({
     updateBusiness: builder.mutation({
       query: (data) => {
         const businessId = data.get('id')
-        
+
         return {
           url: `/business/update/${businessId}`,
           method: 'PATCH',
@@ -41,6 +41,15 @@ const businessApis = baseApis.injectEndpoints({
       query: () => {
         return {
           url: '/city-list',
+          method: 'GET',
+        }
+      },
+    }),
+
+    getAllServices: builder.query({
+      query: () => {
+        return {
+          url: '/service/get-all',
           method: 'GET',
         }
       },
@@ -105,6 +114,7 @@ const businessApis = baseApis.injectEndpoints({
 
 export const {
   useGetBusinessDataQuery,
+  useGetAllServicesQuery,
   useCityListQuery,
   useGetBusinessQuery,
   useUpdateBusinessMutation,

@@ -1,16 +1,18 @@
+import { url } from '@/redux/main/server'
 import Image from 'next/image'
 import Link from 'next/link'
 
 interface CardProps {
-  id: number
-  logo: string
-  name: string
-  rating: number
-  reviews: number
-  status: string
-  categories: string[]
-  bookings: number
-  price: number
+  id: string
+  logo?: string
+  name?: string
+  rating?: number
+  reviews?: number
+  status?: string
+  categories?: string[]
+  bookings?: number
+  price?: number
+  businessName?: string
 }
 
 const Card: React.FC<CardProps> = ({
@@ -23,19 +25,19 @@ const Card: React.FC<CardProps> = ({
   categories,
   bookings,
   price,
+  businessName,
 }) => {
   return (
     <div className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-center sm:flex-row gap-4 max-w-[700px] w-full border border-gray-200">
       <div className="flex-shrink-0 w-[180px]  max-sm:max-w-[400px] max-sm:w-full">
         <Image
-          src={logo}
+          src={`${url}/${logo}`}
           alt="Vendor Logo"
           width={5000}
           height={500}
           className="rounded-md object-cover object-center h-[120px] max-sm:h-full"
         />
       </div>
-
       <div className="flex-1 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-center">
         <h3 className="text-lg font-semibold">{name}</h3>
         <div className="flex items-center gap-1 text-yellow-500 text-sm">
@@ -50,8 +52,8 @@ const Card: React.FC<CardProps> = ({
           <p className="text-sm font-medium text-gray-700">
             Vendor service category:
           </p>
-          <div className="flex gap-2 mt-1">
-            {categories.map((category, index) => (
+          <div className="flex flex-wrap gap-2 mt-1">
+            {categories?.map((category, index) => (
               <span
                 key={index}
                 className="bg-blue-100 text-blue-600 px-4 py-2 rounded-md text-xs"
@@ -64,7 +66,7 @@ const Card: React.FC<CardProps> = ({
       </div>
 
       <div className="flex flex-col">
-        <p className="text-sm text-gray-600">{bookings} Bookings on HYE</p>
+        <p className="text-sm text-gray-600">{bookings} Bookings on {businessName}</p>
         <p className="text-md font-semibold">
           Get started for as low as <span className="text-black">${price}</span>
         </p>

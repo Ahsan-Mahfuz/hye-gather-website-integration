@@ -61,7 +61,7 @@ const Notifications = () => {
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-600">
+          <div className="text-center text-xl text-gray-600 flex items-center justify-center h-[50vh]">
             No notifications found
           </div>
         )}
