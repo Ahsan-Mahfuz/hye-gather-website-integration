@@ -10,6 +10,7 @@ const bookingsApis = baseApis.injectEndpoints({
       }),
       providesTags: ['bookings'],
     }),
+
     createBookings: builder.mutation<
       any,
       {

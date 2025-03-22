@@ -1,89 +1,147 @@
+// 'use client'
+
+// import Link from 'next/link'
+// import { useState } from 'react'
+// import BookingRequest from '../bookingRequest/BookingRequest'
+// import { useCreateBookingsMutation } from '@/redux/bookingsApis'
+
+// interface Vendor {
+//   id: string
+//   _id: string
+//   name: string
+//   img: string
+//   rating: number
+//   reviews: number
+//   status: string
+//   categories: string[]
+//   bookings: number
+//   price: number
+//   description?: string
+//   images?: string[]
+//   services?: {
+//     name: string
+//   }[]
+// }
+
+// interface VendorTabsProps {
+//   vendor: Vendor
+// }
+// const BookingForm: React.FC<VendorTabsProps> = ({ vendor }) => {
+//   const [createBooking] = useCreateBookingsMutation()
+
+//   console.log(vendor)
+
+//   const [bookingFor, setBookingFor] = useState('')
+//   const [service, setService] = useState('')
+
+//   const handleBookingForChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     setBookingFor(e.target.value)
+//   }
+
+//   const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+//     setService(e.target.value)
+//   }
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault()
+//     console.log(`Booking for: ${bookingFor}, Service: ${service}`)
+//   }
+
+//   return (
+//     <div className=" bg-white p-6 mb-10 rounded-lg shadow-md ">
+//       <h2 className="text-xl font-bold mb-4 text-center">Check availability</h2>
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         {/* Select Service */}
+//         <div className="flex flex-col">
+//           <label htmlFor="service" className="font-semibold">
+//             Select Service:
+//           </label>
+//           <select
+//             id="service"
+//             value={service}
+//             onChange={handleServiceChange}
+//             className="border border-gray-300 p-2 rounded-md outline-none"
+//           >
+//             <option value="">Select Multiple</option>
+
+//             {vendor?.business_services?.map((service) => (
+//               <option key={service._id} value={service._id}>
+//                 {service.name}
+//               </option>
+//             ))}
+//           </select>
+//         </div>
+
+//         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+//           <BookingRequest />
+//           <Link
+//             href={'/chat'}
+//             type="button"
+//             className="bg-transparent border-2 border-blue-600 text-blue-600 py-2 px-4 rounded-md text-sm font-semibold w-full sm:w-auto hover:bg-blue-600 hover:text-white"
+//           >
+//             Send message
+//           </Link>
+//         </div>
+//       </form>
+//     </div>
+//   )
+// }
+
+// export default BookingForm
+
 'use client'
 
 import Link from 'next/link'
 import { useState } from 'react'
 import BookingRequest from '../bookingRequest/BookingRequest'
+import { useCreateBookingsMutation } from '@/redux/bookingsApis'
 
-const BookingForm = () => {
-  const [bookingFor, setBookingFor] = useState('')
-  const [service, setService] = useState('')
+interface Service {
+  _id: string
+  name: string
+}
 
-  //   const [modal2Open, setModal2Open] = useState(false)
+interface BusinessService {
+  _id: string
+  name: string
+}
 
-  const handleBookingForChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBookingFor(e.target.value)
-  }
+interface Vendor {
+  id?: string
+  _id: string
+  name: string
+  img?: string
+  rating?: number
+  reviews?: number
+  status?: string
+  categories?: string[]
+  bookings?: number
+  price?: number
+  description?: string
+  images?: string[]
+  business_services?: BusinessService[]
+  services?: Service[]
+  category_id?: string
+}
 
-  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setService(e.target.value)
-  }
+interface BookingFormProps {
+  vendor: Vendor
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log(`Booking for: ${bookingFor}, Service: ${service}`)
-  }
-
+const BookingForm: React.FC<BookingFormProps> = ({ vendor }) => {
+  console.log(vendor)
   return (
-    <div className=" bg-white p-6 mb-10 rounded-lg shadow-md ">
-      <h2 className="text-xl font-bold mb-4 text-center">Check availability</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Booking For */}
-        <div className="flex flex-col">
-          <label htmlFor="bookingFor" className="font-semibold">
-            Booking For:
-          </label>
-          <select
-            id="bookingFor"
-            value={bookingFor}
-            onChange={handleBookingForChange}
-            className="border border-gray-300 p-2 rounded-md"
-          >
-            <option value="">Select One</option>
-            <option value="Individual">Individual</option>
-            <option value="Group">Group</option>
-            <option value="Event">Event</option>
-          </select>
-        </div>
-
-        {/* Select Service */}
-        <div className="flex flex-col">
-          <label htmlFor="service" className="font-semibold">
-            Select Service:
-          </label>
-          <select
-            id="service"
-            value={service}
-            onChange={handleServiceChange}
-            className="border border-gray-300 p-2 rounded-md outline-none"
-          >
-            <option value="">Select One</option>
-            <option value="Catering">Catering</option>
-            <option value="Music">Music</option>
-            <option value="Decoration">Decoration</option>
-          </select>
-        </div>
-
-        {/* Buttons */}
+    <div className="bg-white ">
+      <div className="space-y-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-          {/* <button
-            type="submit"
-            onClick={() => setModal2Open(true)}
-            className="bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-semibold w-full sm:w-auto hover:bg-blue-700"
-          >
-            Send booking request
-          </button> */}
-
-          <BookingRequest />
-          <Link
-            href={'/chat'}
-            type="button"
-            className="bg-transparent border-2 border-blue-600 text-blue-600 py-2 px-4 rounded-md text-sm font-semibold w-full sm:w-auto hover:bg-blue-600 hover:text-white"
-          >
-            Send message
-          </Link>
+          <BookingRequest
+            vendorId={vendor?._id}
+            services={vendor?.business_services || []}
+            categoryId={vendor?.business_category?._id}
+          />
         </div>
-      </form>
+      </div>
     </div>
   )
 }

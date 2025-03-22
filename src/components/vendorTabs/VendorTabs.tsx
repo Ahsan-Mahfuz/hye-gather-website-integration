@@ -196,7 +196,6 @@ interface Vendor {
   id: string
   _id: string
   name: string
-  logo: string
   rating: number
   reviews: number
   status: string

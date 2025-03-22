@@ -230,15 +230,10 @@ const VendorDetailsPage: React.FC<VendorDetailsPageProps> = ({ params }) => {
             <VendorTabs vendor={vendor} />
           </div>
         </div>
-        {/* <div className="lg:col-span-1">
-          <Card className="sticky top-24">
-            <BookingForm vendor={vendor} />
-          </Card>
-        </div> */}
 
         <div>
           <section>
-            <BookingForm />
+            <BookingForm vendor={vendor} />
           </section>
         </div>
       </div>

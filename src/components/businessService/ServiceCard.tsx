@@ -35,8 +35,6 @@ import { url } from '@/redux/main/server'
 
 interface BusinessService {
   _id: string
-  business_category: string
-  business_services: string[]
   price: number
   business: string
   img: string | null
