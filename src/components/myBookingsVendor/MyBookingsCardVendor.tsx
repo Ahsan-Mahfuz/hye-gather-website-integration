@@ -93,7 +93,7 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     is_paid,
   } = booking
 
-  const userData = vendor[0] || {
+  const userData = user[0] || {
     name: 'Unknown',
     email: 'Unknown',
     phone: 'Unknown',
@@ -109,10 +109,10 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
   const modelProps = {
     id: _id,
     bookingType,
-    image: vendor.img || '/placeholder.png', // Fallback image
-    name: vendor.name,
-    email: vendor.email,
-    phone: vendor.phone,
+    image: userData.img || '/placeholder.png',
+    name: userData.name,
+    email: userData.email,
+    phone: userData.phone,
     bookingFor: categoryData.name,
     selectServices: serviceNames,
     eventName: event_name,

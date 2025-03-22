@@ -89,23 +89,6 @@ const MyBookingsModelVendor = ({
   const [editedAdditionalNote, setEditedAdditionalNote] =
     useState(additionalNote)
 
-  const handleSaveChanges = () => {
-    console.log('Updated Booking:', {
-      id,
-      editedEventName,
-      editedEventLocation,
-      editedEventTime,
-      editedNumberOfGuests,
-      editedEventDuration,
-      editedAdditionalRequirements,
-      editedAdditionalNote,
-    })
-
-    toast.success('Booking updated successfully!')
-    setIsEditing(false)
-    setIsModalOpen(false)
-  }
-
   const getImageSrc = () => {
     if (!image || image.includes('undefined')) {
       return '/placeholder.png'
@@ -135,15 +118,15 @@ const MyBookingsModelVendor = ({
             display: 'none',
           },
         }}
-        cancelText={
-          bookingType === 'paymentRequest' ? (
-            <div onClick={handlePaymentClick} style={{ color: 'red' }}>
-              Payment
-            </div>
-          ) : bookingType === 'completed' ? (
-            <div onClick={() => setIsReviewModalOpen(true)}>Get Rating</div>
-          ) : null
-        }
+        // cancelText={
+        //   bookingType === 'paymentRequest' ? (
+        //     <div onClick={handlePaymentClick} style={{ color: 'red' }}>
+        //       Payment
+        //     </div>
+        //   ) : bookingType === 'completed' ? (
+        //     <div onClick={() => setIsReviewModalOpen(true)}>Get Rating</div>
+        //   ) : null
+        // }
         cancelButtonProps={{
           style: {
             display:
@@ -290,21 +273,7 @@ const MyBookingsModelVendor = ({
               <p>{timeLeft}</p>
             </div>
           )}
-
-          {/* {isEditing && (
-            <button
-              className="w-full p-2 rounded-md hover:bg-blue-700 bg-blue-600 text-white mt-4"
-              onClick={handleSaveChanges}
-            >
-              Save Changes
-            </button>
-          )} */}
         </div>
-        {/* {!isEditing && bookingType === 'requested' && (
-          <div className="text-end p-2 bg-blue-600 text-white cursor-pointer font-bold hover:bg-blue-800 flex items-center justify-center rounded-md">
-            <div onClick={() => setIsEditing(true)}>Edit Request</div>
-          </div>
-        )} */}
       </Modal>
 
       <Modal

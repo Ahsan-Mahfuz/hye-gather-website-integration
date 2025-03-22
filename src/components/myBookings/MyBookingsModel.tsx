@@ -655,11 +655,11 @@ const MyBookingsModel = ({
             </button>
           )}
         </div>
-        {!isEditing && bookingType === 'requested' && (
+        {/* {!isEditing && bookingType === 'requested' && (
           <div className="text-end p-2 bg-blue-600 text-white cursor-pointer font-bold hover:bg-blue-800 flex items-center justify-center rounded-md">
             <div onClick={() => setIsEditing(true)}>Edit Request</div>
           </div>
-        )}
+        )} */}
       </Modal>
 
       <Modal

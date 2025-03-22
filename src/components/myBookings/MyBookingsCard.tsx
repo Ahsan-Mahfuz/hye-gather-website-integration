@@ -222,10 +222,11 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
   const modelProps = {
     id: _id,
     bookingType,
-    image: vendor.img || '/placeholder.png', // Fallback image
-    name: vendor.name,
-    email: vendor.email,
-    phone: vendor.phone,
+    image:
+      userData?.img || 'https://dummyimage.com/600x400/a8a8a8/fff&text=img',
+    name: userData.name,
+    email: userData.email,
+    phone: userData.phone,
     bookingFor: categoryData.name,
     selectServices: serviceNames,
     eventName: event_name,

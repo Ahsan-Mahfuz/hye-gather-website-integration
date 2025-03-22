@@ -4,7 +4,7 @@ import Loader from '@/components/loading/ReactLoader'
 import MyBookingsCard from '@/components/myBookings/MyBookingsCard'
 import { useGetBookingsQuery } from '@/redux/bookingsApis'
 import { Tabs } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface User {
   name: string
@@ -52,9 +52,19 @@ interface BookingData {
 }
 
 const MyBookings = () => {
-  const { data: getAllBookings, isLoading } = useGetBookingsQuery()
-  const [activeTab, setActiveTab] = useState('1')
+  const [click, setClicked] = useState('USER')
 
+  const { data: getAllBookings, isLoading } = useGetBookingsQuery({
+    requested_by: click,
+  })
+  const [activeTab, setActiveTab] = useState('1')
+  useEffect(() => {
+    if (activeTab === '2') {
+      setClicked('USER')
+    } else if (activeTab === '3') {
+      setClicked('VENDOR')
+    }
+  }, [activeTab])
   const handleTabChange = (key: string) => {
     setActiveTab(key)
   }

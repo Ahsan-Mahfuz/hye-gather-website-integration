@@ -253,7 +253,7 @@ import MyBookingsCardVendor from '@/components/myBookingsVendor/MyBookingsCardVe
 import VendorCalendar from '@/components/vendorTabs/VendorCalendar'
 import { useGetBookingsQuery } from '@/redux/bookingsApis'
 import { Tabs } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface User {
   name: string
@@ -301,8 +301,19 @@ interface BookingData {
 }
 
 const VendorBookings = () => {
-  const { data: getAllBookings, isLoading } = useGetBookingsQuery()
+  const [click, setClicked] = useState('USER')
+  const { data: getAllBookings, isLoading } = useGetBookingsQuery({
+    requested_by: click,
+  })
   const [activeTab, setActiveTab] = useState('1')
+
+  useEffect(() => {
+    if (activeTab === '2') {
+      setClicked('USER')
+    } else if (activeTab === '3') {
+      setClicked('VENDOR')
+    }
+  }, [activeTab])
 
   const handleTabChange = (key: string) => {
     setActiveTab(key)
@@ -339,7 +350,7 @@ const VendorBookings = () => {
       label: 'Ongoing',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Ongoing Activities</div>
+          <div className="text-lg font-semibold">Ongoing Activities</div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('ongoing').length > 0 ? (
@@ -362,7 +373,7 @@ const VendorBookings = () => {
       label: 'Requests',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Booking Requests</div>
+          <div className="text-lg font-semibold">Booking Requests</div>
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('requested').length > 0 ? (
               getBookingsByStatus('requested').map((booking: BookingData) => (
@@ -409,7 +420,7 @@ const VendorBookings = () => {
       label: 'Completed',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Completed Bookings</div>
+          <div className="text-lg font-semibold">Completed Bookings</div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('completed').length > 0 ? (
@@ -434,7 +445,7 @@ const VendorBookings = () => {
       label: 'Canceled',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Canceled Bookings</div>
+          <div className="text-lg font-semibold">Canceled Bookings</div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('canceled').length > 0 ? (

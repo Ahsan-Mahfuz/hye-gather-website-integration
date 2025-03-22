@@ -3,10 +3,11 @@ import Cookies from 'js-cookie'
 
 const bookingsApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
-    getBookings: builder.query<any, void>({
-      query: () => ({
+    getBookings: builder.query<any, { requested_by: string }>({
+      query: (params) => ({
         url: '/booking/get-all',
         method: 'GET',
+        params,
       }),
       providesTags: ['bookings'],
     }),
