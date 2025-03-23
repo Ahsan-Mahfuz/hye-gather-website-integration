@@ -4,6 +4,7 @@ import { RiMessage2Fill } from 'react-icons/ri'
 import MyBookingsModel from './MyBookingsModel'
 import { url } from '@/redux/main/server'
 import MyBookingsModelVendor from './MyBookingsModelVendor'
+import { useEffect, useState } from 'react'
 
 interface User {
   name: string
@@ -48,6 +49,7 @@ interface BookingData {
   location: string
   services: Service[]
   is_paid: boolean
+  requested_by: string
 }
 
 interface CardProps {
@@ -73,6 +75,14 @@ const formatDateTime = (dateStr: string): string => {
   const date = new Date(dateStr)
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
+const formatDate = (dateStr: string): string => {
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
+}
 
 const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
   const {
@@ -91,8 +101,8 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     location,
     services,
     is_paid,
+    requested_by,
   } = booking
-
   const userData = user[0] || {
     name: 'Unknown',
     email: 'Unknown',
@@ -106,10 +116,62 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
 
   const bookingType = mapStatusToBookingType(status)
 
+  const [timeLeft, setTimeLeft] = useState('')
+
+  const getTargetDateTime = (dateString: string, timeString: string) => {
+    if (!dateString || !timeString) return new Date('Invalid')
+
+    const dateObj = new Date(dateString)
+    const timeObj = new Date(timeString)
+
+    const year = dateObj.getUTCFullYear()
+    const month = dateObj.getUTCMonth()
+    const day = dateObj.getUTCDate()
+
+    const hours = timeObj.getUTCHours()
+    const minutes = timeObj.getUTCMinutes()
+    const seconds = timeObj.getUTCSeconds()
+
+    const combinedDate = new Date(year, month, day, hours, minutes, seconds)
+
+    return combinedDate
+  }
+
+  useEffect(() => {
+    if (status !== 'accepted' || !date || !time) {
+      setTimeLeft('')
+      return
+    }
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime()
+      const targetDateTime = getTargetDateTime(date, time).getTime()
+      const difference = targetDateTime - now
+
+      if (difference <= 0) {
+        clearInterval(interval)
+        setTimeLeft('Event Started')
+        return
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24)
+      const minutes = Math.floor((difference / (1000 * 60)) % 60)
+      const seconds = Math.floor((difference / 1000) % 60)
+
+      const timeString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`
+
+      setTimeLeft(timeString)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [status, date, time])
+
   const modelProps = {
     id: _id,
     bookingType,
     image: userData.img || '/placeholder.png',
+    userId: userData._id,
     name: userData.name,
     email: userData.email,
     phone: userData.phone,
@@ -118,12 +180,16 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     eventName: event_name,
     eventLocation: location,
     eventTime: formatDateTime(time),
+    eventDate: formatDate(date),
     numberOfGuests: Number(number_of_guests) || 0,
     eventDuration: duration,
     additionalRequirements: additional_services || '',
     additionalNote: '',
     amountPaid: is_paid ? `$${price}` : '',
-    timeLeft: status === 'accepted' ? '2 days remaining' : '',
+    timeLeft: status === 'accepted' ? `Time left : ${timeLeft}` : '',
+    requested_by,
+    price,
+    is_paid,
   }
 
   return (

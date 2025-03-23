@@ -49,6 +49,7 @@ interface BookingData {
   location: string
   services: Service[]
   is_paid: boolean
+  requested_by: string
 }
 
 const MyBookings = () => {

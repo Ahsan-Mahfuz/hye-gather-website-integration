@@ -361,7 +361,7 @@ import Payment from '../payment/Payment'
 import toast from 'react-hot-toast'
 
 interface CardProps {
-  id: string // Changed from number to string to match _id from API
+  id: string
   bookingType: string
   image: string
   name: string
@@ -378,6 +378,8 @@ interface CardProps {
   additionalNote?: string
   amountPaid?: string
   timeLeft?: string
+  price?: number
+  requested_by?: string
 }
 
 const MyBookingsModel = ({
@@ -386,6 +388,7 @@ const MyBookingsModel = ({
   image,
   name,
   email,
+  price,
   phone,
   bookingFor,
   selectServices,
@@ -398,6 +401,7 @@ const MyBookingsModel = ({
   additionalNote,
   amountPaid,
   timeLeft,
+  requested_by,
 }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -431,42 +435,42 @@ const MyBookingsModel = ({
     setIsPaymentModalOpen(false)
   }
 
-  const [isEditing, setIsEditing] = useState(false)
+  // const [isEditing, setIsEditing] = useState(false)
 
-  const [editedEventName, setEditedEventName] = useState(eventName)
-  const [editedEventLocation, setEditedEventLocation] = useState(eventLocation)
-  const [editedEventTime, setEditedEventTime] = useState(eventTime)
-  const [editedNumberOfGuests, setEditedNumberOfGuests] =
-    useState(numberOfGuests)
-  const [editedEventDuration, setEditedEventDuration] = useState(eventDuration)
-  const [editedAdditionalRequirements, setEditedAdditionalRequirements] =
-    useState(additionalRequirements)
-  const [editedAdditionalNote, setEditedAdditionalNote] =
-    useState(additionalNote)
+  // const [editedEventName, setEditedEventName] = useState(eventName)
+  // const [editedEventLocation, setEditedEventLocation] = useState(eventLocation)
+  // const [editedEventTime, setEditedEventTime] = useState(eventTime)
+  // const [editedNumberOfGuests, setEditedNumberOfGuests] =
+  //   useState(numberOfGuests)
+  // const [editedEventDuration, setEditedEventDuration] = useState(eventDuration)
+  // const [editedAdditionalRequirements, setEditedAdditionalRequirements] =
+  //   useState(additionalRequirements)
+  // const [editedAdditionalNote, setEditedAdditionalNote] =
+  //   useState(additionalNote)
 
-  const handleSaveChanges = () => {
-    console.log('Updated Booking:', {
-      id,
-      editedEventName,
-      editedEventLocation,
-      editedEventTime,
-      editedNumberOfGuests,
-      editedEventDuration,
-      editedAdditionalRequirements,
-      editedAdditionalNote,
-    })
+  // const handleSaveChanges = () => {
+  //   console.log('Updated Booking:', {
+  //     id,
+  //     editedEventName,
+  //     editedEventLocation,
+  //     editedEventTime,
+  //     editedNumberOfGuests,
+  //     editedEventDuration,
+  //     editedAdditionalRequirements,
+  //     editedAdditionalNote,
+  //   })
 
-    toast.success('Booking updated successfully!')
-    setIsEditing(false)
-    setIsModalOpen(false)
-  }
+  //   toast.success('Booking updated successfully!')
+  //   setIsEditing(false)
+  //   setIsModalOpen(false)
+  // }
 
-  const getImageSrc = () => {
-    if (!image || image.includes('undefined')) {
-      return '/placeholder.png'
-    }
-    return image
-  }
+  // const getImageSrc = () => {
+  //   if (!image || image.includes('undefined')) {
+  //     return '/placeholder.png'
+  //   }
+  //   return image
+  // }
 
   return (
     <>
@@ -536,60 +540,27 @@ const MyBookingsModel = ({
 
             <div>
               <p className="font-semibold">Event Name:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventName}
-                  onChange={(e) => setEditedEventName(e.target.value)}
-                />
-              ) : (
-                <span>{eventName}</span>
-              )}
+              <span>{eventName}</span>
             </div>
             <div>
               <p className="font-semibold">Event Location:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventLocation}
-                  onChange={(e) => setEditedEventLocation(e.target.value)}
-                />
-              ) : (
-                <span>{eventLocation}</span>
-              )}
+
+              <span>{eventLocation}</span>
             </div>
             <div>
               <p className="font-semibold">Event Time:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventTime}
-                  onChange={(e) => setEditedEventTime(e.target.value)}
-                />
-              ) : (
-                <span>{eventTime}</span>
-              )}
+
+              <span>{eventTime}</span>
             </div>
             <div>
               <p className="font-semibold">Number of guests:</p>
-              {isEditing ? (
-                <Input
-                  value={editedNumberOfGuests?.toString()}
-                  onChange={(e) =>
-                    setEditedNumberOfGuests(Number(e.target.value))
-                  }
-                />
-              ) : (
-                <span>{numberOfGuests}</span>
-              )}
+
+              <span>{numberOfGuests}</span>
             </div>
             <div>
               <p className="font-semibold">Event Duration:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventDuration}
-                  onChange={(e) => setEditedEventDuration(e.target.value)}
-                />
-              ) : (
-                <span>{eventDuration}</span>
-              )}
+
+              <span>{eventDuration}</span>
             </div>
           </div>
 
@@ -611,28 +582,14 @@ const MyBookingsModel = ({
             <p className="font-semibold">
               Additional Requirements or Services Needed:
             </p>
-            {isEditing ? (
-              <Input.TextArea
-                value={editedAdditionalRequirements}
-                onChange={(e) =>
-                  setEditedAdditionalRequirements(e.target.value)
-                }
-              />
-            ) : (
-              <p>{additionalRequirements || 'None specified'}</p>
-            )}
+
+            <p>{additionalRequirements || 'None specified'}</p>
           </div>
 
           <div className="text-gray-600 text-sm">
             <p className="font-semibold">Additional Note:</p>
-            {isEditing ? (
-              <Input.TextArea
-                value={editedAdditionalNote}
-                onChange={(e) => setEditedAdditionalNote(e.target.value)}
-              />
-            ) : (
-              <p>{additionalNote || 'None specified'}</p>
-            )}
+
+            <p>{additionalNote || 'None specified'}</p>
           </div>
 
           {amountPaid && (
@@ -640,20 +597,32 @@ const MyBookingsModel = ({
               {amountPaid}
             </div>
           )}
-          {bookingType === 'ongoing' && (
-            <div className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md">
-              <p>{timeLeft}</p>
+          {bookingType === 'ongoing' ||
+            (requested_by === 'VENDOR' && (
+              <div className="flex justify-end text-xl">
+                <p className="font-semibold text-red-500">Price: {price}</p>
+              </div>
+            ))}
+
+          {requested_by === 'VENDOR' && (
+            <div className="flex justify-end ">
+              <Button
+                className="!bg-red-200 hover:!bg-black hover:!text-white"
+                onClick={handlePaymentClick}
+              >
+                Payment
+              </Button>
             </div>
           )}
 
-          {isEditing && (
+          {/* {isEditing && (
             <button
               className="w-full p-2 rounded-md hover:bg-blue-700 bg-blue-600 text-white mt-4"
               onClick={handleSaveChanges}
             >
               Save Changes
             </button>
-          )}
+          )} */}
         </div>
         {/* {!isEditing && bookingType === 'requested' && (
           <div className="text-end p-2 bg-blue-600 text-white cursor-pointer font-bold hover:bg-blue-800 flex items-center justify-center rounded-md">
@@ -668,7 +637,13 @@ const MyBookingsModel = ({
         footer={null}
         centered
       >
-        <Payment />
+        <Payment
+          price={price}
+          name={name}
+          email={email}
+          phone={phone}
+          id={id}
+        />
       </Modal>
 
       <Modal

@@ -29,7 +29,34 @@ const bookingsApis = baseApis.injectEndpoints({
     >({
       query: (data) => {
         return {
-          url: 'booking/create',
+          url: '/booking/create',
+          method: 'POST',
+          body: data,
+        }
+      },
+      invalidatesTags: ['bookings'],
+    }),
+
+    customCreateBookings: builder.mutation<
+      any,
+      {
+        category: string
+        services: string[]
+        date: string
+        time: string
+        number_of_guests: number
+        duration: string
+        additional_services: string
+        business_service: string
+        location: string
+        event_name: string
+        price: number
+        user: string
+      }
+    >({
+      query: (data) => {
+        return {
+          url: '/booking/custom_booking',
           method: 'POST',
           body: data,
         }
@@ -40,5 +67,9 @@ const bookingsApis = baseApis.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useCreateBookingsMutation, useGetBookingsQuery } = bookingsApis
+export const {
+  useCreateBookingsMutation,
+  useCustomCreateBookingsMutation,
+  useGetBookingsQuery,
+} = bookingsApis
 export default bookingsApis

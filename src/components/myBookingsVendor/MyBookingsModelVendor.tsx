@@ -1,14 +1,14 @@
 import { Button, Input, Modal, Rate } from 'antd'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import Payment from '../payment/Payment'
 import toast from 'react-hot-toast'
+import BookingRequestVendor from './BookingRequestVendor'
 
 interface CardProps {
   id: string
   bookingType: string
   image: string
+  userId: string
   name: string
   email: string
   phone: string
@@ -17,17 +17,22 @@ interface CardProps {
   eventName?: string
   eventLocation?: string
   eventTime?: string
+  eventDate?: string
   numberOfGuests?: number
   eventDuration?: string
   additionalRequirements?: string
   additionalNote?: string
   amountPaid?: string
   timeLeft?: string
+  requested_by?: string
+  price?: number
+  is_paid?: boolean
 }
 
 const MyBookingsModelVendor = ({
   id,
   bookingType,
+  userId,
   image,
   name,
   email,
@@ -37,18 +42,23 @@ const MyBookingsModelVendor = ({
   eventName,
   eventLocation,
   eventTime,
+  eventDate,
   numberOfGuests,
   eventDuration,
   additionalRequirements,
   additionalNote,
   amountPaid,
   timeLeft,
+  requested_by,
+  price,
+  is_paid,
 }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
 
   const handleSubmit = () => {
     console.log('Review Submitted:', { id, rating, review })
@@ -66,36 +76,13 @@ const MyBookingsModelVendor = ({
     setIsModalOpen(false)
   }
 
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
-
-  const handlePaymentClick = () => {
-    setIsPaymentModalOpen(true)
+  const handleClickCustomBooking = () => {
+    setIsClickCustomBooking(true)
   }
-
-  const handlePaymentModalCancel = () => {
-    setIsPaymentModalOpen(false)
+  const handleCancelCustomBooking = () => {
+    setIsClickCustomBooking(false)
   }
-
-  const [isEditing, setIsEditing] = useState(false)
-
-  const [editedEventName, setEditedEventName] = useState(eventName)
-  const [editedEventLocation, setEditedEventLocation] = useState(eventLocation)
-  const [editedEventTime, setEditedEventTime] = useState(eventTime)
-  const [editedNumberOfGuests, setEditedNumberOfGuests] =
-    useState(numberOfGuests)
-  const [editedEventDuration, setEditedEventDuration] = useState(eventDuration)
-  const [editedAdditionalRequirements, setEditedAdditionalRequirements] =
-    useState(additionalRequirements)
-  const [editedAdditionalNote, setEditedAdditionalNote] =
-    useState(additionalNote)
-
-  const getImageSrc = () => {
-    if (!image || image.includes('undefined')) {
-      return '/placeholder.png'
-    }
-    return image
-  }
-
+  console.log(is_paid)
   return (
     <>
       <div
@@ -118,15 +105,6 @@ const MyBookingsModelVendor = ({
             display: 'none',
           },
         }}
-        // cancelText={
-        //   bookingType === 'paymentRequest' ? (
-        //     <div onClick={handlePaymentClick} style={{ color: 'red' }}>
-        //       Payment
-        //     </div>
-        //   ) : bookingType === 'completed' ? (
-        //     <div onClick={() => setIsReviewModalOpen(true)}>Get Rating</div>
-        //   ) : null
-        // }
         cancelButtonProps={{
           style: {
             display:
@@ -139,9 +117,12 @@ const MyBookingsModelVendor = ({
         }}
         centered
       >
-        <div className="mx-auto bg-white rounded-xl space-y-4">
-          <div className="flex items-center space-x-4 mb-3">
+        <div className="mx-auto bg-white rounded-xl space-y-4 w-full">
+          <div className="flex items-center  space-x-4 mb-3 w-full">
             <div>
+              <h1 className="font-bold text-[16px] underline underline-offset-4">
+                User Details
+              </h1>
               <h2 className="text-lg font-semibold">{name}</h2>
               <p className="text-sm text-gray-500">{email}</p>
               <p className="text-sm text-gray-500">{phone}</p>
@@ -164,60 +145,33 @@ const MyBookingsModelVendor = ({
 
             <div>
               <p className="font-semibold">Event Name:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventName}
-                  onChange={(e) => setEditedEventName(e.target.value)}
-                />
-              ) : (
-                <span>{eventName}</span>
-              )}
+
+              <span>{eventName}</span>
             </div>
             <div>
               <p className="font-semibold">Event Location:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventLocation}
-                  onChange={(e) => setEditedEventLocation(e.target.value)}
-                />
-              ) : (
-                <span>{eventLocation}</span>
-              )}
+
+              <span>{eventLocation}</span>
             </div>
             <div>
               <p className="font-semibold">Event Time:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventTime}
-                  onChange={(e) => setEditedEventTime(e.target.value)}
-                />
-              ) : (
-                <span>{eventTime}</span>
-              )}
+
+              <span>{eventTime}</span>
+            </div>
+            <div>
+              <p className="font-semibold">Event Date:</p>
+
+              <span>{eventDate}</span>
             </div>
             <div>
               <p className="font-semibold">Number of guests:</p>
-              {isEditing ? (
-                <Input
-                  value={editedNumberOfGuests?.toString()}
-                  onChange={(e) =>
-                    setEditedNumberOfGuests(Number(e.target.value))
-                  }
-                />
-              ) : (
-                <span>{numberOfGuests}</span>
-              )}
+
+              <span>{numberOfGuests}</span>
             </div>
             <div>
               <p className="font-semibold">Event Duration:</p>
-              {isEditing ? (
-                <Input
-                  value={editedEventDuration}
-                  onChange={(e) => setEditedEventDuration(e.target.value)}
-                />
-              ) : (
-                <span>{eventDuration}</span>
-              )}
+
+              <span>{eventDuration}</span>
             </div>
           </div>
 
@@ -239,28 +193,14 @@ const MyBookingsModelVendor = ({
             <p className="font-semibold">
               Additional Requirements or Services Needed:
             </p>
-            {isEditing ? (
-              <Input.TextArea
-                value={editedAdditionalRequirements}
-                onChange={(e) =>
-                  setEditedAdditionalRequirements(e.target.value)
-                }
-              />
-            ) : (
-              <p>{additionalRequirements || 'None specified'}</p>
-            )}
+
+            <p>{additionalRequirements || 'None specified'}</p>
           </div>
 
           <div className="text-gray-600 text-sm">
             <p className="font-semibold">Additional Note:</p>
-            {isEditing ? (
-              <Input.TextArea
-                value={editedAdditionalNote}
-                onChange={(e) => setEditedAdditionalNote(e.target.value)}
-              />
-            ) : (
-              <p>{additionalNote || 'None specified'}</p>
-            )}
+
+            <p>{additionalNote || 'None specified'}</p>
           </div>
 
           {amountPaid && (
@@ -273,16 +213,35 @@ const MyBookingsModelVendor = ({
               <p>{timeLeft}</p>
             </div>
           )}
+
+          {bookingType === 'requested' && requested_by === 'VENDOR' && (
+            <div className="flex justify-end text-xl">
+              <p className="font-semibold text-red-500">
+                Price: {price} <span className='text-sm text-gray-500'>{is_paid ? '(Paid)' : '(Not Paid)'}</span>
+              </p>
+            </div>
+          )}
+
+          {bookingType === 'requested' && requested_by === 'USER' && (
+            <div>
+              <Button
+                className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md w-full h-[42px]"
+                onClick={handleClickCustomBooking}
+              >
+                Create Custom Booking
+              </Button>
+            </div>
+          )}
         </div>
       </Modal>
 
       <Modal
-        open={isPaymentModalOpen}
-        onCancel={handlePaymentModalCancel}
+        visible={isClickCustomBooking}
+        onCancel={handleCancelCustomBooking}
         footer={null}
         centered
       >
-        <Payment />
+        <BookingRequestVendor user={userId} />
       </Modal>
 
       <Modal
