@@ -604,6 +604,16 @@ const MyBookingsModel = ({
               </div>
             ))}
 
+          {bookingType === 'requested' && (
+            <div className="flex justify-end text-[16px]">
+              <div>
+                <p className="font-semibold text-red-500">Price: {price}</p>
+                <button className="border rounded-lg px-2 py-1 bg-blue-600 text-white hover:bg-white hover:text-black">
+                  Payment
+                </button>
+              </div>
+            </div>
+          )}
           {requested_by === 'VENDOR' && (
             <div className="flex justify-end ">
               <Button

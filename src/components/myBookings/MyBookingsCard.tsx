@@ -298,7 +298,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     <div className="bg-white flex  mt-5 flex-col shadow-md rounded-lg px-6 py-5 sm:flex-row gap-4 sm:max-w-[600px] max-w-[430px] w-full border border-gray-200">
       <div>
         <Image
-          src={`${url}/${userData.img}` || '/placeholder.png'}
+          src={`${url}/${userData.img}`}
           alt="Vendor Logo"
           width={5000}
           height={500}
@@ -327,7 +327,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
             <div>
               <p className="text-md font-bold mb-3">Booking For</p>
               <span className="bg-blue-100 p-2 rounded-lg mt-1 font-semibold text-red-600">
-                {categoryData.name}
+                {categoryData.name}          
               </span>
             </div>
             <p className="text-md font-bold mt-4 mb-1">Select Services</p>
