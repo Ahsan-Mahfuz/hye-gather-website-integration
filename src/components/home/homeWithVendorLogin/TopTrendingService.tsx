@@ -5,6 +5,7 @@ import { url } from '@/redux/main/server'
 import { Carousel } from 'antd'
 import { StarIcon } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const contentStyle: React.CSSProperties = {
   maxWidth: '300px',
@@ -139,9 +140,14 @@ const TopTrendingService = () => {
                   </div>
                 </div>
 
-                <button className="w-full py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">
-                  View Details
-                </button>
+                <div className=" flex items-center justify-center">
+                  <Link
+                    href={`/service/${service?.id}`}
+                    className="w-full py-3 flex mx-auto items-center justify-center bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             )
           )}

@@ -413,7 +413,7 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
                 <AppstoreOutlined className="text-blue-600 mr-2" />
                 <h3 className="font-medium text-lg text-gray-800">
                   {service?.business_category?.name ||
-                    getCategoryName(service.business_category)}
+                    getCategoryName(service?.business_category)}
                 </h3>
               </div>
 

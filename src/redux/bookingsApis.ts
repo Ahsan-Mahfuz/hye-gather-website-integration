@@ -37,6 +37,44 @@ const bookingsApis = baseApis.injectEndpoints({
       invalidatesTags: ['bookings'],
     }),
 
+    updateBookings: builder.mutation<
+      any,
+      {
+        id: string
+        price: string
+        additional_services: string
+        additional_note: string
+      }
+    >({
+      query: (data) => {
+        const { id, ...rest } = data
+        return {
+          url: `/booking/update-price/${id}`,
+          method: 'PATCH',
+          body: rest,
+        }
+      },
+      invalidatesTags: ['bookings'],
+    }),
+
+    updateBookingStatus: builder.mutation<
+      any,
+      {
+        id: string
+        status: string
+      }
+    >({
+      query: (data) => {
+        const { id, ...status } = data
+        return {
+          url: `/booking/update-status/${id}`,
+          method: 'PATCH',
+          body: status,
+        }
+      },
+      invalidatesTags: ['bookings'],
+    }),
+
     customCreateBookings: builder.mutation<
       any,
       {
@@ -69,6 +107,8 @@ const bookingsApis = baseApis.injectEndpoints({
 
 export const {
   useCreateBookingsMutation,
+  useUpdateBookingsMutation,
+  useUpdateBookingStatusMutation,
   useCustomCreateBookingsMutation,
   useGetBookingsQuery,
 } = bookingsApis

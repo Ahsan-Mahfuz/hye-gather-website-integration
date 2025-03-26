@@ -3,9 +3,11 @@ import Loader from '@/components/loading/ReactLoader'
 import { useGetBusinessDataQuery } from '@/redux/businessApis'
 import { url } from '@/redux/main/server'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { IoMdArrowRoundBack } from 'react-icons/io'
 
 const EachService = () => {
+  const navigate = useRouter()
   const pathName = usePathname()
   const serviceId = pathName.split('/')[2]
 
@@ -31,8 +33,15 @@ const EachService = () => {
   const service = businessData.data[0]
 
   return (
-    <div className="responsive-width">
-      <div className="max-w-2xl mt-10 max-sm:flex-col bg-white shadow-md rounded-lg p-4 flex items-center gap-4 border border-gray-300">
+    <div className="responsive-width !mb-20">
+      <div
+        className="mt-10 mb-5 flex gap-2 items-center cursor-pointer hover:text-blue-500 transition-all"
+        onClick={() => navigate.back()}
+      >
+        <IoMdArrowRoundBack />
+        Back
+      </div>
+      <div className="max-w-2xl max-sm:flex-col bg-white shadow-md rounded-lg p-4 flex items-center gap-4 border border-gray-300">
         <div className="flex-shrink-0">
           <Image
             src={`${url}/${service.img}`}
@@ -50,7 +59,7 @@ const EachService = () => {
           <p className="text-gray-600 text-sm mt-1">Overview</p>
           <p className="text-gray-800 flex items-center gap-2 mt-2 text-sm">
             📅 {service.total_booking} Booking
-            {service.total_booking !== 1 ? 's' : ''} On HYE GATHER
+            {service.total_booking !== 1 ? 's' : ''} on this vendor
           </p>
           <p className="text-gray-800 font-medium text-sm mt-2">
             Vendor service category:

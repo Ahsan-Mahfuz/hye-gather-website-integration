@@ -15,7 +15,7 @@ const VendorBusinessInformation = ({
   stats,
 }: VendorBusinessInformationProps) => {
   return (
-    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 rounded-lg">
+    <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 rounded-lg">
       {stats.map((stat) => (
         <div
           key={stat.id}

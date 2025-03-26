@@ -249,10 +249,11 @@
 
 import Loader from '@/components/loading/ReactLoader'
 import MyBookingsCard from '@/components/myBookings/MyBookingsCard'
+import BookingRequestVendor from '@/components/myBookingsVendor/BookingRequestVendor'
 import MyBookingsCardVendor from '@/components/myBookingsVendor/MyBookingsCardVendor'
 import VendorCalendar from '@/components/vendorTabs/VendorCalendar'
 import { useGetBookingsQuery } from '@/redux/bookingsApis'
-import { Tabs } from 'antd'
+import { Button, Modal, Tabs } from 'antd'
 import { useEffect, useState } from 'react'
 
 interface User {
@@ -291,6 +292,7 @@ interface BookingData {
   number_of_guests: string
   duration: string
   additional_services?: string
+  additional_note?: string
   event_name: string
   status: string
   paid_to_vendor: boolean
@@ -303,6 +305,8 @@ interface BookingData {
 
 const VendorBookings = () => {
   const [click, setClicked] = useState('USER')
+  const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
+
   const { data: getAllBookings, isLoading } = useGetBookingsQuery({
     requested_by: click,
   })
@@ -344,7 +348,12 @@ const VendorBookings = () => {
       }
     })
   }
-
+  const handleClickCustomBooking = () => {
+    setIsClickCustomBooking(true)
+  }
+  const handleCancelCustomBooking = () => {
+    setIsClickCustomBooking(false)
+  }
   const tabItems = [
     {
       key: '1',
@@ -371,7 +380,7 @@ const VendorBookings = () => {
     },
     {
       key: '2',
-      label: 'Requests',
+      label: 'User Requests',
       children: (
         <div>
           <div className="text-lg font-semibold">Booking Requests</div>
@@ -393,7 +402,7 @@ const VendorBookings = () => {
     },
     {
       key: '3',
-      label: <div className="text-red-700">Payment Pending</div>,
+      label: <div>Your Request</div>,
       children: (
         <div>
           <div className="text-lg font-semibold">Bookings Awaiting Payment</div>
@@ -464,6 +473,18 @@ const VendorBookings = () => {
         </div>
       ),
     },
+    {
+      key: '6',
+      label: 'Create Bookings',
+      children: (
+        <div>
+          <div className="text-lg font-semibold">Create a New Bookings</div>
+          <div>
+            <Button onClick={handleClickCustomBooking}>Create Booking</Button>
+          </div>
+        </div>
+      ),
+    },
   ]
 
   return (
@@ -476,6 +497,17 @@ const VendorBookings = () => {
         className="!border-b-0 poppins "
         items={tabItems}
       />
+
+      <Modal
+        title="Create Custom Booking"
+        open={isClickCustomBooking}
+        onCancel={handleCancelCustomBooking}
+        footer={null}
+        width={500}
+        centered
+      >
+        <BookingRequestVendor onClose={handleCancelCustomBooking} />
+      </Modal>
     </div>
   )
 }

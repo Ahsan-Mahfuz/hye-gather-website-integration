@@ -1,8 +1,15 @@
-import { Button, Input, Modal, Rate } from 'antd'
+import { Button, Form, Input, Modal, Rate } from 'antd'
 import Link from 'next/link'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import BookingRequestVendor from './BookingRequestVendor'
+import UpdateBookingModal from './UpdateBookingModal'
+import {
+  useUpdateBookingsMutation,
+  useUpdateBookingStatusMutation,
+} from '@/redux/bookingsApis'
+import { useCreatePaymentMutation } from '@/redux/paymentApis'
+import { useRouter } from 'next/navigation'
 
 interface CardProps {
   id: string
@@ -54,18 +61,37 @@ const MyBookingsModelVendor = ({
   is_paid,
 }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isUpdateBookingModalOpen, setIsUpdateBookingModalOpen] =
+    useState(false)
+  const [updateBookings] = useUpdateBookingsMutation()
+  const [updateBookingStatus] = useUpdateBookingStatusMutation()
+
+  const status = ['accepted', 'completed', 'canceled', 'pending']
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
   const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
 
+  const [isModalVisiblePayment, setIsModalVisiblePayment] = useState(false)
+
+  const handleOpenModalPayment = () => {
+    setIsModalVisiblePayment(true)
+  }
+
+  const handleAcceptPayment = () => {
+    handleSubmit()
+    setIsModalVisiblePayment(false)
+  }
+
+  const handleCancelPayment = () => {
+    setIsModalVisiblePayment(false)
+  }
+
   const handleSubmit = () => {
-    console.log('Review Submitted:', { id, rating, review })
-    toast.success('Review submitted successfully!')
+    toast.success('Status changed successfully!')
+    updateBookingStatus({ id, status: 'accepted' }).unwrap()
     setIsReviewModalOpen(false)
-    setRating(0)
-    setReview('')
   }
 
   const showModal = () => {
@@ -76,13 +102,47 @@ const MyBookingsModelVendor = ({
     setIsModalOpen(false)
   }
 
-  const handleClickCustomBooking = () => {
-    setIsClickCustomBooking(true)
+  // const handleClickCustomBooking = () => {
+  //   setIsClickCustomBooking(true)
+  // }
+  // const handleCancelCustomBooking = () => {
+  //   setIsClickCustomBooking(false)
+  // }
+
+  const handleUpdateBooking = async (updateData: {
+    id: string
+    price: string
+    additional_services: string
+    additional_note: string
+  }) => {
+    try {
+      updateBookings(updateData).unwrap()
+      toast.success('Booking updated successfully!')
+      setIsUpdateBookingModalOpen(false)
+    } catch (error) {
+      console.error('Failed to update booking:', error)
+      toast.error('Failed to update booking')
+    }
   }
-  const handleCancelCustomBooking = () => {
-    setIsClickCustomBooking(false)
+  const handleClickUpdateBooking = () => {
+    setIsUpdateBookingModalOpen(true)
   }
-  console.log(is_paid)
+  const handleCancelClickUpdateBooking = () => {
+    setIsUpdateBookingModalOpen(false)
+  }
+  const handleBookingStatus = async () => {
+    try {
+      updateBookingStatus({
+        id: id,
+        status: 'accepted',
+      }).unwrap()
+      toast.success('Booking goes to ongoing status tab!')
+    } catch (error) {
+      console.error('Failed to update booking status:', error)
+      toast.error('Failed to update booking status')
+    }
+  }
+
   return (
     <>
       <div
@@ -136,41 +196,43 @@ const MyBookingsModelVendor = ({
           </Link>
 
           <div className="space-y-3 text-md">
-            <p className="font-semibold">
-              Booking For:{' '}
-              <span className="font-normal bg-blue-100 px-3 py-1 rounded-lg">
-                {bookingFor}
-              </span>
-            </p>
-
+            <div className="flex justify-between items-center">
+              <p className="font-semibold">
+                Booking For:{' '}
+                <span className="font-normal bg-blue-100 px-3 py-1 rounded-lg">
+                  {bookingFor}
+                </span>
+              </p>
+              <div className="text-sm flex gap-2 bg-red-200 p-2 items-center justify-center  font-bold">
+                <p className="font-semibold">Price:</p>
+                <span className="text-[16px]">{price}</span>
+                <span className="text-[16px]">
+                  {is_paid ? '(Paid) ' : '(unpaid)'}
+                </span>
+              </div>
+            </div>
             <div>
               <p className="font-semibold">Event Name:</p>
-
               <span>{eventName}</span>
             </div>
             <div>
               <p className="font-semibold">Event Location:</p>
-
               <span>{eventLocation}</span>
             </div>
             <div>
               <p className="font-semibold">Event Time:</p>
-
               <span>{eventTime}</span>
             </div>
             <div>
               <p className="font-semibold">Event Date:</p>
-
               <span>{eventDate}</span>
             </div>
             <div>
               <p className="font-semibold">Number of guests:</p>
-
               <span>{numberOfGuests}</span>
             </div>
             <div>
               <p className="font-semibold">Event Duration:</p>
-
               <span>{eventDuration}</span>
             </div>
           </div>
@@ -193,19 +255,22 @@ const MyBookingsModelVendor = ({
             <p className="font-semibold">
               Additional Requirements or Services Needed:
             </p>
-
             <p>{additionalRequirements || 'None specified'}</p>
           </div>
 
           <div className="text-gray-600 text-sm">
             <p className="font-semibold">Additional Note:</p>
-
             <p>{additionalNote || 'None specified'}</p>
           </div>
 
-          {amountPaid && (
-            <div className="bg-gray-100 text-center py-2 rounded-md text-blue-600 font-semibold">
-              {amountPaid}
+          {amountPaid && is_paid && bookingType === 'requested' && (
+            <div
+              className="bg-gray-100 text-center py-2 rounded-md text-blue-600 font-semibold hover:bg-blue-100 cursor-pointer"
+              onClick={handleOpenModalPayment}
+            >
+              User Paid: {amountPaid}
+              <span className="text-sm text-gray-500"> (Paid)</span>
+              <div>Click to Update Status as Accepted</div>
             </div>
           )}
           {bookingType === 'ongoing' && (
@@ -214,15 +279,40 @@ const MyBookingsModelVendor = ({
             </div>
           )}
 
-          {bookingType === 'requested' && requested_by === 'VENDOR' && (
+          {bookingType === 'requested' && (
             <div className="flex justify-end text-xl">
               <p className="font-semibold text-red-500">
-                Price: {price} <span className='text-sm text-gray-500'>{is_paid ? '(Paid)' : '(Not Paid)'}</span>
+                Price: {price}{' '}
+                <span className="text-sm text-gray-500">
+                  {is_paid ? '(Paid)' : '(Not Paid)'}
+                </span>
               </p>
             </div>
           )}
+          {bookingType === 'requested' && !is_paid && (
+            <div className="">
+              <Button
+                className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md w-full h-[42px]"
+                onClick={handleClickUpdateBooking}
+              >
+                Update Booking
+              </Button>
+            </div>
+          )}
 
-          {bookingType === 'requested' && requested_by === 'USER' && (
+          <UpdateBookingModal
+            id={id}
+            isOpen={isUpdateBookingModalOpen}
+            onCancel={handleCancelClickUpdateBooking}
+            onUpdate={handleUpdateBooking}
+            initialData={{
+              price,
+              additional_services: additionalRequirements,
+              additional_note: additionalNote,
+            }}
+          />
+
+          {/* {bookingType === 'requested' && requested_by === 'USER' && (
             <div>
               <Button
                 className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md w-full h-[42px]"
@@ -231,18 +321,42 @@ const MyBookingsModelVendor = ({
                 Create Custom Booking
               </Button>
             </div>
-          )}
+          )} */}
+        </div>
+      </Modal>
+      <Modal
+        open={isModalVisiblePayment}
+        onOk={handleAcceptPayment}
+        onCancel={handleCancelPayment}
+        centered
+        footer={[
+          <Button key="cancel" onClick={handleCancelPayment}>
+            Cancel
+          </Button>,
+          <Button key="accept" type="primary" onClick={handleAcceptPayment}>
+            Accept Payment
+          </Button>,
+        ]}
+      >
+        <div className="text-center">
+          <p className="text-lg font-semibold mb-4">Confirm Payment Status</p>
+          <p>
+            Total Paid Amount: <strong>{amountPaid}</strong>
+          </p>
+          <p className="text-gray-600 mt-2">
+            Are you sure you want to update the status to Accepted?
+          </p>
         </div>
       </Modal>
 
-      <Modal
-        visible={isClickCustomBooking}
+      {/* <Modal
+        open={isClickCustomBooking}
         onCancel={handleCancelCustomBooking}
         footer={null}
         centered
       >
         <BookingRequestVendor user={userId} />
-      </Modal>
+      </Modal> */}
 
       <Modal
         open={isReviewModalOpen}

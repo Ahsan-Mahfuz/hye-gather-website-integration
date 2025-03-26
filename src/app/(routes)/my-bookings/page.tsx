@@ -42,6 +42,7 @@ interface BookingData {
   number_of_guests: string
   duration: string
   additional_services?: string
+  additional_note?: string
   event_name: string
   status: string
   paid_to_vendor: boolean
@@ -121,7 +122,7 @@ const MyBookings = () => {
     },
     {
       key: '2',
-      label: 'Requests',
+      label: 'Your Requests',
       children: (
         <div>
           <div className="text-lg font-semibold">Your Booking Requests</div>
@@ -143,7 +144,7 @@ const MyBookings = () => {
     },
     {
       key: '3',
-      label: <div className="text-red-700">Payment Pending</div>,
+      label: <div>Vendor Requests</div>,
       children: (
         <div>
           <div className="text-lg font-semibold">Bookings Awaiting Payment</div>

@@ -42,6 +42,7 @@ interface BookingData {
   number_of_guests: string
   duration: string
   additional_services?: string
+  additional_note?: string
   event_name: string
   status: string
   paid_to_vendor: boolean
@@ -95,6 +96,7 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     number_of_guests,
     duration,
     additional_services,
+    additional_note,
     event_name,
     status,
     price,
@@ -184,7 +186,7 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     numberOfGuests: Number(number_of_guests) || 0,
     eventDuration: duration,
     additionalRequirements: additional_services || '',
-    additionalNote: '',
+    additionalNote: additional_note || '',
     amountPaid: is_paid ? `$${price}` : '',
     timeLeft: status === 'accepted' ? `Time left : ${timeLeft}` : '',
     requested_by,

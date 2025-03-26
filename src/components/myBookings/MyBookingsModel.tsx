@@ -359,6 +359,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Payment from '../payment/Payment'
 import toast from 'react-hot-toast'
+import { useCreatePaymentMutation } from '@/redux/paymentApis'
+import { useRouter } from 'next/navigation'
 
 interface CardProps {
   id: string
@@ -380,6 +382,7 @@ interface CardProps {
   timeLeft?: string
   price?: number
   requested_by?: string
+  is_paid?: boolean
 }
 
 const MyBookingsModel = ({
@@ -400,10 +403,14 @@ const MyBookingsModel = ({
   additionalRequirements,
   additionalNote,
   amountPaid,
+  is_paid,
   timeLeft,
   requested_by,
 }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [createPayment, { isLoading: isCreatingPayment }] =
+    useCreatePaymentMutation()
+  const router = useRouter()
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
@@ -434,7 +441,30 @@ const MyBookingsModel = ({
   const handlePaymentModalCancel = () => {
     setIsPaymentModalOpen(false)
   }
+  const handleSubscribe = async () => {
+    try {
+      const payload = {
+        price_data: [
+          {
+            name: name,
+            unit_amount: price,
+            quantity: 1,
+            booking_id: id,
+          },
+        ],
+        purpose: 'BOOKING',
+      }
 
+      const response = await createPayment(payload).unwrap()
+
+      if (response.success && response.url) {
+        window.location.href = response.url
+        router.push('/vendor-home')
+      }
+    } catch (error) {
+      console.error('Payment creation failed:', error)
+    }
+  }
   // const [isEditing, setIsEditing] = useState(false)
 
   // const [editedEventName, setEditedEventName] = useState(eventName)
@@ -531,12 +561,21 @@ const MyBookingsModel = ({
           </Link>
 
           <div className="space-y-3 text-md">
-            <p className="font-semibold">
-              Booking For:{' '}
-              <span className="font-normal bg-blue-100 px-3 py-1 rounded-lg">
-                {bookingFor}
-              </span>
-            </p>
+            <div className="flex justify-between items-center">
+              <p className="font-semibold">
+                Booking For:{' '}
+                <span className="font-normal bg-blue-100 px-3 py-1 rounded-lg">
+                  {bookingFor}
+                </span>
+              </p>
+              <div className="text-sm flex gap-2 bg-red-200 p-2 items-center justify-center  font-bold">
+                <p className="font-semibold">Price:</p>
+                <span className="text-[16px]">{price}</span>
+                <span className="text-[16px]">
+                  {is_paid ? '(Paid) ' : '(unpaid)'}
+                </span>
+              </div>
+            </div>
 
             <div>
               <p className="font-semibold">Event Name:</p>
@@ -592,38 +631,47 @@ const MyBookingsModel = ({
             <p>{additionalNote || 'None specified'}</p>
           </div>
 
-          {amountPaid && (
-            <div className="bg-gray-100 text-center py-2 rounded-md text-blue-600 font-semibold">
-              {amountPaid}
+          {bookingType === 'ongoing' && (
+            <div className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md">
+              <p>{timeLeft}</p>
             </div>
           )}
-          {bookingType === 'ongoing' ||
+
+          {/* {amountPaid && (
+            <div className="bg-gray-100 text-center py-2 rounded-md text-blue-600 font-semibold">
+              {amountPaid} is paid
+            </div>
+          )} */}
+          {/* {bookingType === 'ongoing' ||
             (requested_by === 'VENDOR' && (
               <div className="flex justify-end text-xl">
                 <p className="font-semibold text-red-500">Price: {price}</p>
               </div>
-            ))}
+            ))} */}
 
           {bookingType === 'requested' && (
             <div className="flex justify-end text-[16px]">
               <div>
                 <p className="font-semibold text-red-500">Price: {price}</p>
-                <button className="border rounded-lg px-2 py-1 bg-blue-600 text-white hover:bg-white hover:text-black">
+                <button
+                  onClick={handleSubscribe}
+                  className="border rounded-lg px-2 py-1 bg-blue-600 text-white hover:bg-white hover:text-black"
+                >
                   Payment
                 </button>
               </div>
             </div>
           )}
-          {requested_by === 'VENDOR' && (
+          {/* {requested_by === 'VENDOR' && (
             <div className="flex justify-end ">
               <Button
                 className="!bg-red-200 hover:!bg-black hover:!text-white"
-                onClick={handlePaymentClick}
+                onClick={handleSubscribe}
               >
                 Payment
               </Button>
             </div>
-          )}
+          )} */}
 
           {/* {isEditing && (
             <button

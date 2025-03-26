@@ -60,7 +60,7 @@ const businessApis = baseApis.injectEndpoints({
         return {
           url: '/business-service/get-all',
           method: 'GET',
-          params,
+          params: params && Object.keys(params).length ? params : undefined,
         }
       },
       providesTags: ['business', 'Profile'],

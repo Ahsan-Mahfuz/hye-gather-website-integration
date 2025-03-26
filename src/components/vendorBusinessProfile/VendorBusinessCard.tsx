@@ -26,7 +26,9 @@ const VendorBusinessCard: React.FC<CardProps> = ({
   reviews,
   vendorType,
 }) => {
-  const { data: categoryData } = useGetBusinessDataQuery(id)
+  const { data: categoryData } = useGetBusinessDataQuery({
+    business: id,
+  })
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4 flex flex-col sm:flex-row gap-4 w-full border border-gray-200">

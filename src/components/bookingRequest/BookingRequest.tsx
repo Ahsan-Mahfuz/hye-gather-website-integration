@@ -30,6 +30,7 @@ interface BookingFormData {
   number_of_guests: string
   duration: string
   additional_services?: string
+  additional_note?: string
   business_service: string
   category: string
   services: string[]
@@ -54,6 +55,7 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
     number_of_guests: '',
     duration: '',
     additional_services: '',
+    additional_note: '',
     business_service: vendorId || '',
     category: categoryId || '',
     services: [],
@@ -113,6 +115,7 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
         business_service: formData.business_service,
         location: formData.location,
         event_name: formData.event_name,
+        additional_note: formData.additional_note,
       }
 
       const response = await createBooking(bookingData).unwrap()
@@ -137,6 +140,7 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
       number_of_guests: '',
       duration: '',
       additional_services: '',
+      additional_note: '',
       business_service: vendorId || '',
       category: categoryId || '',
       services: [],
@@ -151,7 +155,8 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
       3: !!formData.number_of_guests,
       4: !!formData.duration,
       5: true,
-      6: formData.services.length > 0,
+      6: true,
+      7: formData.services.length > 0,
     }
 
     return validations[step] || false
@@ -399,6 +404,39 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
         )}
 
         {step === 6 && (
+          <div>
+            <div>
+              <label className="block text-sm font-medium">
+                Additional note:
+              </label>
+              <Input.TextArea
+                name="additional_note"
+                value={formData.additional_note}
+                onChange={handleChange}
+                className="mt-1 block w-full"
+                placeholder="E.g., Any special requests or notes"
+                rows={3}
+              />
+            </div>
+            <div className="mt-6 flex justify-between">
+              <Button
+                onClick={handlePrev}
+                className="w-1/3 h-[42px] bg-gray-200"
+              >
+                Previous
+              </Button>
+              <Button
+                type="primary"
+                onClick={handleNext}
+                className="w-1/3 h-[42px] bg-blue-800"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {step === 7 && (
           <div>
             <div>
               <label className="block text-sm font-medium">

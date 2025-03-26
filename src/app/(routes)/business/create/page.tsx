@@ -70,8 +70,8 @@ const BusinessCreate = () => {
           trade_license: businessData.trade_license || '',
         })
 
-        if (businessData.banner) {
-          setLogoPreview(`${url}/${businessData.banner}`)
+        if (businessData?.banner) {
+          setLogoPreview(`${url}/${businessData?.banner}`)
         }
 
         setEditMode(true)
@@ -301,9 +301,9 @@ const BusinessCreate = () => {
                     return (
                       <>
                         <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
-                          {businessData.banner ? (
+                          {businessData?.banner ? (
                             <Image
-                              src={`${url}/${businessData.banner}`}
+                              src={`${url}/${businessData?.banner}`}
                               alt={businessData.name}
                               width={500}
                               height={500}
@@ -318,7 +318,7 @@ const BusinessCreate = () => {
 
                         <div className="flex-1">
                           <Title level={3} className="!mb-4">
-                            {businessData.name}
+                            {businessData?.name}
                           </Title>
 
                           <div className="mt-4 space-y-3">
@@ -327,7 +327,7 @@ const BusinessCreate = () => {
                                 Address:
                               </Text>
                               <Text className="text-gray-700">
-                                {businessData.address}
+                                {businessData?.address}
                               </Text>
                             </div>
 
@@ -336,7 +336,7 @@ const BusinessCreate = () => {
                                 Trade License:
                               </Text>
                               <Text className="text-gray-700">
-                                {businessData.trade_license}
+                                {businessData?.trade_license}
                               </Text>
                             </div>
 
@@ -345,7 +345,7 @@ const BusinessCreate = () => {
                                 Created:
                               </Text>
                               <Text className="text-gray-700">
-                                {businessData.createdAt
+                                {businessData?.createdAt
                                   ? new Date(
                                       businessData.createdAt
                                     ).toLocaleDateString()

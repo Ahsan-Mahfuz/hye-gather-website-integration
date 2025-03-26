@@ -130,7 +130,6 @@ interface BookingFormProps {
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({ vendor }) => {
-  console.log(vendor)
   return (
     <div className="bg-white ">
       <div className="space-y-4">

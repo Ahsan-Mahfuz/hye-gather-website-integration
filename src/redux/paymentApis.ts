@@ -13,7 +13,7 @@ type PurposeType = 'BOOKING' | 'BASIC' | 'PREMIUM'
 
 interface PaymentRequest {
   price_data: PriceData[]
-  subscription_type: SubscriptionType
+  subscription_type?: SubscriptionType
   purpose: PurposeType
   currency?: string
 }
