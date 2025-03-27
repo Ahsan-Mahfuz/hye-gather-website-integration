@@ -27,3 +27,11 @@ export const baseApis = createApi({
   ],
   endpoints: () => ({}),
 })
+
+export const chatConversationApis = createApi({
+  reducerPath: 'chatApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/chat' }),
+  endpoints: (builder) => ({
+    // Your chat-related API endpoints
+  }),
+})

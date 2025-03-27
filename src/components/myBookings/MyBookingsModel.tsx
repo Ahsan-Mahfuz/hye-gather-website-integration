@@ -583,22 +583,18 @@ const MyBookingsModel = ({
             </div>
             <div>
               <p className="font-semibold">Event Location:</p>
-
               <span>{eventLocation}</span>
             </div>
             <div>
               <p className="font-semibold">Event Time:</p>
-
               <span>{eventTime}</span>
             </div>
             <div>
               <p className="font-semibold">Number of guests:</p>
-
               <span>{numberOfGuests}</span>
             </div>
             <div>
               <p className="font-semibold">Event Duration:</p>
-
               <span>{eventDuration}</span>
             </div>
           </div>
