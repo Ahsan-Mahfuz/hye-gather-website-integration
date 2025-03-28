@@ -19,8 +19,6 @@ interface Message {
 interface Conversation {
   _id: string
   users: User[]
-  createdAt?: string
-  updatedAt?: string
 }
 
 interface ChatState {

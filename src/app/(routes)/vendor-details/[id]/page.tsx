@@ -220,7 +220,7 @@ const VendorDetailsPage: React.FC<VendorDetailsPageProps> = ({ params }) => {
                   Starting from ${vendor?.price}
                 </p>
                 <Link
-                  href={'/chat'}
+                  href={`/chat?id=${vendor?.businesses?.user}`}
                   className="inline-block px-6 py-3 !mt-3 text-white font-semibold  bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-500 transition-all duration-300 cursor-pointer"
                 >
                   Send Message

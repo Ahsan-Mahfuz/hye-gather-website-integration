@@ -4,7 +4,6 @@ import { RiMessage2Fill } from 'react-icons/ri'
 import MyBookingsModel from './MyBookingsModel'
 import { url } from '@/redux/main/server'
 import { useEffect, useState } from 'react'
-import { useChatNavigation } from '../chatConversation/ChatNaviagtion'
 
 interface User {
   name: string
@@ -166,6 +165,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     image:
       userData?.img || 'https://dummyimage.com/600x400/a8a8a8/fff&text=img',
     name: userData.name,
+    vendorId: userData._id,
     email: userData.email,
     phone: userData.phone,
     bookingFor: categoryData.name,
@@ -183,16 +183,8 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     price,
     is_paid,
   }
-  const { startConversationWithUser } = useChatNavigation()
-  const handleStartChat = () => {
-    const chatUser = {
-      _id: userData._id,
-      name: userData.name,
-      email: userData.email,
-      img: userData.img,
-    }
-    startConversationWithUser(chatUser)
-  }
+
+  console.log(modelProps)
 
   return (
     <div className="bg-white grid mb-5  mt-5 flex-col shadow-md rounded-lg px-6 py-5 sm:flex-row gap-4 sm:max-w-[600px] max-w-[430px] w-full border border-gray-200">
@@ -212,12 +204,12 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
           <div className="text-gray-600 text-xs">
             <strong>Phone :</strong> {userData.phone}
           </div>
-          <button
-            onClick={handleStartChat}
+          <Link
+            href={`chat?id=${userData._id}`}
             className="flex bg-green-100 justify-center items-center gap-1 mt-2"
           >
             <RiMessage2Fill className="text-2xl text-blue-800 text-center cursor-pointer transition duration-300 ease-in-out hover:text-blue-700 animate-pulse" />
-          </button>
+          </Link>
         </div>
       </div>
 

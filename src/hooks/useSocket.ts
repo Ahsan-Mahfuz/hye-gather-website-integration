@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react'
-import type { Socket } from 'socket.io-client'
-import io from 'socket.io-client'
+import { useEffect, useState } from 'react'
+import { io, Socket } from 'socket.io-client'
 
-export const useSocket = (url: string) => {
-  const [socket, setSocket] = useState<typeof Socket | null>(null)
-  console.log('socet-----------------')
+export const useSocket = (serverUrl: string, currentUserId: string) => {
+  const [socket, setSocket] = useState<Socket | null>(null)
+
   useEffect(() => {
-    const newSocket: typeof Socket = io(url, {
-      reconnection: true,
-      //  reconnectionAttempts: 5,
-      reconnectionDelay: 500,
+    const newSocket = io(serverUrl)
+
+    newSocket.on('connect', () => {
+      console.log('Socket connected')
+    })
+
+    newSocket.on('disconnect', (reason: string) => {
+      console.log('Socket disconnected:', reason)
+    })
+
+    newSocket.on('connect_error', (error: any) => {
+      console.error('Socket connection error:', error)
     })
 
     setSocket(newSocket)
@@ -17,7 +24,7 @@ export const useSocket = (url: string) => {
     return () => {
       newSocket.disconnect()
     }
-  }, [url])
+  }, [serverUrl, currentUserId])
 
   return socket
 }

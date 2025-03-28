@@ -24,14 +24,7 @@ export const baseApis = createApi({
     'business',
     'businessProfile',
     'bookings',
+    'messages',
   ],
   endpoints: () => ({}),
-})
-
-export const chatConversationApis = createApi({
-  reducerPath: 'chatApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/chat' }),
-  endpoints: (builder) => ({
-    // Your chat-related API endpoints
-  }),
 })

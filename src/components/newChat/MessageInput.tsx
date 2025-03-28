@@ -1,49 +1,22 @@
-import { useSendMessageMutation } from '@/redux/chatConversationApis'
-import { useEffect, useState } from 'react'
+'use client'
+import { useState } from 'react'
 import { RiSendPlaneFill, RiImageAddLine } from 'react-icons/ri'
 
 interface MessageInputProps {
-  conversationId: string
-  senderId: string
-  socket: any
-  refetch: () => void
+  onSendMessage: (message: string, imageFile?: any) => void
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({
-  conversationId,
-  senderId,
-  socket,
-  refetch,
-}) => {
+const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
-  const [sendMessage] = useSendMessageMutation()
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (!message.trim() && !imageFile) return
 
-    const formData = new FormData()
-    formData.append('conversation_id', conversationId)
-    formData.append('message', message)
-    formData.append('sender', senderId)
+    onSendMessage(message, imageFile)
 
-    if (imageFile) {
-      formData.append('img', imageFile)
-    }
-
-    try {
-      const response = await sendMessage(formData).unwrap()
-
-      console.log(conversationId)
-      console.log(senderId)
-      const socketEvent = `new-message::${conversationId}-${senderId}`
-      socket.emit(socketEvent)
-      refetch()
-      setMessage('')
-      setImageFile(null)
-    } catch (error) {
-      console.error('Failed to send message', error)
-    }
+    setMessage('')
+    setImageFile(null)
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,13 +39,17 @@ const MessageInput: React.FC<MessageInputProps> = ({
         <RiImageAddLine className="text-2xl text-gray-600" />
       </label>
 
+      {imageFile && (
+        <div className="mr-2 text-sm text-gray-500">{imageFile.name}</div>
+      )}
+
       <input
         type="text"
         placeholder="Type a message..."
         className="flex-1 p-2 border rounded-lg mr-2"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
       />
 
       <button

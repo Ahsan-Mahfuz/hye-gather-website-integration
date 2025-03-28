@@ -4,60 +4,44 @@ import { baseApis } from './main/baseApis'
 const chatConversationApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
     createConversation: builder.mutation<any, { user: string }>({
-      query: (data) => {
-        return {
-          url: '/conversation/create',
-          method: 'POST',
-          body: data,
-        }
-      },
-      invalidatesTags: ['conversation'],
+      query: (data) => ({
+        url: '/conversation/create',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['conversation', 'messages'],
     }),
 
-    getConversationId: builder.query<any, void>({
-      query: () => {
-        return {
-          url: '/conversation/get-all',
-          method: 'GET',
-        }
-      },
-      providesTags: ['conversation'],
+    getConversations: builder.query<any, void>({
+      query: () => '/conversation/get-all',
+      providesTags: ['conversation', 'messages'],
     }),
 
-    sendMessage: builder.mutation<
-      any,
-      { message: string; conversation_id: string }
-    >({
-      query: (data) => {
-        return {
-          url: '/message/create',
-          method: 'POST',
-          body: data,
-        }
-      },
-      invalidatesTags: ['conversation'],
+    sendMessage: builder.mutation<any, FormData>({
+      query: (data) => ({
+        url: '/message/create',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['conversation', 'messages'],
     }),
 
-    getAllMessagesBetweenThem: builder.query<any, { conversation_id: string }>({
-      query: (params) => {
-        return {
-          url: '/message/get-all/',
-          method: 'GET',
-          params,
-        }
-      },
-      providesTags: ['conversation'],
-      
+    getConversationMessages: builder.query<any, { conversation_id: string }>({
+      query: (params) => ({
+        url: '/message/get-all',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['conversation', 'messages'],
     }),
   }),
-  overrideExisting: false,
 })
 
 export const {
   useCreateConversationMutation,
-  useGetConversationIdQuery,
+  useGetConversationsQuery,
   useSendMessageMutation,
-  useGetAllMessagesBetweenThemQuery,
+  useGetConversationMessagesQuery,
 } = chatConversationApis
 
 export default chatConversationApis
