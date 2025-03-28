@@ -205,6 +205,11 @@ interface Vendor {
   description?: string
   images?: string[]
   services?: Service[]
+  photos?: string[]
+  business_services?: Service[]
+  total_booking?: number
+  businesses?: { name: string }
+  total_rated?: number
 }
 
 interface VendorTabsProps {

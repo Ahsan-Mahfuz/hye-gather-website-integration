@@ -713,7 +713,7 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
   }, [selectedCategory, getBusinessServiceData, findBusinessServiceId])
   const handleCategoryChange = (value: string) => {
     const correspondingBusinessService = getBusinessServiceData?.data?.find(
-      (service) => service.business_category._id === value
+      (service: any) => service.business_category._id === value
     )
 
     setSelectedCategory(value)

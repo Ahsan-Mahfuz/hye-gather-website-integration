@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { RiMessage2Fill } from 'react-icons/ri'
-import MyBookingsModel from './MyBookingsModel'
 import { url } from '@/redux/main/server'
 import MyBookingsModelVendor from './MyBookingsModelVendor'
 import { useEffect, useState } from 'react'

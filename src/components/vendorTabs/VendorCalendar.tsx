@@ -27,7 +27,7 @@ const VendorCalendar: React.FC = () => {
     const listData = getListData(value)
     return (
       <ul className="events">
-        {listData.map((item, index) => (
+        {listData.map((item: any, index: number) => (
           <li key={index}>
             <Badge
               status={item.type as BadgeProps['status']}
