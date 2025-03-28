@@ -96,7 +96,7 @@ const ChatPage: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen responsive-width">
       <ConversationList currentUser={currentUser} />
       <ChatWindow currentUser={currentUser} />
     </div>

@@ -557,6 +557,7 @@ const { Option } = Select
 
 interface BookingRequestProps {
   onClose: () => void
+  userId?: string
 }
 
 interface BusinessService {
@@ -586,7 +587,10 @@ interface BookingFormData {
   is_paid: boolean
 }
 
-const BookingRequestVendor: React.FC<BookingRequestProps> = ({ onClose }) => {
+const BookingRequestVendor: React.FC<BookingRequestProps> = ({
+  onClose,
+  userId,
+}) => {
   const [createBooking, { isLoading }] = useCreateBookingsMutation()
   const [customCreateBooking, { isLoading: isCustomLoading }] =
     useCustomCreateBookingsMutation()
@@ -623,7 +627,7 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({ onClose }) => {
   const [price, setPrice] = useState<string>('')
 
   const [formData, setFormData] = useState<BookingFormData>({
-    user: '',
+    user: userId || '',
     event_name: '',
     phoneNumber: '',
     location: '',
@@ -807,11 +811,12 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({ onClose }) => {
             <label className="block text-sm font-medium">User ID:</label>
             <Input
               name="user"
-              value={formData.user}
+              value={userId || formData.user}
               onChange={handleChange}
               className="mt-1 h-[42px] block w-full"
               placeholder="Enter User ID"
               required
+              disabled={userId ? true : false}
             />
           </div>
           <div className="mt-6 flex justify-between">

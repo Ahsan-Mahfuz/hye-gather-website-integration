@@ -49,6 +49,9 @@ interface BusinessData {
   business_services: BusinessService[]
   business_category: BusinessCategory
   address: string
+  businesses?: {
+    name: string
+  }
 }
 
 interface ApiResponse {

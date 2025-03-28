@@ -11,6 +11,11 @@ import {
   useGetConversationMessagesQuery,
   useSendMessageMutation,
 } from '@/redux/chatConversationApis'
+import Cookies from 'js-cookie'
+import { GoCopy } from 'react-icons/go'
+import toast from 'react-hot-toast'
+import { Modal } from 'antd'
+import BookingRequestVendor from '../myBookingsVendor/BookingRequestVendor'
 
 interface ChatWindowProps {
   currentUser: User
@@ -18,7 +23,9 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
   const searchParams = useSearchParams()
+  const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
   const conversationId = searchParams.get('id')
+  const userId = Cookies.get('UserId')
 
   const [messages, setMessages] = useState<Message[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -97,8 +104,52 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
     )
   }
 
+  const handleCopy = () => {
+    if (!userId) return
+
+    if (!navigator.clipboard) {
+      toast.error('Clipboard not supported in this browser.')
+      return
+    }
+
+    navigator.clipboard
+      .writeText(userId)
+      .then(() => toast.success('User ID copied to clipboard!'))
+      .catch((err) => {
+        console.error('Failed to copy:', err)
+        toast.error('Failed to copy User ID!')
+      })
+  }
+  const handleClickCustomBooking = () => {
+    setIsClickCustomBooking(true)
+  }
+  const handleCancelCustomBooking = () => {
+    setIsClickCustomBooking(false)
+  }
   return (
     <div className="flex flex-col h-full">
+      <div className=" backdrop-blur-md border-b-2  py-5 px-3 text-lg font-semibold flex items-center justify-between">
+        <div>
+          {Cookies.get('UserName')}
+          {Cookies.get('role') === 'VENDOR' && (
+            <div className="text-sm opacity-80 flex items-center gap-2 ">
+              User ID: {Cookies.get('UserId')}
+              <GoCopy
+                className="cursor-pointer text-xl hover:text-gray-500"
+                onClick={handleCopy}
+              />
+            </div>
+          )}
+        </div>
+        {Cookies.get('role') === 'VENDOR' && (
+          <div
+            className="cursor-pointer bg-blue-100 p-2  rounded-md hover:bg-blue-200"
+            onClick={handleClickCustomBooking}
+          >
+            Create Booking
+          </div>
+        )}
+      </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg) => (
           <div
@@ -131,6 +182,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
       </div>
 
       <MessageInput onSendMessage={handleSendMessage} />
+
+      <Modal
+        title="Create Custom Booking"
+        open={isClickCustomBooking}
+        onCancel={handleCancelCustomBooking}
+        footer={null}
+        width={500}
+        centered
+      >
+        <BookingRequestVendor
+          onClose={handleCancelCustomBooking}
+          userId={Cookies.get('UserId')}
+        />
+      </Modal>
     </div>
   )
 }

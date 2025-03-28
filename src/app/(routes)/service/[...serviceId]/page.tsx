@@ -65,7 +65,7 @@ const EachService = () => {
             Vendor service category:
           </p>
           <div className="flex gap-2 mt-1 flex-wrap">
-            {service.business_services.map((category) => (
+            {service.business_services.map((category: any) => (
               <span
                 key={category._id}
                 className="bg-blue-100 text-blue-600 px-3 py-1 rounded-md text-xs"
@@ -91,7 +91,7 @@ const EachService = () => {
         <div>
           <div className="grid grid-cols-3 gap-4 mt-4">
             {service.photos &&
-              service.photos.map((photo, index) => (
+              service.photos.map((photo: any, index: number) => (
                 <Image
                   key={index}
                   src={`${url}/${photo}`}

@@ -121,8 +121,15 @@ interface Vendor {
   description?: string
   images?: string[]
   business_services?: BusinessService[]
-  services?: Service[]
+  services?: {
+    name: string
+    image: string
+  }[]
   category_id?: string
+  business_category?: {
+    _id: string
+    name: string
+  }
 }
 
 interface BookingFormProps {

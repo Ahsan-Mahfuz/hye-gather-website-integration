@@ -1,67 +1,3 @@
-// 'use client'
-// import { useRouter } from 'next/navigation'
-// import Card from '@/components/card/Card'
-// import BookingForm from '@/components/bookingForm/BookingForm'
-// import VendorTabs from '@/components/vendorTabs/VendorTabs'
-// import { useGetBusinessDataQuery } from '@/redux/businessApis'
-
-// type Vendor = {
-//   id: number
-//   logo: string
-//   name: string
-//   rating: number
-//   reviews: number
-//   status: string
-//   categories: string[]
-//   bookings: number
-//   price: number
-// }
-
-// const vendor: Vendor = {
-//   id: 1,
-//   logo: '/entertainment.jpg',
-//   name: 'Entertainment',
-//   rating: 4.5,
-//   reviews: 200,
-//   status: 'Available',
-//   categories: ['Music', 'Dance', 'Party'],
-//   bookings: 120,
-//   price: 500,
-// }
-
-// const VendorDetails = () => {
-//   const router = useRouter()
-
-//   const { data: businessData, isLoading } = useGetBusinessDataQuery({
-//     business,
-//     search,
-//     address: address.join(','),
-//     _id,
-//   })
-
-//   return (
-//     <div className="responsive-width ">
-//       <div className="flex flex-row justify-between mx-auto mt-10 px-2 max-xl:gap-10 max-xl:items-center max-xl:flex-col ">
-//         <div className="flex flex-col gap-5 ">
-//           <section>
-//             <Card {...vendor} />
-//           </section>
-//           <section>
-//             <VendorTabs />
-//           </section>
-//         </div>
-//         <div>
-//           <section>
-//             <BookingForm />
-//           </section>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default VendorDetails
-
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -95,6 +31,26 @@ interface Vendor {
   price: number
   description?: string
   images?: string[]
+  businesses?: {
+    _id: string
+    name: string
+    user: string
+  }
+  total_rated?: number
+  total_booking?: number
+  vendor_type?: string
+  user_details?: {
+    _id: string
+    name: string
+  }
+  business_services?: {
+    _id: string
+    name: string
+  }[]
+  business_category?: {
+    _id: string
+    name: string
+  }
   services?: {
     name: string
     image: string
@@ -111,12 +67,10 @@ interface VendorDetailsPageProps {
 
 const VendorDetailsPage: React.FC<VendorDetailsPageProps> = ({ params }) => {
   const router = useRouter()
-  const unwrappedParams = use(params)
-  const vendorId = unwrappedParams.id
+  const vendorId = params.id
   const [vendor, setVendor] = useState<Vendor | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  // If you're using Redux to fetch the vendor
   const { data: vendorData, isLoading } = useGetBusinessDataQuery({
     _id: vendorId,
   })

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { url } from '@/redux/main/server'
 import { useGetConversationsQuery } from '@/redux/chatConversationApis'
 import { Conversation, User } from '@/types/chat'
+import Cookies from 'js-cookie'
 
 interface ConversationListProps {
   currentUser: User
@@ -49,6 +50,8 @@ const ConversationList: React.FC<ConversationListProps> = ({ currentUser }) => {
     const otherUser = conversation?.users?.find(
       (user) => user._id !== currentUser._id
     )
+    Cookies.set('UserId', otherUser?._id as string)
+    Cookies.set('UserName', otherUser?.name as string)
 
     return (
       <div
@@ -69,13 +72,14 @@ const ConversationList: React.FC<ConversationListProps> = ({ currentUser }) => {
         <div>
           <h3 className="font-semibold">{otherUser?.name}</h3>
           <p className="text-sm text-gray-500">{otherUser?.role}</p>
+          {/* <p className="text-sm text-gray-500">{otherUser?._id}</p> */}
         </div>
       </div>
     )
   }
 
   return (
-    <div className="w-80 border-r h-full overflow-y-auto">
+    <div className="w-80 border-r h-full overflow-y-auto ">
       <h2 className="p-4 text-xl font-semibold border-b">Chats</h2>
       {conversations?.length > 0 ? (
         conversations.map(renderConversationItem)
