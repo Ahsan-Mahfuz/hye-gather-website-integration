@@ -91,7 +91,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
 
   if (!conversationId) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
+      <div className="flex items-center justify-center h-full mx-auto text-gray-500">
         Select a conversation to start chatting
       </div>
     )
