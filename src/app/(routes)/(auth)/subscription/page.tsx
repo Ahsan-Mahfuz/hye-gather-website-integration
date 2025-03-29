@@ -8,7 +8,17 @@ import {
 } from '@/redux/paymentApis'
 
 type PlanType = 'monthly' | 'yearly'
-
+type SubscriptionType = 'MONTHLY' | 'YEARLY'
+type PaymentRequest = {
+  price_data: {
+    name: string
+    unit_amount: number
+    quantity: number
+  }[]
+  subscription_type: SubscriptionType
+  purpose: PurposeType
+}
+type PurposeType = 'BASIC'
 const Subscription: React.FC = () => {
   const [plan, setPlan] = useState<PlanType>('monthly')
   const router = useRouter()
@@ -23,7 +33,7 @@ const Subscription: React.FC = () => {
     if (!subscription) return
 
     try {
-      const payload = {
+      const payload: PaymentRequest = {
         price_data: [
           {
             name: 'subscription',

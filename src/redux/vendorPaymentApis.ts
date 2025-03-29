@@ -16,6 +16,7 @@ export interface VendorPaymentResponse {
   success: boolean
   paymentUrl?: string
   message?: string
+  url?: string
 }
 
 const vendorPaymentApis = baseApis.injectEndpoints({

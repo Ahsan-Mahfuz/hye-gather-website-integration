@@ -25,7 +25,7 @@ interface CardProps {
   eventLocation?: string
   eventTime?: string
   eventDate?: string
-  numberOfGuests?: number
+  numberOfGuests?: string
   eventDuration?: string
   additionalRequirements?: string
   additionalNote?: string
@@ -63,6 +63,12 @@ const MyBookingsModelVendor = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isUpdateBookingModalOpen, setIsUpdateBookingModalOpen] =
     useState(false)
+  const [
+    isUpdateCompleteBookingModalOpen,
+    setIsUpdateCompleteBookingModalOpen,
+  ] = useState(false)
+  const [isUpdateCancelBookingModalOpen, setIsUpdateCancelBookingModalOpen] =
+    useState(false)
   const [updateBookings] = useUpdateBookingsMutation()
   const [updateBookingStatus] = useUpdateBookingStatusMutation()
 
@@ -83,6 +89,14 @@ const MyBookingsModelVendor = ({
     handleSubmit()
     setIsModalVisiblePayment(false)
   }
+  const handleAcceptComplete = () => {
+    handleSubmitComplete()
+    setIsUpdateCompleteBookingModalOpen(false)
+  }
+  const handleAcceptCancel = () => {
+    handleSubmitCancel()
+    setIsUpdateCancelBookingModalOpen(false)
+  }
 
   const handleCancelPayment = () => {
     setIsModalVisiblePayment(false)
@@ -92,6 +106,14 @@ const MyBookingsModelVendor = ({
     toast.success('Status changed successfully!')
     updateBookingStatus({ id, status: 'accepted' }).unwrap()
     setIsReviewModalOpen(false)
+  }
+  const handleSubmitCancel = () => {
+    toast.success('Status changed successfully!')
+    updateBookingStatus({ id, status: 'canceled' }).unwrap()
+  }
+  const handleSubmitComplete = () => {
+    toast.success('Status changed successfully!')
+    updateBookingStatus({ id, status: 'completed' }).unwrap()
   }
 
   const showModal = () => {
@@ -130,6 +152,21 @@ const MyBookingsModelVendor = ({
   const handleCancelClickUpdateBooking = () => {
     setIsUpdateBookingModalOpen(false)
   }
+
+  const handleClickUpdateBookingToComplete = () => {
+    setIsUpdateCompleteBookingModalOpen(true)
+  }
+  const handleCancelClickUpdateBookingToComplete = () => {
+    setIsUpdateCompleteBookingModalOpen(false)
+  }
+
+  const handleClickCancelBooking = () => {
+    setIsUpdateCancelBookingModalOpen(true)
+  }
+  const handleClickCancelBookingCancelButton = () => {
+    setIsUpdateCancelBookingModalOpen(false)
+  }
+
   const handleBookingStatus = async () => {
     try {
       updateBookingStatus({
@@ -151,6 +188,7 @@ const MyBookingsModelVendor = ({
       >
         View Details
       </div>
+
       <Modal
         title={
           <div className="flex items-center mb-5 justify-center text-center text-3xl">
@@ -278,7 +316,14 @@ const MyBookingsModelVendor = ({
               <p>{timeLeft}</p>
             </div>
           )}
-
+          {bookingType === 'ongoing' && (
+            <div
+              className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md cursor-pointer hover:bg-blue-200"
+              onClick={handleClickUpdateBookingToComplete}
+            >
+              <p>Click to Update Status to Completed</p>
+            </div>
+          )}
           {bookingType === 'requested' && (
             <div className="flex justify-end text-xl">
               <p className="font-semibold text-red-500">
@@ -299,6 +344,16 @@ const MyBookingsModelVendor = ({
               </Button>
             </div>
           )}
+          {bookingType === 'requested' && !is_paid && (
+            <div className="">
+              <Button
+                className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md w-full h-[42px]"
+                onClick={handleClickCancelBooking}
+              >
+                Cancel Booking
+              </Button>
+            </div>
+          )}
 
           <UpdateBookingModal
             id={id}
@@ -311,19 +366,9 @@ const MyBookingsModelVendor = ({
               additional_note: additionalNote,
             }}
           />
-
-          {/* {bookingType === 'requested' && requested_by === 'USER' && (
-            <div>
-              <Button
-                className="bg-blue-100 text-center text-blue-500 text-lg p-2 rounded-md w-full h-[42px]"
-                onClick={handleClickCustomBooking}
-              >
-                Create Custom Booking
-              </Button>
-            </div>
-          )} */}
         </div>
       </Modal>
+
       <Modal
         open={isModalVisiblePayment}
         onOk={handleAcceptPayment}
@@ -349,14 +394,56 @@ const MyBookingsModelVendor = ({
         </div>
       </Modal>
 
-      {/* <Modal
-        open={isClickCustomBooking}
-        onCancel={handleCancelCustomBooking}
-        footer={null}
+      <Modal
+        open={isUpdateCancelBookingModalOpen}
+        onOk={handleAcceptCancel}
+        onCancel={handleClickCancelBookingCancelButton}
         centered
+        footer={[
+          <Button key="cancel" onClick={handleClickCancelBookingCancelButton}>
+            Cancel
+          </Button>,
+          <Button key="accept" type="primary" onClick={handleAcceptCancel}>
+            Yes, Cancel Booking
+          </Button>,
+        ]}
       >
-        <BookingRequestVendor user={userId} />
-      </Modal> */}
+        <div className="text-center">
+          <p className="text-lg font-semibold mb-4">
+            Confirm Cancellation of Booking
+          </p>
+          <p className="text-gray-600 mt-2">
+            Are you sure you want to update the status to Canceled?
+          </p>
+        </div>
+      </Modal>
+
+      <Modal
+        open={isUpdateCompleteBookingModalOpen}
+        onOk={handleAcceptComplete}
+        onCancel={handleCancelClickUpdateBookingToComplete}
+        centered
+        footer={[
+          <Button
+            key="cancel"
+            onClick={handleCancelClickUpdateBookingToComplete}
+          >
+            Cancel
+          </Button>,
+          <Button key="accept" type="primary" onClick={handleAcceptComplete}>
+            Accept Completion
+          </Button>,
+        ]}
+      >
+        <div className="text-center">
+          <p className="text-lg font-semibold mb-4">
+            Confirm Completion of Booking
+          </p>
+          <p className="text-gray-600 mt-2">
+            Are you sure you want to update the status to Completed?
+          </p>
+        </div>
+      </Modal>
 
       <Modal
         open={isReviewModalOpen}

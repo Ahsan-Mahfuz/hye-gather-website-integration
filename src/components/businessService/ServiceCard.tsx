@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PiPlusCircleBold } from 'react-icons/pi'
@@ -83,7 +83,7 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]) // Track deleted photos paths
   const [originalMainImage, setOriginalMainImage] = useState<string | null>(
     null
-  ) // Track original main image
+  )
   const [isMainImageDeleted, setIsMainImageDeleted] = useState(false) // Track if main image is deleted
 
   const [newService, setNewService] = useState({
@@ -107,16 +107,16 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
   const [deleteBusinessService, { isLoading: isDeleting }] =
     useDeleteBusinessServiceMutation()
 
-  // Service data destructuring
   const services: BusinessService[] = businessData?.data || []
-  const categories: Category[] = categoriesData?.data || []
+  const categories: Category[] = useMemo(
+    () => categoriesData?.data || [],
+    [categoriesData]
+  )
 
-  // Filter services from the selected category
   const [selectedServices, setSelectedServices] = useState<
     { _id: string; name: string }[]
   >([])
 
-  // Update available services when category changes
   useEffect(() => {
     if (newService.business_category && categories.length > 0) {
       const category = categories.find(
@@ -126,7 +126,6 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
     }
   }, [newService.business_category, categories])
 
-  // Modal functions
   const showDeleteConfirm = (id: string) => {
     setDeleteServiceId(id)
     setIsDeleteModalOpen(true)
@@ -164,18 +163,15 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
   }
 
   const handlePhotosChange = ({ fileList }: any) => {
-    // Track which photos are being removed
     const currentPhotoPaths = fileList
       .map((file: any) => (file.url ? file.url.replace(`${url}/`, '') : null))
       .filter(Boolean)
 
-    // If we're editing, detect which photos were removed
     if (editServiceId) {
       const previousPaths = fileList
         .filter((file: any) => file.url)
         .map((file: any) => file.url.replace(`${url}/`, ''))
 
-      // Find paths that were in the original list but not in the current list
       const removedPaths = originalMainImage
         ? fileList
             .filter(
@@ -186,7 +182,6 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
             .map((file: any) => file.url.replace(`${url}/`, ''))
         : []
 
-      // Add newly detected deleted paths
       setDeletedPhotos((prev) => [...prev, ...removedPaths])
     }
 
@@ -199,12 +194,14 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
 
     const serviceToEdit = {
       business_category:
-        service.business_category?.['_id'] || service.business_category,
+        typeof service.business_category === 'string'
+          ? service.business_category
+          : service.business_category?._id || '',
       business_services: Array.isArray(service.business_services)
-        ? service.business_services.map((s) =>
-            typeof s === 'object' ? s._id : s
-          )
-        : [service.business_services],
+        ? service.business_services
+            .map((s) => (typeof s === 'object' ? s._id : s))
+            .filter((s) => s !== undefined)
+        : [],
       price: service.price,
       business: service.business,
       businessServiceId: service._id,
@@ -227,7 +224,6 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
       setFileList([])
     }
 
-    // Set main image if available
     if (service.img) {
       setMainImage({
         uid: '-1',
@@ -413,7 +409,7 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
                 <AppstoreOutlined className="text-blue-600 mr-2" />
                 <h3 className="font-medium text-lg text-gray-800">
                   {service?.business_category?.name ||
-                    getCategoryName(service?.business_category)}
+                    getCategoryName(service?.business_category?._id || '')}
                 </h3>
               </div>
 
@@ -431,14 +427,6 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
                           : getServiceNames([ser])[0]}
                       </span>
                     ))}
-
-                  {/* {
-                      business_services.map((ser, idx) => (
-                        <div>
-                   
-                        </div>
-                      ))
-                    } */}
                 </div>
               </div>
 
@@ -576,7 +564,9 @@ const ServiceCard = ({ businessId }: { businessId: string }) => {
               formatter={(value) =>
                 `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
               }
-              parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+              parser={(value) => {
+                return value ? parseFloat(value.replace(/\$\s?|(,*)/g, '')) : 0
+              }}
             />
           </div>
 

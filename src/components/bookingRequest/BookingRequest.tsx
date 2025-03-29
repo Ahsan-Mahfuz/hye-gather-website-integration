@@ -80,12 +80,12 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
 
-  const handleDateChange = (date: any, dateString: string) => {
-    setFormData((prevData) => ({ ...prevData, date: dateString }))
+  const handleDateChange = (date: any, dateString: string | string[]) => {
+    setFormData((prevData) => ({ ...prevData, date: dateString as string }))
   }
 
-  const handleTimeChange = (time: any, timeString: string) => {
-    setFormData((prevData) => ({ ...prevData, time: timeString }))
+  const handleTimeChange = (time: any, timeString: string | string[]) => {
+    setFormData((prevData) => ({ ...prevData, time: timeString as string }))
   }
 
   const handleServiceChange = (values: string[]) => {
@@ -109,13 +109,13 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
         services: formData.services,
         date: formData.date,
         time: formData.time,
-        number_of_guests: formData.number_of_guests,
+        number_of_guests: Number(formData.number_of_guests),
         duration: formData.duration,
-        additional_services: formData.additional_services,
+        additional_services: formData.additional_services || '',
         business_service: formData.business_service,
         location: formData.location,
         event_name: formData.event_name,
-        additional_note: formData.additional_note,
+        additional_note: formData.additional_note || '',
       }
 
       const response = await createBooking(bookingData).unwrap()

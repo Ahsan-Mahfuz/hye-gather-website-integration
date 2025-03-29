@@ -25,7 +25,7 @@ interface CardProps {
   additionalNote?: string
   amountPaid?: string
   timeLeft?: string
-  price?: number
+  price: number
   requested_by?: string
   is_paid?: boolean
 }
@@ -126,42 +126,6 @@ const MyBookingsModel = ({
       console.error('Payment creation failed:', error)
     }
   }
-  // const [isEditing, setIsEditing] = useState(false)
-
-  // const [editedEventName, setEditedEventName] = useState(eventName)
-  // const [editedEventLocation, setEditedEventLocation] = useState(eventLocation)
-  // const [editedEventTime, setEditedEventTime] = useState(eventTime)
-  // const [editedNumberOfGuests, setEditedNumberOfGuests] =
-  //   useState(numberOfGuests)
-  // const [editedEventDuration, setEditedEventDuration] = useState(eventDuration)
-  // const [editedAdditionalRequirements, setEditedAdditionalRequirements] =
-  //   useState(additionalRequirements)
-  // const [editedAdditionalNote, setEditedAdditionalNote] =
-  //   useState(additionalNote)
-
-  // const handleSaveChanges = () => {
-  //   console.log('Updated Booking:', {
-  //     id,
-  //     editedEventName,
-  //     editedEventLocation,
-  //     editedEventTime,
-  //     editedNumberOfGuests,
-  //     editedEventDuration,
-  //     editedAdditionalRequirements,
-  //     editedAdditionalNote,
-  //   })
-
-  //   toast.success('Booking updated successfully!')
-  //   setIsEditing(false)
-  //   setIsModalOpen(false)
-  // }
-
-  // const getImageSrc = () => {
-  //   if (!image || image.includes('undefined')) {
-  //     return '/placeholder.png'
-  //   }
-  //   return image
-  // }
 
   return (
     <>
@@ -294,18 +258,6 @@ const MyBookingsModel = ({
             </div>
           )}
 
-          {/* {amountPaid && (
-            <div className="bg-gray-100 text-center py-2 rounded-md text-blue-600 font-semibold">
-              {amountPaid} is paid
-            </div>
-          )} */}
-          {/* {bookingType === 'ongoing' ||
-            (requested_by === 'VENDOR' && (
-              <div className="flex justify-end text-xl">
-                <p className="font-semibold text-red-500">Price: {price}</p>
-              </div>
-            ))} */}
-
           {bookingType === 'requested' && (
             <div className="flex justify-end text-[16px]">
               <div>
@@ -319,31 +271,7 @@ const MyBookingsModel = ({
               </div>
             </div>
           )}
-          {/* {requested_by === 'VENDOR' && (
-            <div className="flex justify-end ">
-              <Button
-                className="!bg-red-200 hover:!bg-black hover:!text-white"
-                onClick={handleSubscribe}
-              >
-                Payment
-              </Button>
-            </div>
-          )} */}
-
-          {/* {isEditing && (
-            <button
-              className="w-full p-2 rounded-md hover:bg-blue-700 bg-blue-600 text-white mt-4"
-              onClick={handleSaveChanges}
-            >
-              Save Changes
-            </button>
-          )} */}
         </div>
-        {/* {!isEditing && bookingType === 'requested' && (
-          <div className="text-end p-2 bg-blue-600 text-white cursor-pointer font-bold hover:bg-blue-800 flex items-center justify-center rounded-md">
-            <div onClick={() => setIsEditing(true)}>Edit Request</div>
-          </div>
-        )} */}
       </Modal>
 
       <Modal

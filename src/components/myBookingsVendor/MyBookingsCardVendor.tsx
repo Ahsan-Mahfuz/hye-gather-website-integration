@@ -182,7 +182,7 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     eventLocation: location,
     eventTime: formatDateTime(time),
     eventDate: formatDate(date),
-    numberOfGuests: Number(number_of_guests) || 0,
+    numberOfGuests: number_of_guests || '',
     eventDuration: duration,
     additionalRequirements: additional_services || '',
     additionalNote: additional_note || '',
