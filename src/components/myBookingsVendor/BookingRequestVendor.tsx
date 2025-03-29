@@ -107,12 +107,10 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
     is_paid: false,
   })
 
-  // Filter services based on selected category
   const filteredServices = allBusinessServices.filter(
     (service) => service.category === selectedCategory
   )
 
-  // Added missing methods
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -200,6 +198,7 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
         ...formData,
         price: Number(price),
         additional_services: formData.additional_services || '',
+        number_of_guests: formData.number_of_guests,
       }
 
       const response = await customCreateBooking(bookingData).unwrap()

@@ -75,6 +75,8 @@ const VendorDetailsPage: React.FC<VendorDetailsPageProps> = ({ params }) => {
     _id: vendorId,
   })
 
+  console.log(vendorData)
+
   useEffect(() => {
     if (vendorData) {
       setVendor(vendorData?.data[0] as Vendor)
