@@ -82,17 +82,48 @@ const MyBookingsModel = ({
   const [createReview, { isLoading: isCreatingReview }] =
     useCreateReviewMutation()
 
+  // const handleSubmit = () => {
+  //   console.log(business_service, rating, review)
+  //   createReview({
+  //     service: business_service,
+  //     rating: String(rating),
+  //     description: review,
+  //   }).unwrap()
+  //   toast.success('Review submitted successfully!')
+  //   setIsReviewModalOpen(false)
+  //   setRating(0)
+  //   setReview('')
+  // }
+
   const handleSubmit = () => {
+    if (isNaN(rating) || rating <= 0) {
+      toast.error('Please provide a valid rating.')
+      return
+    }
+
+    if (!review.trim()) {
+      toast.error('Please provide a review description.')
+      return
+    }
+
     console.log(business_service, rating, review)
+
     createReview({
       service: business_service,
-      rating: String(rating),
+      rating: rating,
       description: review,
-    }).unwrap()
-    toast.success('Review submitted successfully!')
-    setIsReviewModalOpen(false)
-    setRating(0)
-    setReview('')
+    })
+      .unwrap()
+      .then(() => {
+        toast.success('Review submitted successfully!')
+        setIsReviewModalOpen(false)
+        setRating(0)
+        setReview('')
+      })
+      .catch((error) => {
+        toast.error('Failed to submit review. Please try again.')
+        console.error('Review submission error:', error)
+      })
   }
 
   const showModal = () => {

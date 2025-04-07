@@ -5,7 +5,7 @@ const reviewRatingApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
     createReview: builder.mutation<
       any,
-      { service: string; rating: string; description: string }
+      { service: string; rating: number; description: string }
     >({
       query: () => ({
         url: '/review/create',
