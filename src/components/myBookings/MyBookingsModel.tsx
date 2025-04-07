@@ -6,6 +6,7 @@ import Payment from '../payment/Payment'
 import toast from 'react-hot-toast'
 import { useCreatePaymentMutation } from '@/redux/paymentApis'
 import { useRouter } from 'next/navigation'
+import { useCreateReviewMutation } from '@/redux/reviewRatingApis'
 
 interface CardProps {
   id: string
@@ -28,6 +29,7 @@ interface CardProps {
   price: number
   requested_by?: string
   is_paid?: boolean
+  business_service: string
 }
 
 enum PurposeType {
@@ -67,6 +69,7 @@ const MyBookingsModel = ({
   is_paid,
   timeLeft,
   requested_by,
+  business_service,
 }: CardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [createPayment, { isLoading: isCreatingPayment }] =
@@ -76,9 +79,16 @@ const MyBookingsModel = ({
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [createReview, { isLoading: isCreatingReview }] =
+    useCreateReviewMutation()
 
   const handleSubmit = () => {
-    console.log('Review Submitted:', { id, rating, review })
+    console.log(business_service, rating, review)
+    createReview({
+      service: business_service,
+      rating: String(rating),
+      description: review,
+    }).unwrap()
     toast.success('Review submitted successfully!')
     setIsReviewModalOpen(false)
     setRating(0)
@@ -135,6 +145,7 @@ const MyBookingsModel = ({
       >
         View Details
       </div>
+
       <Modal
         title={
           <div className="flex items-center mb-5 justify-center text-center text-3xl">

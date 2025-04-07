@@ -50,6 +50,7 @@ interface BookingData {
   services: Service[]
   is_paid: boolean
   requested_by: string
+  business_service: string
 }
 
 interface CardProps {
@@ -95,6 +96,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     services,
     is_paid,
     requested_by,
+    business_service,
   } = booking
 
   const userData = vendor[0] || {
@@ -182,6 +184,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     timeLeft: status === 'accepted' ? `Time left : ${timeLeft}` : '',
     price,
     is_paid,
+    business_service,
   }
 
   console.log(modelProps)

@@ -51,6 +51,7 @@ interface BookingData {
   services: Service[]
   is_paid: boolean
   requested_by: string
+  business_service: string
 }
 
 const MyBookings = () => {
@@ -59,6 +60,7 @@ const MyBookings = () => {
   const { data: getAllBookings, isLoading } = useGetBookingsQuery({
     requested_by: click,
   })
+
   const [activeTab, setActiveTab] = useState('1')
   useEffect(() => {
     if (activeTab === '2') {
