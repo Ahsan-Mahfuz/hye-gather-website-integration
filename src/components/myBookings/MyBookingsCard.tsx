@@ -205,7 +205,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
             <strong>Phone :</strong> {userData.phone}
           </div>
           <Link
-            href={`chat?id=${userData._id}`}
+            href={`chat?id=${userData._id}&name=${userData.name}`}
             className="flex bg-green-100 justify-center items-center gap-1 mt-2"
           >
             <RiMessage2Fill className="text-2xl text-blue-800 text-center cursor-pointer transition duration-300 ease-in-out hover:text-blue-700 animate-pulse" />

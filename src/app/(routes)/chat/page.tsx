@@ -44,11 +44,13 @@ import { useGetProfileDataQuery } from '@/redux/profileApis'
 import { User } from '@/types/chat'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Cookies from 'js-cookie'
 
 const ChatPage: React.FC = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const conversationId: string | null = searchParams.get('id')
+  const nameUser: string | null = searchParams.get('name')
   const { data: profileData } = useGetProfileDataQuery()
   const [currentUser, setCurrentUser] = useState<User | null>(profileData?.data)
 
@@ -66,6 +68,8 @@ const ChatPage: React.FC = () => {
         conv.users.some((user: any) => user._id === conversationId)
       )
       if (existingConv) {
+        Cookies.set('UserId', conversationId as string)
+        Cookies.set('UserName', nameUser as string)
         router.push(`/chat?id=${existingConv._id}`)
       } else {
         const createNewConversation = async () => {
@@ -89,7 +93,7 @@ const ChatPage: React.FC = () => {
         createNewConversation()
       }
     }
-  }, [conversationId, conversationsData, createConversation, router])
+  }, [conversationId, conversationsData, createConversation, router, nameUser])
 
   if (!currentUser) {
     return <Loader />

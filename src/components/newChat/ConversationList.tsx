@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { url } from '@/redux/main/server'
@@ -17,6 +17,10 @@ const ConversationList: React.FC<ConversationListProps> = ({ currentUser }) => {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null)
+
+  useEffect(() => {
+    Cookies.get('UserId')
+  }, [])
 
   useEffect(() => {
     if (conversationsData?.data) {
@@ -42,6 +46,25 @@ const ConversationList: React.FC<ConversationListProps> = ({ currentUser }) => {
   }
 
   const handleSelectConversation = (conversation: Conversation) => {
+    if (conversation?.users && conversation?.users.length > 0) {
+      if (Cookies.get('role') === 'VENDOR') {
+        const roleUser = conversation.users.find((user) => user.role === 'USER')
+        if (roleUser) {
+          Cookies.set('UserId', roleUser._id as string)
+          Cookies.set('UserName', roleUser.name as string)
+        }
+      } else if (conversation.users.length > 1) {
+        const roleUser = conversation.users.find(
+          (user) => user.role === 'VENDOR'
+        )
+        if (roleUser) {
+          Cookies.set('UserId', roleUser._id as string)
+          Cookies.set('UserName', roleUser.name as string)
+        }
+      }
+    } else {
+      console.error('No users found in the conversation')
+    }
     setSelectedConversation(conversation)
     router.push(`/chat?id=${conversation._id}`)
   }
@@ -50,8 +73,6 @@ const ConversationList: React.FC<ConversationListProps> = ({ currentUser }) => {
     const otherUser = conversation?.users?.find(
       (user) => user._id !== currentUser._id
     )
-    Cookies.set('UserId', otherUser?._id as string)
-    Cookies.set('UserName', otherUser?.name as string)
 
     return (
       <div
