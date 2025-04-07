@@ -127,7 +127,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
     setIsClickCustomBooking(false)
   }
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       <div className=" backdrop-blur-md border-b-2  py-5 px-3 text-lg font-semibold flex items-center justify-between">
         <div>
           {Cookies.get('UserName')}
@@ -150,7 +150,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
           </div>
         )}
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 ">
         {messages.map((msg) => (
           <div
             key={msg._id}

@@ -24,12 +24,12 @@ import { MdOutlineWorkspacePremium } from 'react-icons/md'
 import { RiMoneyDollarCircleLine } from 'react-icons/ri'
 
 const menuItems = [
-  {
-    id: 1,
-    title: 'Account Setting',
-    icon: <Settings className="w-5 h-5" />,
-    link: '/account-settings',
-  },
+  // {
+  //   id: 1,
+  //   title: 'Account Setting',
+  //   icon: <Settings className="w-5 h-5" />,
+  //   link: '/account-settings',
+  // },
   // {
   //   id: 2,
   //   title: 'Favorite Vendor',
@@ -77,19 +77,19 @@ const menuItems = [
 
 const moreItems = [
   {
-    id: 4,
+    id: 8,
     title: 'Terms & Condition',
     icon: <FileText className="w-5 h-5" />,
     link: '/terms-and-conditions',
   },
   {
-    id: 5,
+    id: 9,
     title: 'Privacy Policy',
     icon: <Shield className="w-5 h-5" />,
     link: '/privacy-and-policy',
   },
   {
-    id: 6,
+    id: 10,
     title: 'Help/Support',
     icon: <HelpCircle className="w-5 h-5" />,
     link: '/contact-us',
