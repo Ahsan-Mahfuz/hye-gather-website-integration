@@ -210,6 +210,13 @@ interface Vendor {
   total_booking?: number
   businesses?: { name: string }
   total_rated?: number
+  reviews_comment?: {
+    _id: string
+    user: string
+    description: string
+    rating: number
+    createdAt: string
+  }[]
 }
 
 interface VendorTabsProps {
@@ -269,7 +276,9 @@ const VendorTabs: React.FC<VendorTabsProps> = ({ vendor }) => {
           <div className="mt-4">
             <strong className="text-lg font-semibold">Ratings</strong>
             <p>
-              <span className="text-yellow-600">{vendor?.rating} ratings</span>{' '}
+              <span className="text-yellow-600">
+                {vendor?.rating.toFixed(1)} ratings
+              </span>{' '}
               - {vendor?.total_rated} Reviews
             </p>
           </div>
@@ -332,7 +341,7 @@ const VendorTabs: React.FC<VendorTabsProps> = ({ vendor }) => {
     {
       key: '4',
       label: 'Reviews',
-      children: <Reviews vendorId={vendor?.id} />,
+      children: <Reviews service={vendor._id} />,
     },
   ]
 

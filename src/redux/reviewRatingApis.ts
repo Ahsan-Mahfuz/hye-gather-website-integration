@@ -7,18 +7,19 @@ const reviewRatingApis = baseApis.injectEndpoints({
       any,
       { service: string; rating: number; description: string }
     >({
-      query: () => ({
+      query: (data) => ({
         url: '/review/create',
         method: 'POST',
+        body: data,
       }),
       invalidatesTags: ['reviews'],
     }),
     getReview: builder.query<any, { service: string; page: number }>({
-      query: (data) => {
-        const { service, page } = data
+      query: (params) => {
         return {
           url: `/review/get-all`,
           method: 'GET',
+          params,
         }
       },
       providesTags: ['reviews'],

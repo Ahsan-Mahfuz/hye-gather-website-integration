@@ -55,6 +55,13 @@ interface Vendor {
     name: string
     image: string
   }[]
+  reviews_comment?: {
+    _id: string
+    user: string
+    description: string
+    rating: number
+    createdAt: string
+  }[]
 }
 
 interface PageParams {
