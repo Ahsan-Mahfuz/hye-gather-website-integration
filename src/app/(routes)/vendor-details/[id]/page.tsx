@@ -159,7 +159,7 @@ const VendorDetailsPage: React.FC<VendorDetailsPageProps> = ({ params }) => {
                 </h1>
                 <div className="flex items-center mb-2">
                   <span className="text-yellow-500 mr-1">★</span>
-                  <span className="mr-1">{vendor?.rating}</span>
+                  <span className="mr-1">{vendor?.rating.toFixed(1)}</span>
                   <span className="text-gray-500">({vendor?.total_rated})</span>
                 </div>
                 <div className="mb-2">

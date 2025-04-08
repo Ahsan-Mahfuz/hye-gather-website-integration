@@ -40,7 +40,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
   ).join('')
 
   return (
-    <div className="bg-white p-4 rounded-lg border mb-4">
+    <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
       <div className="flex items-center mb-4">
         <Image
           src={`${url}/${avatar}`}
@@ -61,7 +61,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
         </div>
       </div>
       <div className="mb-2">
-        <span className="text-yellow-500 text-xl">{starRating}</span>
+        <span className="text-yellow-500 text-2xl">{starRating}</span>
       </div>
       <p className="text-gray-700">{reviewText}</p>
     </div>

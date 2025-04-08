@@ -165,7 +165,7 @@ const BusinessCreate = () => {
   return (
     <div className="responsive-width py-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 py-6 px-8">
+        <div className=" bg-blue-700 py-6 px-8">
           <Title level={2} className="!text-white !m-0">
             {editMode ? 'Update Your Business' : 'Register Your Business'}
           </Title>
@@ -275,7 +275,7 @@ const BusinessCreate = () => {
                   type="primary"
                   htmlType="submit"
                   loading={isCreating || isUpdating}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 h-12 text-base"
+                  className="w-full bg-blue-700 h-12 text-base"
                   size="large"
                 >
                   {editMode ? 'Update Business' : 'Register Business'}
