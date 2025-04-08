@@ -109,7 +109,7 @@ const BookingRequest: React.FC<BookingRequestProps> = ({
         services: formData.services,
         date: formData.date,
         time: formData.time,
-        number_of_guests: Number(formData.number_of_guests),
+        number_of_guests: formData.number_of_guests,
         duration: formData.duration,
         additional_services: formData.additional_services || '',
         business_service: formData.business_service,

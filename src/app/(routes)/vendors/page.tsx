@@ -225,7 +225,7 @@ const Vendors = () => {
             </Checkbox.Group>
           </div>
 
-          <div>
+          {/* <div>
             <p className="font-semibold">Sorting by City / Area</p>
             <Select
               mode="multiple"
@@ -240,7 +240,7 @@ const Vendors = () => {
                 </Option>
               ))}
             </Select>
-          </div>
+          </div> */}
 
           <button
             onClick={filterVendors}
@@ -277,7 +277,7 @@ const Vendors = () => {
               </Checkbox.Group>
             </div>
 
-            <div>
+            {/* <div>
               <p className="font-semibold">Sorting by City / Area</p>
               <Select
                 mode="multiple"
@@ -292,7 +292,7 @@ const Vendors = () => {
                   </Option>
                 ))}
               </Select>
-            </div>
+            </div> */}
 
             <button
               onClick={filterVendors}

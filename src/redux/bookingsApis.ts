@@ -3,14 +3,21 @@ import Cookies from 'js-cookie'
 
 const bookingsApis = baseApis.injectEndpoints({
   endpoints: (builder) => ({
-    getBookings: builder.query<any, { requested_by: string }>({
-      query: (params) => ({
+    getBookings: builder.query<any, void>({
+      query: () => ({
         url: '/booking/get-all',
         method: 'GET',
-        params,
       }),
       providesTags: ['bookings'],
     }),
+    // getBookings: builder.query<any, { requested_by?: string }>({
+    //   query: (params) => ({
+    //     url: '/booking/get-all',
+    //     method: 'GET',
+    //     params,
+    //   }),
+    //   providesTags: ['bookings'],
+    // }),
 
     createBookings: builder.mutation<
       any,
@@ -19,7 +26,7 @@ const bookingsApis = baseApis.injectEndpoints({
         services: string[]
         date: string
         time: string
-        number_of_guests: number
+        number_of_guests: string
         duration: string
         additional_services: string
         business_service: string

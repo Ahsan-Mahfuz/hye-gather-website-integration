@@ -18,6 +18,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiBadgeDollar } from 'react-icons/ci'
+import { FaStripe } from 'react-icons/fa'
 import { ImProfile } from 'react-icons/im'
 import { LuCrown } from 'react-icons/lu'
 import { MdOutlineWorkspacePremium } from 'react-icons/md'
@@ -72,6 +73,12 @@ const menuItems = [
     title: 'Package Plan',
     icon: <CiBadgeDollar className="w-5 h-5" />,
     link: '/subscription',
+  },
+  {
+    id: 8,
+    title: 'Connect Stripe Account',
+    icon: <FaStripe className="w-5 h-5" />,
+    link: '/connect-stripe-account',
   },
 ]
 
@@ -156,7 +163,9 @@ const ProfileSettings = () => {
                   item.title !== 'Earnings' &&
                   item.title !== 'Business Profile' &&
                   item.title !== 'Premium Package' &&
-                  item.title !== 'Package Plan'
+                  item.title !== 'Package Plan' &&
+                  item.title !== 'Connect Stripe Account' 
+                  // item.title !== 'Notification'
                 : true
             )
             .map((item) => (

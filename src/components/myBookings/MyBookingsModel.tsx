@@ -237,7 +237,7 @@ const MyBookingsModel = ({
               </p>
               <div className="text-sm flex gap-2 bg-red-200 p-2 items-center justify-center  font-bold">
                 <p className="font-semibold">Price:</p>
-                <span className="text-[16px]">{price}</span>
+                <span className="text-[16px]">${price}</span>
                 <span className="text-[16px]">
                   {is_paid ? '(Paid) ' : '(unpaid)'}
                 </span>

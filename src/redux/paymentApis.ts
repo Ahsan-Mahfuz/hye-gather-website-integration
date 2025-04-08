@@ -55,6 +55,13 @@ const paymentApis = baseApis.injectEndpoints({
         },
       }),
     }),
+    postConnectStripeAccount: builder.mutation<any, { country: string }>({
+      query: (data) => ({
+        url: '/payment/create-stripe-account',
+        method: 'POST',
+        body: data,
+      }),
+    }),
     getSubscription: builder.query<SubscriptionResponse, void>({
       query: () => {
         return {
@@ -68,5 +75,9 @@ const paymentApis = baseApis.injectEndpoints({
   overrideExisting: false,
 })
 
-export const { useCreatePaymentMutation, useGetSubscriptionQuery } = paymentApis
+export const {
+  useCreatePaymentMutation,
+  usePostConnectStripeAccountMutation,
+  useGetSubscriptionQuery,
+} = paymentApis
 export default paymentApis

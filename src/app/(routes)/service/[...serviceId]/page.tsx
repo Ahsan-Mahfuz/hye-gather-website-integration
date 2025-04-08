@@ -75,7 +75,7 @@ const EachService = () => {
             ))}
           </div>
           <p className="text-gray-800 flex items-center gap-2 mt-2 text-sm">
-            💲 Price: ${service.price}
+            💲 Price: $${service.price}
           </p>
           <p className="text-gray-800 flex items-center gap-2 mt-2 text-sm">
             👤 Vendor: {service.user_details.name}

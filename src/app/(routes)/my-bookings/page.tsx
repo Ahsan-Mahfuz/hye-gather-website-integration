@@ -57,9 +57,15 @@ interface BookingData {
 const MyBookings = () => {
   const [click, setClicked] = useState('USER')
 
-  const { data: getAllBookings, isLoading } = useGetBookingsQuery({
-    requested_by: click,
-  })
+  const { data: getAllBookings, isLoading, refetch } = useGetBookingsQuery()
+
+  // const {
+  //   data: getAllBookings,
+  //   isLoading,
+  //   refetch,
+  // } = useGetBookingsQuery({
+  //   requested_by: click,
+  // })
 
   const [activeTab, setActiveTab] = useState('1')
   useEffect(() => {
@@ -68,7 +74,8 @@ const MyBookings = () => {
     } else if (activeTab === '3') {
       setClicked('VENDOR')
     }
-  }, [activeTab])
+    refetch()
+  }, [activeTab, getAllBookings, refetch])
   const handleTabChange = (key: string) => {
     setActiveTab(key)
   }
@@ -78,6 +85,7 @@ const MyBookings = () => {
   }
 
   const getBookingsByStatus = (status: string) => {
+    console.log(status)
     if (!getAllBookings?.data) return []
 
     return getAllBookings?.data?.filter((booking: BookingData) => {
@@ -87,7 +95,7 @@ const MyBookings = () => {
         case 'requested':
           return booking.status === 'pending'
         case 'paymentRequest':
-          return booking.status === 'pending' && !booking.is_paid
+          return booking.status === 'pending'
         case 'completed':
           return booking.status === 'completed'
         case 'canceled':
@@ -107,8 +115,8 @@ const MyBookings = () => {
           <div className="text-lg font-semibold">Your Ongoing Activities</div>
 
           <div className="flex gap-5 flex-wrap">
-            {getBookingsByStatus('ongoing').length > 0 ? (
-              getBookingsByStatus('ongoing').map((booking: BookingData) => (
+            {getBookingsByStatus('ongoing')?.length > 0 ? (
+              getBookingsByStatus('ongoing')?.map((booking: BookingData) => (
                 <div key={booking._id} className="flex ">
                   <MyBookingsCard booking={booking} />
                 </div>
@@ -129,8 +137,8 @@ const MyBookings = () => {
         <div>
           <div className="text-lg font-semibold">Your Booking Requests</div>
           <div className="flex gap-5 flex-wrap">
-            {getBookingsByStatus('requested').length > 0 ? (
-              getBookingsByStatus('requested').map((booking: BookingData) => (
+            {getBookingsByStatus('requested')?.length > 0 ? (
+              getBookingsByStatus('requested')?.map((booking: BookingData) => (
                 <div key={booking._id}>
                   <MyBookingsCard booking={booking} />
                 </div>
@@ -175,7 +183,6 @@ const MyBookings = () => {
       children: (
         <div>
           <div className="text-lg font-semibold">Your Completed Bookings</div>
-
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('completed').length > 0 ? (
               getBookingsByStatus('completed').map((booking: BookingData) => (

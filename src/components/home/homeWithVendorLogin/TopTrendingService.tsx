@@ -73,7 +73,6 @@ const TopTrendingService = () => {
           ]}
           className="flex items-center justify-center gap-10 w-full mx-auto text-black"
         >
-          {/* Iterate over the fetched data */}
           {data?.data?.map(
             (
               service: {
@@ -87,7 +86,7 @@ const TopTrendingService = () => {
             ) => (
               <div
                 key={index}
-                className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
+                className=" bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
               >
                 <div className="relative overflow-hidden">
                   <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 z-10">

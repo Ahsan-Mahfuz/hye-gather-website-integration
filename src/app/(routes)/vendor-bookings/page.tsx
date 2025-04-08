@@ -61,13 +61,14 @@ const VendorBookings = () => {
   const [click, setClicked] = useState('USER')
   const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
 
-  const {
-    data: getAllBookings,
-    isLoading,
-    refetch,
-  } = useGetBookingsQuery({
-    requested_by: click,
-  })
+  const { data: getAllBookings, isLoading, refetch } = useGetBookingsQuery()
+  // const {
+  //   data: getAllBookings,
+  //   isLoading,
+  //   refetch,
+  // } = useGetBookingsQuery({
+  //   requested_by: click,
+  // })
   const [activeTab, setActiveTab] = useState('1')
 
   useEffect(() => {
@@ -92,6 +93,8 @@ const VendorBookings = () => {
   const getBookingsByStatus = (status: string) => {
     if (!getAllBookings?.data) return []
 
+    console.log(getAllBookings?.data)
+
     return getAllBookings?.data?.filter((booking: BookingData) => {
       switch (status) {
         case 'ongoing':
@@ -99,7 +102,7 @@ const VendorBookings = () => {
         case 'requested':
           return booking.status === 'pending'
         case 'paymentRequest':
-          return booking.status === 'pending' && !booking.is_paid
+          return booking.status === 'pending'
         case 'completed':
           return booking.status === 'completed'
         case 'canceled':
@@ -125,7 +128,7 @@ const VendorBookings = () => {
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('ongoing').length > 0 ? (
-              getBookingsByStatus('ongoing').map((booking: BookingData) => (
+              getBookingsByStatus('ongoing')?.map((booking: BookingData) => (
                 <div key={booking._id} className="flex ">
                   <MyBookingsCardVendor booking={booking} />
                 </div>

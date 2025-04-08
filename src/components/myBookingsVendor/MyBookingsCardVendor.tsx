@@ -111,6 +111,8 @@ const MyBookingsCardVendor: React.FC<CardProps> = ({ booking }) => {
     img: '/placeholder.png',
   }
 
+  console.log(_id)
+
   const categoryData = category[0] || { name: 'Unknown' }
 
   const serviceNames = services.map((service) => service.name)
