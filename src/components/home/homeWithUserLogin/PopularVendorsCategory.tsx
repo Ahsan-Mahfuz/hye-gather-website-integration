@@ -112,6 +112,7 @@ import { useGetBusinessDataWithoutParamsQuery } from '@/redux/businessApis'
 import { url } from '@/redux/main/server'
 import { Carousel } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const PopularVendorsCategory = () => {
   const { data, isLoading, isError } =
@@ -158,7 +159,11 @@ const PopularVendorsCategory = () => {
           ]}
         >
           {topRatedServices?.map((item: any) => (
-            <div key={item._id} className="px-4 ">
+            <Link
+              href={`/vendor-details/${item._id}`}
+              key={item._id}
+              className="px-4 "
+            >
               <div className="bg-white rounded-2xl border p-4 text-center">
                 <Image
                   src={`${url}/${item.img}`}
@@ -180,7 +185,7 @@ const PopularVendorsCategory = () => {
                     .join(', ')}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </Carousel>
       </div>
