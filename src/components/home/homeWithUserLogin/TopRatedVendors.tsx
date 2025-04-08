@@ -35,7 +35,8 @@ const TopRatedVendors = () => {
     <div className="mt-50 responsive-width">
       <p className="font-bold text-3xl mb-10 text-center">
         {/* This Week&apos;s Top-Rated Vendors */}
-        Top-Rated Vendors
+        {/* Top-Rated Vendors */}
+        Popular Vendor category
       </p>
       <div className="responsive-width flex items-center justify-start flex-wrap gap-5">
         {vendors.length > 0 ? (

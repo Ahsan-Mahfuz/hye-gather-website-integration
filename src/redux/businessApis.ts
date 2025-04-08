@@ -66,6 +66,16 @@ const businessApis = baseApis.injectEndpoints({
       providesTags: ['business', 'Profile'],
     }),
 
+    getBusinessDataWithoutParams: builder.query({
+      query: () => {
+        return {
+          url: '/business-service/get-all',
+          method: 'GET',
+        }
+      },
+      providesTags: ['business', 'Profile'],
+    }),
+
     createBusinessService: builder.mutation({
       query: (data) => {
         return {
@@ -122,6 +132,7 @@ export const {
   useUpdateBusinessServiceMutation,
   useDeleteBusinessServiceMutation,
   useCreateBusinessMutation,
+  useGetBusinessDataWithoutParamsQuery,
 } = businessApis
 
 export default businessApis
