@@ -93,7 +93,6 @@ const VendorBookings = () => {
   const getBookingsByStatus = (status: string) => {
     if (!getAllBookings?.data) return []
 
-
     return getAllBookings?.data?.filter((booking: BookingData) => {
       switch (status) {
         case 'ongoing':
@@ -146,7 +145,9 @@ const VendorBookings = () => {
       label: 'User Requests',
       children: (
         <div>
-          <div className="text-lg font-semibold">Booking Requests</div>
+          <div className="text-lg font-semibold">
+            Booking Requests From Users
+          </div>
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('requested').length > 0 ? (
               getBookingsByStatus('requested').map((booking: BookingData) => (
@@ -168,7 +169,7 @@ const VendorBookings = () => {
       label: <div>Your Request</div>,
       children: (
         <div>
-          <div className="text-lg font-semibold">Bookings Awaiting Payment</div>
+          <div className="text-lg font-semibold">Your Booking Requests</div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('paymentRequest').length > 0 ? (

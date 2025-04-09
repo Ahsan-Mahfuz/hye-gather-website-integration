@@ -12,9 +12,6 @@ const earningsApis = baseApis.injectEndpoints({
           url: '/dashboard/vendor-overview',
           method: 'GET',
           params,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
         }
       },
     }),

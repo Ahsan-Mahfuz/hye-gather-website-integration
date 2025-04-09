@@ -39,11 +39,13 @@ const EarningStatics = () => {
     year_payment: selectedYear,
   })
 
+  const years = Array.from(
+    { length: currentYear - 2024 + 1 },
+    (_, i) => 2024 + i
+  ).reverse()
 
-  const years = earningsData?.payment_year || [currentYear]
-
-  const months = earningsData?.earningGrowth?.monthNames?.map((name: string) =>
-    name.substring(0, 3)
+  const months = earningsData?.data?.earning_overview?.monthNames?.map(
+    (name: string) => name.substring(0, 3)
   ) || [
     'Jan',
     'Feb',
@@ -64,7 +66,7 @@ const EarningStatics = () => {
     datasets: [
       {
         label: 'Earnings',
-        data: earningsData?.earningGrowth?.data || Array(12).fill(0),
+        data: earningsData?.data?.earning_overview?.data || Array(12).fill(0),
         backgroundColor: '#0033A0',
       },
     ],
@@ -80,7 +82,7 @@ const EarningStatics = () => {
         <h2 className="text-xl font-semibold">Earning Statistics</h2>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">
-            Total: ${earningsData?.total_earning?.toLocaleString() || 0}
+            Total: ${earningsData?.data?.earning || 0}
           </span>
           <select
             className="p-2 bg-blue-100 text-xs rounded-md cursor-pointer outline-none"
