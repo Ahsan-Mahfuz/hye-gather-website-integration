@@ -62,7 +62,6 @@ const OtpSent = () => {
           form.resetFields()
           localStorage.removeItem('reset-token')
           localStorage.setItem('reset-token', res?.data?.resetToken)
-          console.log(res?.data?.token)
           router.push('/set-new-password')
         })
     } catch (error: any) {

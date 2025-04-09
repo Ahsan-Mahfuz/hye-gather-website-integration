@@ -84,7 +84,6 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
     category: item.business_category._id,
   }))
 
-  console.log(businessServiceId)
 
   const [step, setStep] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -184,7 +183,6 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
   }
 
   const handleRadioChange = (e: any, field: string) => {
-    console.log(e.target.value)
     setFormData((prevData) => ({
       ...prevData,
       [field]: e.target.value,
@@ -192,7 +190,6 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
   }
 
   const handleSubmit = async () => {
-    console.log(formData)
     try {
       const bookingData = {
         ...formData,

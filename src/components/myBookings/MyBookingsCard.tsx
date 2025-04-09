@@ -187,7 +187,6 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     business_service,
   }
 
-  console.log(modelProps)
 
   return (
     <div className="bg-white grid mb-5  mt-5 flex-col shadow-md rounded-lg px-6 py-5 sm:flex-row gap-4 sm:max-w-[600px] max-w-[430px] w-full border border-gray-200">

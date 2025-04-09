@@ -8,11 +8,11 @@ export const useSocket = (serverUrl: string, currentUserId: string) => {
     const newSocket = io(serverUrl)
 
     newSocket.on('connect', () => {
-      console.log('Socket connected')
+      // console.log('Socket connected')
     })
 
     newSocket.on('disconnect', (reason: string) => {
-      console.log('Socket disconnected:', reason)
+      // console.log('Socket disconnected:', reason)
     })
 
     newSocket.on('connect_error', (error: any) => {

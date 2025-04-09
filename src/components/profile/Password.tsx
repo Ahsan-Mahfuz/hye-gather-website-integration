@@ -22,7 +22,6 @@ const Password = () => {
   }
 
   const handleSaveClick = async (values: FormData) => {
-    console.log(values)
     try {
       const response = await changePassword({
         old_password: values.old_password,

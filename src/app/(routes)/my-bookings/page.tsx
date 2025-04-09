@@ -74,8 +74,7 @@ const MyBookings = () => {
     } else if (activeTab === '3') {
       setClicked('VENDOR')
     }
-    refetch()
-  }, [activeTab, getAllBookings, refetch])
+  }, [activeTab, getAllBookings])
   const handleTabChange = (key: string) => {
     setActiveTab(key)
   }
@@ -85,7 +84,6 @@ const MyBookings = () => {
   }
 
   const getBookingsByStatus = (status: string) => {
-    console.log(status)
     if (!getAllBookings?.data) return []
 
     return getAllBookings?.data?.filter((booking: BookingData) => {

@@ -17,7 +17,6 @@ const SetANewPassword = () => {
   }
   const onFinish = async (values: FormData) => {
     try {
-      console.log(values)
       const response = await postResetPassword({
         password: values.password,
         confirm_password: values.confirm,

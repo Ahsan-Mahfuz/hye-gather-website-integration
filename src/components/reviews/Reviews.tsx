@@ -74,7 +74,6 @@ const Reviews: FC<{ service: string }> = ({ service }) => {
   if (isLoading) return <p>Loading reviews...</p>
   if (!data?.success || !data.data.length) return <p>No reviews found.</p>
 
-  console.log(data)
   return (
     <div className="max-w-2xl mx-auto">
       {data?.data.map((review: Review) => (

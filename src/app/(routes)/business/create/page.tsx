@@ -94,7 +94,7 @@ const BusinessCreate = () => {
       }
       reader.readAsDataURL(info.file)
     } else {
-      console.log('Invalid file object:', info.file)
+      console.error('Invalid file object:', info.file)
     }
   }
 

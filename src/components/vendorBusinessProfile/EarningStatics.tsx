@@ -39,7 +39,6 @@ const EarningStatics = () => {
     year_payment: selectedYear,
   })
 
-  console.log(earningsData)
 
   const years = earningsData?.payment_year || [currentYear]
 

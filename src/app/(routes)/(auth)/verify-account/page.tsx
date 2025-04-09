@@ -64,7 +64,6 @@ const VerifyAccount = () => {
         .then((res) => {
           toast.success(res?.message)
           form.resetFields()
-          console.log(role)
           if (role === 'VENDOR') {
             Cookies.set('token', res?.data?.token)
             router.push('/subscription')

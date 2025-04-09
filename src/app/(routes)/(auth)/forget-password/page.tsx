@@ -16,7 +16,6 @@ const ForgetPassword = () => {
   }
   const onFinish = async (values: FormData) => {
     try {
-      console.log(values)
       const response = await postResendOtp({
         email: values.email,
       })

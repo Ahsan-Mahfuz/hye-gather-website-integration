@@ -106,7 +106,6 @@ const MyBookingsModel = ({
       return
     }
 
-    console.log(business_service, rating, review)
 
     createReview({
       service: business_service,

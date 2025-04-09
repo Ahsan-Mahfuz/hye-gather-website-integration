@@ -93,7 +93,6 @@ const VendorBookings = () => {
   const getBookingsByStatus = (status: string) => {
     if (!getAllBookings?.data) return []
 
-    console.log(getAllBookings?.data)
 
     return getAllBookings?.data?.filter((booking: BookingData) => {
       switch (status) {
