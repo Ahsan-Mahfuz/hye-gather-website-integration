@@ -5,13 +5,54 @@ import Image from 'next/image'
 import toast from 'react-hot-toast'
 import { FaCheckCircle } from 'react-icons/fa'
 
+interface PriceData {
+  name: string
+  unit_amount: number
+  quantity: number
+  booking_id?: string
+}
+
+type SubscriptionType = 'MONTHLY' | 'YEARLY'
+type PurposeType = 'BOOKING' | 'BASIC' | 'PREMIUM'
+
+interface PaymentRequest {
+  price_data: PriceData[]
+  subscription_type?: SubscriptionType
+  purpose: PurposeType
+  currency?: string
+}
+
+interface PaymentResponse {
+  success: boolean
+  message: string
+  url: string
+}
+
+interface SubscriptionBenefit {
+  monthly_benefits: string[]
+  yearly_benefits: string[]
+  monthly_price: number
+  yearly_price: number
+  monthly_tag: string
+  yearly_tag: string
+  _id: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+interface SubscriptionResponse {
+  success: boolean
+  message: string
+  data: SubscriptionBenefit[]
+}
 export default function VendorPlan() {
   const [createPayment, { isLoading: isCreatingPayment }] =
     useCreatePaymentMutation()
 
   const handleSubscribe = async () => {
     try {
-      const payload = {
+      const payload: PaymentRequest = {
         price_data: [
           {
             name: 'subscription',

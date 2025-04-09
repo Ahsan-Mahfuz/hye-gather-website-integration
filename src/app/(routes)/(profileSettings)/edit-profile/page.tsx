@@ -51,10 +51,6 @@ const Profile = () => {
         setImagePreview(`${url}/${profileData.data.img}`)
       }
     }
-
-
-   
-
   }, [profileData, form])
 
   if (isLoading) return <Loader />

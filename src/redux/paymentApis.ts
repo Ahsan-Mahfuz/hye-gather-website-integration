@@ -50,9 +50,6 @@ const paymentApis = baseApis.injectEndpoints({
         url: '/payment/create',
         method: 'POST',
         body: data,
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
       }),
     }),
     postConnectStripeAccount: builder.mutation<any, { country: string }>({

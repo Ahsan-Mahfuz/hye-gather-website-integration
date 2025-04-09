@@ -14,18 +14,12 @@ const privacyApis = baseApis.injectEndpoints({
       providesTags: ['Profile'],
     }),
 
-    postProfileData: builder.mutation<
-      any,
-      { name: string; phone: string; email: string; img: string }
-    >({
-      query: (data) => {
+    postProfileData: builder.mutation<any, FormData>({
+      query: (formData) => {
         return {
           url: '/auth/update-profile',
           method: 'PATCH',
-          body: data,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
+          body: formData,
         }
       },
       invalidatesTags: ['Profile'],

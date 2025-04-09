@@ -3,21 +3,12 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Card from '@/components/card/Card'
-import BookingForm from '@/components/bookingForm/BookingForm'
+import { useRouter } from 'next/navigation'
 import VendorTabs from '@/components/vendorTabs/VendorTabs'
+import BookingForm from '@/components/bookingForm/BookingForm'
 import { useGetBusinessDataQuery } from '@/redux/businessApis'
-import { use } from 'react'
 import { url } from '@/redux/main/server'
 import Loader from '@/components/loading/ReactLoader'
-import { Button } from 'antd'
-import { useRouter } from 'next/navigation'
-import Cookies from 'js-cookie'
-
-interface Category {
-  name: string
-  id: string
-}
 
 interface Vendor {
   id: string
@@ -65,34 +56,33 @@ interface Vendor {
   }[]
 }
 
-interface PageParams {
-  id: string
+interface ClientVendorDetailsProps {
+  initialVendorData: Vendor | null
+  vendorId: string
 }
 
-interface VendorDetailsPageProps {
-  params: PageParams
-}
-
-const VendorDetailsPage = () => {
+const ClientVendorDetails: React.FC<ClientVendorDetailsProps> = ({
+  initialVendorData,
+  vendorId,
+}) => {
   const router = useRouter()
-  // const vendorId = params.id
-  const [vendor, setVendor] = useState<Vendor | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [vendor, setVendor] = useState<Vendor | null>(initialVendorData)
+  const [loading, setLoading] = useState<boolean>(!initialVendorData)
 
-  const vendorId = Cookies.get('vendor-Id')
-
+  // Client-side data fetching (for real-time updates or additional data)
   const { data: vendorData, isLoading } = useGetBusinessDataQuery({
     _id: vendorId,
   })
 
   useEffect(() => {
-    if (vendorData) {
-      setVendor(vendorData?.data[0] as Vendor)
+    // Only update with client data if it's available and different
+    if (vendorData && vendorData.data && vendorData.data[0]) {
+      setVendor(vendorData.data[0] as Vendor)
       setLoading(false)
-    } else if (!isLoading) {
+    } else if (!isLoading && !initialVendorData) {
       setLoading(false)
     }
-  }, [vendorData, isLoading])
+  }, [vendorData, isLoading, initialVendorData])
 
   const handleBack = (): void => {
     router.back()
@@ -185,7 +175,7 @@ const VendorDetailsPage = () => {
                 </p>
                 <Link
                   href={`/chat?id=${vendor?.businesses?.user}`}
-                  className="inline-block px-6 py-3 !mt-3 text-white font-semibold  bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-500 transition-all duration-300 cursor-pointer"
+                  className="inline-block px-6 py-3 !mt-3 text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-500 transition-all duration-300 cursor-pointer"
                 >
                   Send Message
                 </Link>
@@ -205,4 +195,4 @@ const VendorDetailsPage = () => {
   )
 }
 
-export default VendorDetailsPage
+export default ClientVendorDetails

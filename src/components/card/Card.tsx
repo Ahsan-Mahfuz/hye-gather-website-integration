@@ -1,6 +1,7 @@
 import { url } from '@/redux/main/server'
 import Image from 'next/image'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
 
 interface CardProps {
   id: string
@@ -75,6 +76,7 @@ const Card: React.FC<CardProps> = ({
         <Link
           href={`/vendor-details/${id}`}
           className="mt-2 bg-blue-600 flex items-center justify-center text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
+          onClick={() => Cookies.set('vendor-Id', id)}
         >
           View Details
         </Link>

@@ -89,12 +89,8 @@ const EarningStatics = () => {
             value={selectedYear}
             onChange={handleYearChange}
           >
-            {years.map((year: number) => (
-              <option
-                key={year}
-                value={year}
-                className="p-2 text-xs cursor-pointer"
-              >
+            {years.map((year) => (
+              <option key={year} value={year} className="p-2 cursor-pointer">
                 {year}
               </option>
             ))}

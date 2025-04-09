@@ -89,7 +89,7 @@ const bookingsApis = baseApis.injectEndpoints({
         services: string[]
         date: string
         time: string
-        number_of_guests: number
+        number_of_guests: string
         duration: string
         additional_services: string
         business_service: string

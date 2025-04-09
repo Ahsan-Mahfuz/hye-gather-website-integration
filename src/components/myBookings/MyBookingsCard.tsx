@@ -175,7 +175,7 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     eventName: event_name,
     eventLocation: location,
     eventTime: formatDateTime(time),
-    numberOfGuests: Number(number_of_guests) || 0,
+    numberOfGuests: number_of_guests,
     eventDuration: duration,
     additionalRequirements: additional_services || '',
     additionalNote: additional_note || '',
@@ -186,7 +186,6 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
     is_paid,
     business_service,
   }
-
 
   return (
     <div className="bg-white grid mb-5  mt-5 flex-col shadow-md rounded-lg px-6 py-5 sm:flex-row gap-4 sm:max-w-[600px] max-w-[430px] w-full border border-gray-200">

@@ -20,7 +20,7 @@ interface CardProps {
   eventName?: string
   eventLocation?: string
   eventTime?: string
-  numberOfGuests?: number
+  numberOfGuests?: string
   eventDuration?: string
   additionalRequirements?: string
   additionalNote?: string
@@ -105,7 +105,6 @@ const MyBookingsModel = ({
       toast.error('Please provide a review description.')
       return
     }
-
 
     createReview({
       service: business_service,

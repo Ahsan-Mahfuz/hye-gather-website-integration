@@ -84,7 +84,6 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
     category: item.business_category._id,
   }))
 
-
   const [step, setStep] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [selectedServices, setSelectedServices] = useState<string[]>([])
@@ -191,15 +190,15 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
 
   const handleSubmit = async () => {
     try {
+      console.log(formData.number_of_guests)
+      console.log(typeof formData.number_of_guests)
       const bookingData = {
         ...formData,
         price: Number(price),
         additional_services: formData.additional_services || '',
         number_of_guests: formData.number_of_guests,
       }
-
       const response = await customCreateBooking(bookingData).unwrap()
-
       toast.success(response.message || 'Custom booking created successfully!')
       onClose()
       resetForm()
