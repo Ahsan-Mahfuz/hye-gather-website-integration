@@ -111,7 +111,7 @@ const VendorBusinessCard: React.FC<CardProps> = ({
         </Link>
         <div className="bg-blue-100 p-3 rounded-md w-full text-center">
           <p className="text-blue-600 text-sm font-medium">
-            Be a Premium Vendor
+            Become a Premium Vendor
           </p>
           <Link href={'/top-vendor-plan'}>
             <button className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium mt-2 w-full">

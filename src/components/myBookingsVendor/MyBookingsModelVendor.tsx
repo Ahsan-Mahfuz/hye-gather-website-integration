@@ -258,7 +258,7 @@ const MyBookingsModelVendor = ({
               <span>{eventLocation}</span>
             </div>
             <div>
-              <p className="font-semibold">Event Time:</p>
+              <p className="font-semibold">Serving Time:</p>
               <span>{eventTime}</span>
             </div>
             <div>

@@ -55,6 +55,11 @@ const Footer = () => {
                 Contact Us
               </Link>
             </li>
+            <li>
+              <Link href="/about-us" className="hover:text-blue-500">
+                About Us
+              </Link>
+            </li>
           </ul>
         </div>
 

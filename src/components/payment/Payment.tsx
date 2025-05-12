@@ -11,12 +11,14 @@ const Payment = ({
   email,
   phone,
   id,
+  handleSubscribe,
 }: {
   price: number
   name: string
   email: string
   phone: string
   id: string
+  handleSubscribe: () => void
 }) => {
   const [showPromo, setShowPromo] = useState(false)
   const [inputPromoCode, setInputPromoCode] = useState('')
@@ -165,6 +167,7 @@ const Payment = ({
       } else {
         toast.error(response.message || 'Failed to create payment')
       }
+      handleSubscribe()
     } catch (error) {
       toast.dismiss('creating-payment')
       toast.error('Error creating payment')

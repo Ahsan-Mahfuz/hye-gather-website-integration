@@ -107,33 +107,12 @@ const MyBookings = () => {
   const tabItems = [
     {
       key: '1',
-      label: 'Ongoing',
+      label: ' My Inquiries',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Ongoing Activities</div>
-
-          <div className="flex gap-5 flex-wrap">
-            {getBookingsByStatus('ongoing')?.length > 0 ? (
-              getBookingsByStatus('ongoing')?.map((booking: BookingData) => (
-                <div key={booking._id} className="flex ">
-                  <MyBookingsCard booking={booking} />
-                </div>
-              ))
-            ) : (
-              <div className="mt-4 text-center text-gray-500">
-                No ongoing bookings found
-              </div>
-            )}
+          <div className="text-lg font-semibold">
+            Vendors you reached out to.
           </div>
-        </div>
-      ),
-    },
-    {
-      key: '2',
-      label: 'Your Requests',
-      children: (
-        <div>
-          <div className="text-lg font-semibold">Your Booking Requests</div>
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('requested')?.length > 0 ? (
               getBookingsByStatus('requested')?.map((booking: BookingData) => (
@@ -150,12 +129,15 @@ const MyBookings = () => {
         </div>
       ),
     },
+
     {
-      key: '3',
-      label: <div>Vendor Requests</div>,
+      key: '2',
+      label: <div>Vendor Offers</div>,
       children: (
         <div>
-          <div className="text-lg font-semibold">Bookings Awaiting Payment</div>
+          <div className="text-lg font-semibold">
+            Vendor has responded; you can accept their offer.
+          </div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('paymentRequest').length > 0 ? (
@@ -175,12 +157,42 @@ const MyBookings = () => {
         </div>
       ),
     },
+
     {
-      key: '4',
-      label: 'Completed',
+      key: '3',
+      label: 'Upcoming Events',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Completed Bookings</div>
+          <div className="text-lg font-semibold">
+            Vendors you’ve booked, event pending.
+          </div>
+
+          <div className="flex gap-5 flex-wrap">
+            {getBookingsByStatus('ongoing')?.length > 0 ? (
+              getBookingsByStatus('ongoing')?.map((booking: BookingData) => (
+                <div key={booking._id} className="flex ">
+                  <MyBookingsCard booking={booking} />
+                </div>
+              ))
+            ) : (
+              <div className="mt-4 text-center text-gray-500">
+                No ongoing bookings found
+              </div>
+            )}
+          </div>
+        </div>
+      ),
+    },
+
+
+    {
+      key: '4',
+      label: ' Past Events',
+      children: (
+        <div>
+          <div className="text-lg font-semibold">
+            Vendors you’ve used and can review
+          </div>
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('completed').length > 0 ? (
               getBookingsByStatus('completed').map((booking: BookingData) => (
@@ -199,12 +211,15 @@ const MyBookings = () => {
         </div>
       ),
     },
+
     {
       key: '5',
-      label: 'Canceled',
+      label: 'Canceled Events',
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Canceled Bookings</div>
+          <div className="text-lg font-semibold">
+            Events or vendors you canceled.
+          </div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('canceled').length > 0 ? (
@@ -222,6 +237,34 @@ const MyBookings = () => {
         </div>
       ),
     },
+
+    // {
+    //   key: '2',
+    //   label: ' My Inquiries',
+    //   children: (
+    //     <div>
+    //       <div className="text-lg font-semibold">
+    //         Vendors you reached out to.
+    //       </div>
+    //       <div className="flex gap-5 flex-wrap">
+    //         {getBookingsByStatus('requested')?.length > 0 ? (
+    //           getBookingsByStatus('requested')?.map((booking: BookingData) => (
+    //             <div key={booking._id}>
+    //               <MyBookingsCard booking={booking} />
+    //             </div>
+    //           ))
+    //         ) : (
+    //           <div className="mt-4 text-center text-gray-500">
+    //             No booking requests found
+    //           </div>
+    //         )}
+    //       </div>
+    //     </div>
+    //   ),
+    // },
+   
+   
+    
   ]
 
   return (

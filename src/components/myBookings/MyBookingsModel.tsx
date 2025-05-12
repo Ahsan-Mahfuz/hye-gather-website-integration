@@ -229,7 +229,7 @@ const MyBookingsModel = ({
             <div className="flex justify-between items-center">
               <p className="font-semibold">
                 Booking For:{' '}
-                <span className="font-normal bg-blue-100 px-3 py-1 rounded-lg">
+                <span className="font-normal bg-gray-100 px-3 py-1 rounded-lg">
                   {bookingFor}
                 </span>
               </p>
@@ -251,7 +251,7 @@ const MyBookingsModel = ({
               <span>{eventLocation}</span>
             </div>
             <div>
-              <p className="font-semibold">Event Time:</p>
+              <p className="font-semibold">Serving Time:</p>
               <span>{eventTime}</span>
             </div>
             <div>
@@ -303,7 +303,8 @@ const MyBookingsModel = ({
               <div>
                 <p className="font-semibold text-red-500">Price: {price}</p>
                 <button
-                  onClick={handleSubscribe}
+                  onClick={handlePaymentClick}
+                  // onClick={handleSubscribe}
                   className="border rounded-lg px-2 py-1 bg-blue-600 text-white hover:bg-white hover:text-black"
                 >
                   Payment
@@ -326,6 +327,7 @@ const MyBookingsModel = ({
           email={email}
           phone={phone}
           id={id}
+          handleSubscribe={handleSubscribe}
         />
       </Modal>
 

@@ -119,10 +119,12 @@ const VendorBookings = () => {
   const tabItems = [
     {
       key: '1',
-      label: 'Ongoing',
+      label: ' Upcoming Events',
       children: (
         <div>
-          <div className="text-lg font-semibold">Ongoing Activities</div>
+          <div className="text-lg font-semibold">
+            Vendors you’ve booked, event pending.
+          </div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('ongoing').length > 0 ? (
@@ -142,11 +144,11 @@ const VendorBookings = () => {
     },
     {
       key: '2',
-      label: 'User Requests',
+      label: ' My Inquiries',
       children: (
         <div>
           <div className="text-lg font-semibold">
-            Booking Requests From Users
+            Vendors you reached out to.
           </div>
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('requested').length > 0 ? (
@@ -166,10 +168,12 @@ const VendorBookings = () => {
     },
     {
       key: '3',
-      label: <div>Your Request</div>,
+      label: <div>User Offers</div>,
       children: (
         <div>
-          <div className="text-lg font-semibold">Your Booking Requests</div>
+          <div className="text-lg font-semibold">
+            User has responded, you can accept their offer.
+          </div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('paymentRequest').length > 0 ? (
@@ -191,7 +195,7 @@ const VendorBookings = () => {
     },
     {
       key: '4',
-      label: 'Completed',
+      label: 'Past Events',
       children: (
         <div>
           <div className="text-lg font-semibold">Completed Bookings</div>
@@ -216,10 +220,12 @@ const VendorBookings = () => {
     },
     {
       key: '5',
-      label: 'Canceled',
+      label: 'Canceled Events',
       children: (
         <div>
-          <div className="text-lg font-semibold">Canceled Bookings</div>
+          <div className="text-lg font-semibold">
+            Events or users you canceled.
+          </div>
 
           <div className="flex gap-5 flex-wrap">
             {getBookingsByStatus('canceled').length > 0 ? (
@@ -239,7 +245,7 @@ const VendorBookings = () => {
     },
     {
       key: '6',
-      label: 'Create Bookings',
+      label: 'Manual Bookings',
       children: (
         <div>
           <div className="text-lg font-semibold">Create a New Bookings</div>

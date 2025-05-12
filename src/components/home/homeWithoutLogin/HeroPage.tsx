@@ -13,7 +13,7 @@ const HeroPage = () => {
             <Image
               src="/bestVendor.svg"
               alt="bestVendor"
-              className='w-7'
+              className="w-7"
               width={10}
               height={10}
             />

@@ -414,7 +414,7 @@ const BookingRequestVendor: React.FC<BookingRequestProps> = ({
             />
           </div>
           <div className="mt-4">
-            <label className="block text-sm font-medium">Event Time:</label>
+            <label className="block text-sm font-medium">Serving Time:</label>
             <TimePicker
               format="h:mm A"
               onChange={handleTimeChange}
