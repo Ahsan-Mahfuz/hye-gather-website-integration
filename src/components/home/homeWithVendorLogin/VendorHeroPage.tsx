@@ -31,7 +31,10 @@ const VendorHeroPage = () => {
         </ul>
 
         <div className="mt-6">
-          <Link href={'/top-vendor-plan'} className="max-sm:flex  max-sm:flex-col gap-1">
+          <Link
+            href={'/top-vendor-plan'}
+            className="max-sm:flex  max-sm:flex-col gap-1"
+          >
             <button className="px-2 py-3 max-sm:w-full bg-blue-600  text-white rounded-lg font-semibold hover:bg-blue-700 transition">
               Get Started
             </button>
@@ -43,7 +46,7 @@ const VendorHeroPage = () => {
       <div className="flex flex-col gap-3 mt-20">
         <div className="flex justify-end max-md:items-center max-md:justify-center items-end gap-3">
           <Image
-            src="/dJs.jpg"
+            src="/djjj.png"
             alt="Bartender"
             className="max-w-72 w-full h-72 rounded-lg shadow-md object-cover"
             width={5000}
@@ -59,14 +62,14 @@ const VendorHeroPage = () => {
         </div>
         <div className="flex justify-start max-md:items-center max-md:justify-center items-start gap-3">
           <Image
-            src="/food.jpg"
+            src="/carsss.png"
             alt="Chef"
             className="max-w-52 w-full h-52 rounded-lg shadow-md object-cover max-md:hidden"
             width={5000}
             height={50}
           />
           <Image
-            src="/photography.jpg"
+            src="/foods.png"
             alt="Photographer"
             className="max-w-72 w-full h-72  rounded-lg shadow-md object-cover "
             width={5000}

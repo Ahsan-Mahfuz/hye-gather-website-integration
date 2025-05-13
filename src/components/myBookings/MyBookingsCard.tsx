@@ -197,17 +197,17 @@ const MyBookingsCard: React.FC<CardProps> = ({ booking }) => {
           height={500}
           className="rounded-full flex items-center justify-center mx-auto mb-1 object-cover object-center w-[100px] h-[100px]"
         />
-        <h3 className="text-lg font-semibold bg-green-100 px-2 pt-2">
+        <h3 className="text-lg font-semibold bg-gray-300 px-2 pt-2">
           {userData.name}
         </h3>
-        <div className="bg-green-100 text-sm p-2">
-          <div className="text-gray-600 text-xs">{userData.email}</div>
-          <div className="text-gray-600 text-xs">
+        <div className="bg-gray-300text-sm p-2 bg-gray-300">
+          <div className=" text-xs">{userData.email}</div>
+          <div className=" text-xs">
             <strong>Phone :</strong> {userData.phone}
           </div>
           <Link
             href={`chat?id=${userData._id}&name=${userData.name}`}
-            className="flex bg-green-100 justify-center items-center gap-1 mt-2"
+            className="flex bg-gray-300 justify-center items-center gap-1 mt-2"
           >
             <RiMessage2Fill className="text-2xl text-blue-800 text-center cursor-pointer transition duration-300 ease-in-out hover:text-blue-700 animate-pulse" />
           </Link>
