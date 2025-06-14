@@ -1,9 +1,7 @@
-
 import { FaPhoneAlt } from 'react-icons/fa'
 import Link from 'next/link'
 import { IoMailOpenSharp } from 'react-icons/io5'
 import dynamic from 'next/dynamic'
-
 
 const AskedQuestionWithAnswer = dynamic(
   () => import('./AskedQuestionWithAnswer'),
@@ -12,7 +10,6 @@ const AskedQuestionWithAnswer = dynamic(
   }
 )
 const FrequentlyAskedQuestion = () => {
-
   return (
     <div className="responsive-width " id="faq">
       <div className="  mt-40 rounded-lg flex  flex-col justify-center">
@@ -34,10 +31,10 @@ const FrequentlyAskedQuestion = () => {
               <div className="flex items-center gap-3">
                 <IoMailOpenSharp />
                 <a
-                  href="mailto:hello@sassiii.com"
+                  href="mailto:hyegather@gmail.com"
                   className="text-blue-600 hover:underline"
                 >
-                  hello@sassiii.com
+                  hyegather@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -60,7 +57,7 @@ const FrequentlyAskedQuestion = () => {
         </div>
         <div className="text-center mt-10">
           <Link
-            href="mailto:hello@sassiii.com"
+            href="mailto:hyegather@gmail.com"
             className="text-white p-4 max-md:text-xs rounded-lg poppins  bg-blue-800 hover:bg-blue-700 max-lg:text-sm transition-all duration-300"
           >
             Let&apos;s Mail Us →

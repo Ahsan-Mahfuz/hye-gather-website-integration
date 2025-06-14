@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { RiCheckboxBlankCircleFill } from 'react-icons/ri'
 
 const eventData = [
   {
@@ -18,13 +19,13 @@ const eventData = [
   {
     id: 2,
     category: 'Musicians',
-    title: 'Live Music for Every Moment',
+    title: 'Live Music That Elevates the Moments',
     description:
-      'Talented musicians to make your events unforgettable, from solo acts to full bands.',
+      'Bring your event to life with passionate performers—from solo vocalists to full bands.',
     features: [
-      'Diverse genres to suit your event.',
-      'Professional performers for any size audience.',
-      'Flexible scheduling and packages.',
+      'Explore a range of musical styles.',
+      'Hear samples and read reviews.',
+      'Book confidently through our platform.',
     ],
     image: '/musician.jpg',
   },
@@ -136,13 +137,13 @@ const EventCard = ({
         <ul className="mt-4 space-y-2">
           {features.map((feature, index) => (
             <li key={index} className="flex items-center gap-2 text-gray-600">
-              💡 {feature}
+              <RiCheckboxBlankCircleFill className='mb-1 text-black' /> {feature}
             </li>
           ))}
         </ul>
         <Link href={'/sign-in'}>
           <button className="mt-4 px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-700 cursor-pointer">
-            Learn more
+            View Vendors
           </button>
         </Link>
       </div>
@@ -152,10 +153,20 @@ const EventCard = ({
 
 const ExploreVendors = () => {
   return (
-    <div className=" mx-auto space-y-8 p-6 responsive-width">
-      {eventData.map((event) => (
-        <EventCard key={event.id} {...event} />
-      ))}
+    <div className="responsive-width">
+      <div className="text-3xl font-bold mb-4 text-center mt-5">
+        Explore Trusted Armenian Event Vendors
+      </div>
+      <div className="text-center text-gray-600 max-w-[1000px] mx-auto w-full mb-10">
+        Discover top-rated service providers for every kind of event — all in
+        one place. From food to music, entertainment to decorators, find the
+        perfect vendors trusted by the community.
+      </div>
+      <div className="  space-y-8  ">
+        {eventData.map((event) => (
+          <EventCard key={event.id} {...event} />
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import AboutOwner from '@/components/home/homeWithVendorLogin/AboutOwner'
 import EventMarketplace from '@/components/home/homeWithVendorLogin/EventMarketplace'
 import HowItWorksVendor from '@/components/home/homeWithVendorLogin/HowItWorksVendor'
 import TestimonialVendor from '@/components/home/homeWithVendorLogin/TestimonialVendor'
@@ -10,6 +11,7 @@ const UserHome = () => {
       <VendorHeroPage />
       <HowItWorksVendor />
       {/* <TopTrendingService /> */}
+      <AboutOwner />
       <EventMarketplace />
       <TestimonialVendor />
     </div>

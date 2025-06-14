@@ -1,12 +1,12 @@
 import Link from 'next/link'
+import { TiTick } from 'react-icons/ti'
 const RoleSelection = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen  ">
       <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold ">Choose your role to get started</h2>
+        <h2 className="text-3xl font-bold ">Tell us who you are</h2>
         <p className="text-gray-600 mt-3">
-          Select the option that best describes you to personalize your
-          experience.
+          Select an option to personalize your experience on Hye Gather.
         </p>
       </div>
 
@@ -21,25 +21,30 @@ const RoleSelection = () => {
         >
           <div>
             <h3 className="text-3xl max-md:text-2xl m-10 text-center font-semibold text-gray-900">
-              Become a Vendor
+              I’m a Vendor
             </h3>
             <p className=" text-sm text-center mt-2">
-              Join us as a vendor to showcase your services and connect with
-              potential clients. Grow your business by managing bookings,
-              receiving reviews, and handling payments—all in one place.
+              Showcase your services, connect with clients, and manage all your
+              bookings in one place.
             </p>
             <ul className="mt-4 space-y-2">
               <li className="flex items-center">
-                <span className="text-blue-800 mr-2 text-2xl ">🔹</span> Create
-                and manage your listings.
+                <span className="text-blue-800 mr-2 text-2xl ">
+                  <TiTick />
+                </span>{' '}
+                Add and manage your listings.
               </li>
               <li className="flex items-center">
-                <span className="text-blue-800 mr-2 text-2xl">🔹</span> Handle
-                bookings seamlessly.
+                <span className="text-blue-800 mr-2 text-2xl">
+                  <TiTick />
+                </span>{' '}
+                Track bookings and payments.
               </li>
               <li className="flex items-center">
-                <span className="text-blue-800 mr-2 text-2xl">🔹</span> Get
-                reviews and receive payments.
+                <span className="text-blue-800 mr-2 text-2xl">
+                  <TiTick />
+                </span>{' '}
+                Collect reviews and grow your business.
               </li>
             </ul>
           </div>
@@ -48,7 +53,7 @@ const RoleSelection = () => {
             href={{ pathname: '/sign-up', query: { role: 'VENDOR' } }}
           >
             <button className="mt-10 cursor-pointer w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-              I&apos;M A VENDOR
+              Continue as Vendor
             </button>
           </Link>
         </div>
@@ -63,24 +68,32 @@ const RoleSelection = () => {
         >
           <div>
             <h3 className="text-3xl text-center font-semibold text-gray-900 m-10 max-md:text-2xl ">
-              Find a Vendor
+              I’m Planning an Event
             </h3>
             <p className="text-sm text-center mt-2">
-              Looking for top-rated vendors? Sign up as a customer to search,
-              compare, and book professionals for your next event with ease.
+              Easily find and book trusted Armenian vendors for any occasion.
             </p>
             <ul className=" mt-4 space-y-2">
               <li className="flex items-center">
-                <span className="text-blue-500 text-2xl mr-2">🔹</span> Search
-                and compare vendors.
+                <span className="text-blue-800 text-2xl mr-2">
+                  {' '}
+                  <TiTick />
+                </span>{' '}
+                Browse and compare top-rated vendors.
               </li>
               <li className="flex items-center">
-                <span className="text-blue-500 text-2xl mr-2">🔹</span> Book and
-                manage appointments.
+                <span className="text-blue-800 text-2xl mr-2">
+                  {' '}
+                  <TiTick />
+                </span>{' '}
+                Send inquiries and manage bookings.
               </li>
               <li className="flex items-center">
-                <span className="text-blue-500 text-2xl mr-2">🔹</span> Share
-                your experience through reviews.
+                <span className="text-blue-800 text-2xl mr-2">
+                  {' '}
+                  <TiTick />
+                </span>
+                Leave reviews and stay organized.
               </li>
             </ul>
           </div>
@@ -89,7 +102,7 @@ const RoleSelection = () => {
             href={{ pathname: '/sign-up', query: { role: 'USER' } }}
           >
             <button className="mt-10 cursor-pointer w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-              I&apos;M A CUSTOMER
+             Continue as Planner
             </button>
           </Link>
         </div>
