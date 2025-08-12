@@ -44,6 +44,32 @@ const bookingsApis = baseApis.injectEndpoints({
       invalidatesTags: ['bookings'],
     }),
 
+    manualBookings: builder.mutation<
+      any,
+      {
+        category: string
+        services: string[]
+        date: string
+        time: string
+        number_of_guests: string
+        duration: string
+        additional_services: string
+        business_service: string
+        location: string
+        event_name: string
+        price: number
+      }
+    >({
+      query: (data) => {
+        return {
+          url: '/booking/create',
+          method: 'POST',
+          body: data,
+        }
+      },
+      invalidatesTags: ['bookings'],
+    }),
+
     updateBookings: builder.mutation<
       any,
       {
@@ -114,6 +140,7 @@ const bookingsApis = baseApis.injectEndpoints({
 
 export const {
   useCreateBookingsMutation,
+  useManualBookingsMutation,
   useUpdateBookingsMutation,
   useUpdateBookingStatusMutation,
   useCustomCreateBookingsMutation,

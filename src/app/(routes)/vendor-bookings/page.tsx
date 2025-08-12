@@ -1,8 +1,8 @@
 'use client'
 
 import Loader from '@/components/loading/ReactLoader'
-import MyBookingsCard from '@/components/myBookings/MyBookingsCard'
 import BookingRequestVendor from '@/components/myBookingsVendor/BookingRequestVendor'
+import BookingRequestVendorCustom from '@/components/myBookingsVendor/BookingRequestVendorCustom'
 import MyBookingsCardVendor from '@/components/myBookingsVendor/MyBookingsCardVendor'
 import VendorCalendar from '@/components/vendorTabs/VendorCalendar'
 import { useGetBookingsQuery } from '@/redux/bookingsApis'
@@ -60,15 +60,9 @@ interface BookingData {
 const VendorBookings = () => {
   const [click, setClicked] = useState('USER')
   const [isClickCustomBooking, setIsClickCustomBooking] = useState(false)
+  const [isClickCustomBookingCS, setIsClickCustomBookingCS] = useState(false)
 
   const { data: getAllBookings, isLoading, refetch } = useGetBookingsQuery()
-  // const {
-  //   data: getAllBookings,
-  //   isLoading,
-  //   refetch,
-  // } = useGetBookingsQuery({
-  //   requested_by: click,
-  // })
   const [activeTab, setActiveTab] = useState('1')
 
   useEffect(() => {
@@ -110,12 +104,30 @@ const VendorBookings = () => {
       }
     })
   }
+
   const handleClickCustomBooking = () => {
     setIsClickCustomBooking(true)
   }
+
   const handleCancelCustomBooking = () => {
     setIsClickCustomBooking(false)
   }
+
+  const handleClickCustomBookingCS = () => {
+    setIsClickCustomBookingCS(true)
+  }
+
+  const handleCancelCustomBookingCS = () => {
+    console.log('Closing custom booking modal') 
+    setIsClickCustomBookingCS(false)
+  }
+
+  const handleCustomBookingSuccess = () => {
+    console.log('Custom booking success, closing modal') 
+    setIsClickCustomBookingCS(false)
+    refetch() 
+  }
+
   const tabItems = [
     {
       key: '1',
@@ -123,7 +135,7 @@ const VendorBookings = () => {
       children: (
         <div>
           <div className="text-lg font-semibold">
-            Vendors you’ve booked, event pending.
+            Vendors you&apos;ve booked, event pending.
           </div>
 
           <div className="flex gap-5 flex-wrap">
@@ -257,6 +269,29 @@ const VendorBookings = () => {
               <div>
                 <div className="flex items-center flex-col gap-2 ">
                   <FiPlusCircle className="text-5xl" />
+                  <span className="font-semibold ">Create Manual Booking</span>
+                </div>
+              </div>
+            </Button>
+          </div>
+        </div>
+      ),
+    },
+
+    {
+      key: '7',
+      label: 'Custom Bookings',
+      children: (
+        <div>
+          <div className="text-lg font-semibold">Create a New Bookings</div>
+          <div>
+            <Button
+              onClick={handleClickCustomBookingCS}
+              className="py-32 px-10 transition-all mt-3"
+            >
+              <div>
+                <div className="flex items-center flex-col gap-2 ">
+                  <FiPlusCircle className="text-5xl" />
                   <span className="font-semibold ">Create Custom Booking</span>
                 </div>
               </div>
@@ -279,15 +314,24 @@ const VendorBookings = () => {
       />
 
       <Modal
-        title="Create Custom Booking"
+        title="Create Manual Booking"
         open={isClickCustomBooking}
         onCancel={handleCancelCustomBooking}
         footer={null}
         width={500}
         centered
+        destroyOnClose={true}
       >
         <BookingRequestVendor onClose={handleCancelCustomBooking} />
       </Modal>
+
+      {isClickCustomBookingCS && (
+        <BookingRequestVendorCustom
+          isVisible={isClickCustomBookingCS}
+          onClose={handleCancelCustomBookingCS}
+          // onSuccess={handleCustomBookingSuccess}
+        />
+      )}
     </div>
   )
 }

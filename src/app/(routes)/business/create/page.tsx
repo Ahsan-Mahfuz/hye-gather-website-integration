@@ -45,6 +45,8 @@ const BusinessCreate = () => {
   const router = useRouter()
   const [form] = Form.useForm<BusinessFormData>()
 
+  const [mounted, setMounted] = useState(false)
+
   const [createBusiness, { isLoading: isCreating }] =
     useCreateBusinessMutation()
   const [updateBusiness, { isLoading: isUpdating }] =
@@ -56,28 +58,37 @@ const BusinessCreate = () => {
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
   const [editMode, setEditMode] = useState<boolean>(false)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
-    if (businessProfileData?.data) {
+    if (businessProfileData?.data && mounted && !isInitialized) {
       const businessData = Array.isArray(businessProfileData.data)
         ? businessProfileData.data[0]
         : businessProfileData.data
 
       if (businessData) {
-        form.setFieldsValue({
-          name: businessData.name || '',
-          address: businessData.address || '',
-          trade_license: businessData.trade_license || '',
-        })
+        setTimeout(() => {
+          form.setFieldsValue({
+            name: businessData.name || '',
+            address: businessData.address || '',
+            trade_license: businessData.trade_license || '',
+          })
 
-        if (businessData?.banner) {
-          setLogoPreview(`${url}/${businessData?.banner}`)
-        }
+          if (businessData?.banner) {
+            setLogoPreview(`${url}/${businessData?.banner}`)
+          }
 
-        setEditMode(true)
+          setEditMode(true)
+          setIsInitialized(true)
+        }, 0)
       }
     }
-  }, [businessProfileData, form])
+  }, [businessProfileData, form, mounted, isInitialized])
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -147,7 +158,7 @@ const BusinessCreate = () => {
     }
   }
 
-  if (profileLoading) {
+  if (!mounted || profileLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <Loader />
@@ -162,6 +173,15 @@ const BusinessCreate = () => {
     </div>
   )
 
+  const getBusinessData = () => {
+    if (!businessProfileData?.data) return null
+    return Array.isArray(businessProfileData.data)
+      ? businessProfileData.data[0]
+      : businessProfileData.data
+  }
+
+  const businessData = getBusinessData()
+
   return (
     <div className="responsive-width py-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
@@ -171,7 +191,11 @@ const BusinessCreate = () => {
           </Title>
         </div>
 
-        <Tabs defaultActiveKey="form" className="px-6 pt-4">
+        <Tabs
+          defaultActiveKey="form"
+          className="px-6 pt-4"
+          destroyInactiveTabPane={false}
+        >
           <TabPane tab="Business Information" key="form">
             <Form
               form={form}
@@ -289,84 +313,78 @@ const BusinessCreate = () => {
             </Form>
           </TabPane>
 
-          {businessProfileData?.data && (
+          {businessData && (
             <TabPane tab="Business Profile" key="profile">
               <div className="p-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                  {(() => {
-                    const businessData = Array.isArray(businessProfileData.data)
-                      ? businessProfileData.data[0]
-                      : businessProfileData.data
+                  <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+                    {businessData?.banner ? (
+                      <Image
+                        src={`${url}/${businessData?.banner}`}
+                        alt={businessData.name || 'Business logo'}
+                        width={500}
+                        height={500}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                        No Logo
+                      </div>
+                    )}
+                  </div>
 
-                    return (
-                      <>
-                        <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
-                          {businessData?.banner ? (
-                            <Image
-                              src={`${url}/${businessData?.banner}`}
-                              alt={businessData.name}
-                              width={500}
-                              height={500}
-                              className="object-cover w-full h-full"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-                              No Logo
-                            </div>
-                          )}
-                        </div>
+                  <div className="flex-1">
+                    <Title level={3} className="!mb-4">
+                      {businessData?.name || 'Business Name'}
+                    </Title>
 
-                        <div className="flex-1">
-                          <Title level={3} className="!mb-4">
-                            {businessData?.name}
-                          </Title>
+                    <div className="mt-4 space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <Text className="text-sm font-medium text-gray-500 sm:w-32">
+                          Address:
+                        </Text>
+                        <Text className="text-gray-700">
+                          {businessData?.address || 'N/A'}
+                        </Text>
+                      </div>
 
-                          <div className="mt-4 space-y-3">
-                            <div className="flex flex-col sm:flex-row sm:items-center">
-                              <Text className="text-sm font-medium text-gray-500 sm:w-32">
-                                Address:
-                              </Text>
-                              <Text className="text-gray-700">
-                                {businessData?.address}
-                              </Text>
-                            </div>
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <Text className="text-sm font-medium text-gray-500 sm:w-32">
+                          Trade License:
+                        </Text>
+                        <Text className="text-gray-700">
+                          {businessData?.trade_license || 'N/A'}
+                        </Text>
+                      </div>
 
-                            <div className="flex flex-col sm:flex-row sm:items-center">
-                              <Text className="text-sm font-medium text-gray-500 sm:w-32">
-                                Trade License:
-                              </Text>
-                              <Text className="text-gray-700">
-                                {businessData?.trade_license}
-                              </Text>
-                            </div>
+                      <div className="flex flex-col sm:flex-row sm:items-center">
+                        <Text className="text-sm font-medium text-gray-500 sm:w-32">
+                          Created:
+                        </Text>
+                        <Text className="text-gray-700">
+                          {businessData?.createdAt
+                            ? new Date(
+                                businessData.createdAt
+                              ).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                              })
+                            : 'N/A'}
+                        </Text>
+                      </div>
+                    </div>
 
-                            <div className="flex flex-col sm:flex-row sm:items-center">
-                              <Text className="text-sm font-medium text-gray-500 sm:w-32">
-                                Created:
-                              </Text>
-                              <Text className="text-gray-700">
-                                {businessData?.createdAt
-                                  ? new Date(
-                                      businessData.createdAt
-                                    ).toLocaleDateString()
-                                  : 'N/A'}
-                              </Text>
-                            </div>
-                          </div>
-
-                          <div className="mt-6">
-                            <Button
-                              type="primary"
-                              onClick={() => router.push('/service')}
-                              className="bg-blue-600 hover:bg-blue-700"
-                            >
-                              Back to business service
-                            </Button>
-                          </div>
-                        </div>
-                      </>
-                    )
-                  })()}
+                    <div className="mt-6">
+                      <Button
+                        type="primary"
+                        onClick={() => router.push('/service')}
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Back to business service
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </TabPane>
